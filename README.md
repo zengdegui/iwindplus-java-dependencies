@@ -5,12 +5,11 @@ iwindplus-cloud-dependencies是基于springcloud封装的模板,其中申明了s
 
 1.nexus快照版本（开发版）步骤:
 修改pom.xml文件中nexus-snapshots-url为snapshots仓库地址
+修改pom.xml文件中nexus-releases-url为releases仓库地址
 操作命令： mvn deploy
 
 2.nexus RELEASE版本步骤：
-修改pom.xml文件中nexus-releases-url为releases仓库地址
-修改pom.xml文件中release-username(git账户),release-password(git密码)
-操作命令:
+操作步骤:
 1)： mvn release:clean release:prepare
 发布到仓库中:
 2)： mvn release:perform
