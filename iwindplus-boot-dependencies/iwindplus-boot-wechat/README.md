@@ -1,0 +1,9 @@
+微信模块
+一、微信小程序对接流程
+   1、启动类开启注解@EnableWechatMa
+   2、在配置文件中配置WechatMaProperty中属性
+   3、程序中注入WechatMaService，调用该类中方法
+二、微信公众号对接流程
+   1、启动类开启注解@EnableWechatMp
+   2、在配置文件中配置WechatMpProperty中属性
+   3、程序中注入WechatMpService，调用该类中方法

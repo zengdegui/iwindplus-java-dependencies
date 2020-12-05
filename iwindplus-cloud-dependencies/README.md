@@ -1,0 +1,1 @@
+iwindplus-cloud-dependencies 是基于springcloud架构的封装

@@ -1,0 +1,11 @@
+支付模块
+一、微信支付对接流程
+   1、启动类开启注解@EnableWechatPay
+   2、在配置文件中配置WechatPayProperty中属性
+   3、程序中注入WechatPayService，调用该类中方法
+   4、需要使用回调则必须实现PayBaseService中的方法
+二、支付宝支付对接流程
+   1、启动类开启注解@EnableAlipay
+   2、在配置文件中配置AlipayProperty中属性
+   3、程序中注入AlipayService，调用该类中方法
+   4、需要使用回调则必须实现PayBaseService中的方法

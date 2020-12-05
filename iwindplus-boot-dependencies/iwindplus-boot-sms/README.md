@@ -1,0 +1,14 @@
+短信模块
+重点必须实现SmsBaseService,里面包含验证码的验证方法,和存储方法
+一、阿里云sms使用流程
+   1、启动类开启注解@EnableAlibabaSms
+   2、在配置文件中配置AliyunSmsProperty中属性
+   3、程序中注入SmsService，调用该类中方法
+二、七牛云sms使用流程
+   1、启动类开启注解@EnableQiniuSms
+   2、在配置文件中配置QiniuSmsProperty中属性
+   3、程序中注入SmsService，调用该类中方法
+二、凌凯sms使用流程
+   1、启动类开启注解@EnableLingkaiSms
+   2、在配置文件中配置LingkaiSmsProperty中属性
+   3、程序中注入SmsService，调用该类中方法

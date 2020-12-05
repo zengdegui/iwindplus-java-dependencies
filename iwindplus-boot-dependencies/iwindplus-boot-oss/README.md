@@ -1,0 +1,13 @@
+对象存储模块
+一、阿里云oss使用流程
+   1、启动类开启注解@EnableAlibabaOss
+   2、在配置文件中配置AliyunOssProperty中属性
+   3、程序中注入AliyunOssService，调用该类中方法
+二、七牛云oss使用流程
+   1、启动类开启注解@EnableQiniuOss
+   2、在配置文件中配置QiniuOssProperty中属性
+   3、程序中注入QiniuOssService，调用该类中方法
+三、springboot自带oss使用流程
+   1、默认是开启的
+   2、在配置文件中配置MultipartProperties中属性
+   3、程序中注入FileService，调用该类中方法
