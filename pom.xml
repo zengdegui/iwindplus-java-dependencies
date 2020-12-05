@@ -60,7 +60,7 @@
 
     <scm>
         <developerConnection>${source-url}</developerConnection>
-        <tag>tag</tag>
+        <tag>iwindplus-platform-dependencies-1.0.0</tag>
   </scm>
 
     <build>
