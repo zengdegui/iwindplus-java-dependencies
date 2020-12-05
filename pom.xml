@@ -60,7 +60,7 @@
 
     <scm>
         <developerConnection>${source-url}</developerConnection>
-      <tag>HEAD</tag>
+        <tag>tag</tag>
   </scm>
 
     <build>
