@@ -11,7 +11,7 @@ iwindplus-cloud-dependencies是基于springcloud封装的模板,其中申明了s
 修改pom.xml文件中nexus-releases-url为releases仓库地址
 修改pom.xml文件中release-username(git账户),release-password(git密码)
 操作命令:
-1)： mvn release:prepare
+1)： mvn release:clean release:prepare
 发布到仓库中:
 2)： mvn release:perform
 后悔药：mvn release:rollback
