@@ -20,7 +20,7 @@ maven-release-plugin会自动帮我们签出刚才打的tag，然后打包，分
 
 现在我们想要发布1.1.0，然后将主干升级为1.2.0-SNAPSHOT，同时开启一个1.1.x的分支，用来修复1.1.0中的bug。
 首先，在发布1.1.0之前，我们创建1.1.x分支，运行如下命令：
-mvn release:branch -DbranchName=1.0.0 -DupdateBranchVersions=true -DupdateWorkingCopyVersions=false
+mvn release:branch -DbranchName=iwindplus-platform-dependencies-1.0.0 -DupdateBranchVersions=true -DupdateWorkingCopyVersions=false
 
 3.修改工程版本
 mvn versions:set -DnewVersion=1.0.0-SNAPSHOT
