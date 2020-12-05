@@ -24,10 +24,6 @@
         <nexus-releases-url>http://8.135.100.226:8081/repository/maven-releases/</nexus-releases-url>
         <!-- 源码 -->
         <source-url>scm:git:https://github.com/zengdegui/iwindplus-platform-dependencies.git</source-url>
-
-        <!-- git账号 -->
-        <release-username>gitUsername</release-username>
-        <release-password>gitPassword</release-password>
     </properties>
 
     <dependencyManagement>
@@ -66,7 +62,6 @@
 
     <scm>
         <developerConnection>${source-url}</developerConnection>
-        <tag>HEAD</tag>
     </scm>
 
     <build>
@@ -98,8 +93,6 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>${maven-release-plugin.version}</version>
                     <configuration>
-                        <!--<username>${release-username}</username>
-                        <password>${release-password}</password>-->
                         <autoVersionSubmodules>true</autoVersionSubmodules>
                         <arguments>-DskipTests</arguments>
                     </configuration>
