@@ -19,9 +19,9 @@
         <versions-maven-plugin.version>2.7</versions-maven-plugin.version>
 
         <!-- 快照版本 -->
-        <nexus-snapshots-url>http://ip:port/repository/maven-snapshots/</nexus-snapshots-url>
+        <nexus-snapshots-url>http://8.135.100.226:8081/repository/maven-snapshots/</nexus-snapshots-url>
         <!-- 正式版本 -->
-        <nexus-releases-url>http://ip:port/repository/maven-releases/</nexus-releases-url>
+        <nexus-releases-url>http://8.135.100.226:8081/repository/maven-releases/</nexus-releases-url>
         <!-- 源码 -->
         <source-url>scm:git:https://github.com/zengdegui/iwindplus-platform-dependencies.git</source-url>
 
@@ -98,8 +98,8 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>${maven-release-plugin.version}</version>
                     <configuration>
-                        <username>${release-username}</username>
-                        <password>${release-password}</password>
+                        <!--<username>${release-username}</username>
+                        <password>${release-password}</password>-->
                         <autoVersionSubmodules>true</autoVersionSubmodules>
                         <arguments>-DskipTests</arguments>
                     </configuration>
