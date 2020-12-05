@@ -60,7 +60,7 @@
 
     <scm>
         <developerConnection>${source-url}</developerConnection>
-        <tag>tag</tag>
+        <tag>iwindplus-boot-dependencies-1.0.1</tag>
   </scm>
 
     <build>
