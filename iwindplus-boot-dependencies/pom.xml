@@ -19,6 +19,7 @@
         <module>iwindplus-boot-wechat</module>
         <module>iwindplus-boot-pay</module>
         <module>iwindplus-boot-excel</module>
+        <module>iwindplus-boot-mail</module>
     </modules>
 
     <properties>
@@ -274,6 +275,11 @@
             <dependency>
                 <groupId>com.iwindplus.boot</groupId>
                 <artifactId>iwindplus-boot-excel</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.iwindplus.boot</groupId>
+                <artifactId>iwindplus-boot-mail</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
