@@ -96,7 +96,9 @@ public abstract class AbstractOssServiceImpl implements OssService {
      */
     String getFileName(String sourceFileName) {
         String ext = sourceFileName.substring(sourceFileName.lastIndexOf("."));
-        return new StringBuilder(IdUtil.fastSimpleUUID()).append(ext).toString();
+        String stringDatePath = DateUtil.getStringDate(DatePattern.PURE_DATE_PATTERN);
+        Path path = Paths.get(stringDatePath, IdUtil.fastSimpleUUID(), ext);
+        return path.toString();
     }
 
     /**

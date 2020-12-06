@@ -89,38 +89,7 @@ public class QiniuOssServiceImpl extends AbstractOssServiceImpl implements Qiniu
      * @throws Exception
      */
     private UploadManager getUploadManager() throws Exception {
-        Configuration cfg = null;
-        if (null == this.qiniuOssProperty.getZone()) {
-            cfg = new Configuration(Region.autoRegion());
-        } else {
-            switch (this.qiniuOssProperty.getZone()) {
-                case EAST_CHINA: {
-                    cfg = new Configuration(Region.huadong());
-                    break;
-                }
-                case NORTH_CHINA: {
-                    cfg = new Configuration(Region.huabei());
-                    break;
-                }
-                case SOUTH_CHINA: {
-                    cfg = new Configuration(Region.huanan());
-                    break;
-                }
-                case NORTH_AMERICA: {
-                    cfg = new Configuration(Region.beimei());
-                    break;
-                }
-                case SOUTHEAST_ASIA: {
-                    cfg = new Configuration(Region.xinjiapo());
-                    break;
-                }
-                default: {
-                    cfg = new Configuration(Region.autoRegion());
-                    break;
-                }
-            }
-        }
-        UploadManager uploadManager = null;
+        Configuration cfg = new Configuration(this.getRegion());
         if (null != this.qiniuOssProperty.getBreakpointEnabled()
                 && Boolean.TRUE.equals(this.qiniuOssProperty.getBreakpointEnabled())) {
             String rootPath;
@@ -135,11 +104,36 @@ public class QiniuOssServiceImpl extends AbstractOssServiceImpl implements Qiniu
             }
             // 设置断点续传文件进度保存目录
             FileRecorder fileRecorder = new FileRecorder(path.toString());
-            uploadManager = new UploadManager(cfg, fileRecorder);
+            return new UploadManager(cfg, fileRecorder);
         } else {
-            uploadManager = new UploadManager(cfg);
+            return new UploadManager(cfg);
         }
-        return uploadManager;
+    }
+
+    private Region getRegion() {
+        if (null == this.qiniuOssProperty.getZone()) {
+            return Region.autoRegion();
+        }
+        switch (this.qiniuOssProperty.getZone()) {
+            case EAST_CHINA: {
+                return Region.huadong();
+            }
+            case NORTH_CHINA: {
+                return Region.huabei();
+            }
+            case SOUTH_CHINA: {
+                return Region.huanan();
+            }
+            case NORTH_AMERICA: {
+                return Region.beimei();
+            }
+            case SOUTHEAST_ASIA: {
+                return Region.xinjiapo();
+            }
+            default: {
+                return Region.autoRegion();
+            }
+        }
     }
 
     /**
