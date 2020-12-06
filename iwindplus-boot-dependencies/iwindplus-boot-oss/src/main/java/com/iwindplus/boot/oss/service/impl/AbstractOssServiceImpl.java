@@ -10,6 +10,7 @@ import com.google.common.collect.Lists;
 import com.iwindplus.boot.oss.domain.enumerate.OssCodeEnum;
 import com.iwindplus.boot.oss.domain.vo.UploadVO;
 import com.iwindplus.boot.oss.service.OssService;
+import com.iwindplus.boot.util.DateUtil;
 import com.iwindplus.boot.web.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -51,7 +52,8 @@ public abstract class AbstractOssServiceImpl implements OssService {
         } else {
             rootPath = System.getProperty(USER_DIR);
         }
-        Path relativeDir = Paths.get(UOLOAD_DIR, DatePattern.PURE_DATE_PATTERN);
+
+        Path relativeDir = Paths.get(UOLOAD_DIR, DateUtil.getStringDate(DatePattern.PURE_DATE_PATTERN));
         Path absoluteDir = Paths.get(rootPath).resolve(relativeDir);
         if (!Files.exists(absoluteDir)) {
             try {
