@@ -89,29 +89,36 @@ public class QiniuOssServiceImpl extends AbstractOssServiceImpl implements Qiniu
      */
     private UploadManager getUploadManager() throws Exception {
         Configuration cfg = null;
-        switch (this.qiniuOssProperty.getZone()) {
-            case EAST_CHINA: {
-                cfg = new Configuration(Region.huadong());
-                break;
-            }
-            case NORTH_CHINA: {
-                cfg = new Configuration(Region.huabei());
-                break;
-            }
-            case SOUTH_CHINA: {
-                cfg = new Configuration(Region.huanan());
-                break;
-            }
-            case NORTH_AMERICA: {
-                cfg = new Configuration(Region.beimei());
-                break;
-            }
-            case SOUTHEAST_ASIA: {
-                cfg = new Configuration(Region.xinjiapo());
-                break;
+        if (null == this.qiniuOssProperty.getZone()) {
+            cfg = new Configuration(Region.autoRegion());
+        } else {
+            switch (this.qiniuOssProperty.getZone()) {
+                case EAST_CHINA: {
+                    cfg = new Configuration(Region.huadong());
+                    break;
+                }
+                case NORTH_CHINA: {
+                    cfg = new Configuration(Region.huabei());
+                    break;
+                }
+                case SOUTH_CHINA: {
+                    cfg = new Configuration(Region.huanan());
+                    break;
+                }
+                case NORTH_AMERICA: {
+                    cfg = new Configuration(Region.beimei());
+                    break;
+                }
+                case SOUTHEAST_ASIA: {
+                    cfg = new Configuration(Region.xinjiapo());
+                    break;
+                }
+                default: {
+                    cfg = new Configuration(Region.autoRegion());
+                    break;
+                }
             }
         }
-
         UploadManager uploadManager = null;
         if (null != this.qiniuOssProperty.getBreakpointEnabled()
                 && Boolean.TRUE.equals(this.qiniuOssProperty.getBreakpointEnabled())) {

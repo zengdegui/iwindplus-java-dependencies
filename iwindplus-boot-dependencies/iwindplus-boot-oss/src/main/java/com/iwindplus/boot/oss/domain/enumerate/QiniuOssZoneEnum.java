@@ -7,6 +7,8 @@ package com.iwindplus.boot.oss.domain.enumerate;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
+import java.util.Objects;
+
 /**
  * 七牛云对象存储服务器区域枚举.
  *
@@ -30,5 +32,14 @@ public enum QiniuOssZoneEnum {
     private QiniuOssZoneEnum(final Integer value, final String desc) {
         this.value = value;
         this.desc = desc;
+    }
+
+    public static QiniuOssZoneEnum valueOfValue(String value) {
+        for (QiniuOssZoneEnum val : QiniuOssZoneEnum.values()) {
+            if (Objects.equals(value, val.value())) {
+                return val;
+            }
+        }
+        return null;
     }
 }
