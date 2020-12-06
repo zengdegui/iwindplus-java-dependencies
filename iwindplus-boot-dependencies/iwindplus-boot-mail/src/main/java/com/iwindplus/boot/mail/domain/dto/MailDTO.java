@@ -5,9 +5,7 @@
 package com.iwindplus.boot.mail.domain.dto;
 
 import com.iwindplus.boot.oss.domain.vo.UploadVO;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -21,6 +19,8 @@ import java.util.List;
  */
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Accessors(chain = true)
 public class MailDTO implements Serializable {
     private static final long serialVersionUID = -1252086996292274033L;
