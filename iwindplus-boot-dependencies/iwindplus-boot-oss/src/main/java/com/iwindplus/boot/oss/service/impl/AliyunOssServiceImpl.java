@@ -81,6 +81,7 @@ public class AliyunOssServiceImpl extends AbstractOssServiceImpl implements Aliy
                 ossClient.shutdown();
                 inputStream.close();
             } catch (IOException e) {
+                log.error("IOException [{}]", e);
                 throw new BaseException(OssCodeEnum.FILE_UPLOAD_FAILED.value(),
                         OssCodeEnum.FILE_UPLOAD_FAILED.desc());
             }

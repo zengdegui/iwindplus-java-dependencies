@@ -80,6 +80,7 @@ public abstract class AbstractOssServiceImpl implements OssService {
                         .absolutePath(absolutePath.toString()).relativePath(relativePath.toString()).build();
                 list.add(data);
             } catch (IOException e) {
+                log.error("IOException [{}]", e);
                 throw new BaseException(OssCodeEnum.FILE_UPLOAD_FAILED.value(),
                         OssCodeEnum.FILE_UPLOAD_FAILED.desc());
             }
