@@ -41,6 +41,7 @@
         <aliyun-java-sdk-core.version>4.5.14</aliyun-java-sdk-core.version>
         <p6spy.version>3.9.1</p6spy.version>
         <redisson.version>3.13.6</redisson.version>
+        <commons-fileupload.version>1.4</commons-fileupload.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <commons-io.version>2.8.0</commons-io.version>
         <commons-text.version>1.9</commons-text.version>
@@ -181,6 +182,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-collections4</artifactId>
                 <version>${commons-collections4.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>${commons-fileupload.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>
