@@ -143,7 +143,7 @@ public class DateUtil extends cn.hutool.core.date.DateUtil {
     /**
      * 获取当前时间戳（yyyyMMddHHmmss.
      *
-     * @return
+     * @return String
      */
     public static String getCurrentTimestampStr() {
         return getStringDate(DatePattern.PURE_DATETIME_PATTERN);
