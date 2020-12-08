@@ -163,7 +163,7 @@ public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
                 code = CloudWebCodeEnum.UNSUPPORTED_RESPONSE_TYPE.value();
                 message = CloudWebCodeEnum.UNSUPPORTED_RESPONSE_TYPE.desc();
             } else if (StringUtils.contains(className, "UserDeniedAuthorizationException")
-                    || StringUtils.contains(className, "UserDenAccessDeniedExceptioniedAuthorizationException")) {
+                    || StringUtils.contains(className, "AuthorizationException")) {
                 status = HttpStatus.UNAUTHORIZED;
                 code = WebCodeEnum.UNAUTHORIZED.value();
                 message = WebCodeEnum.UNAUTHORIZED.desc();
