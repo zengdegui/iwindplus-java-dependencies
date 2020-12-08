@@ -18,7 +18,6 @@ import com.iwindplus.boot.excel.domain.dto.ExcelImportFileDTO;
 import com.iwindplus.boot.excel.domain.dto.ExcelImportStreamDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.springframework.http.MediaType;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +35,7 @@ import java.util.Map;
  * @author zengdegui
  * @since 2018年9月1日
  */
-public class ExcelPOIUtil {
+public class ExcelPoiUtil {
     /**
      * xls 类型.
      */
@@ -51,7 +50,7 @@ public class ExcelPOIUtil {
      * excel导出（自定义导出格式）.
      *
      * @param entity 对象
-     * @throws Exception
+     * @throws Exception 异常
      */
     public static void exportExcel(ExcelExportCustomDTO entity) throws Exception {
         List<Map<String, Object>> list = entity.getList();
@@ -109,7 +108,7 @@ public class ExcelPOIUtil {
      * Integer,Long,Double,Date,String,Boolean支持校验,支持Key-Value
      *
      * @param entity 对象
-     * @return
+     * @return ExcelImportResult<T>
      * @throws Exception
      */
     public static <T> ExcelImportResult<T> importExcel(ExcelImportStreamDTO entity) throws Exception {
@@ -126,7 +125,7 @@ public class ExcelPOIUtil {
     }
 
     /**
-     * 导入本地excel（加载本地文件方式） 字段类型
+     * 导入本地excel（加载本地文件方式） 字段类型.
      * Integer,Long,Double,Date,String,Boolean支持校验,支持Key-Value
      *
      * @param entity 对象
@@ -147,7 +146,7 @@ public class ExcelPOIUtil {
     }
 
     /**
-     * 设置导出参数设置
+     * 设置导出参数设置.
      *
      * @param title     表格标题
      * @param sheetName 表格名称
@@ -166,7 +165,7 @@ public class ExcelPOIUtil {
     }
 
     /**
-     * 获取文件名
+     * 获取文件名.
      *
      * @param fileName  文件名称
      * @param excelType 导出表格文件类型
@@ -182,7 +181,7 @@ public class ExcelPOIUtil {
     }
 
     /**
-     * 下载excel文件
+     * 下载excel文件.
      *
      * @param fileName 文件名
      * @param workbook 表格

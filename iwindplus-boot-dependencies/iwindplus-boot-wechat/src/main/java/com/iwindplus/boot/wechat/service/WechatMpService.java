@@ -34,7 +34,7 @@ public interface WechatMpService extends WxMpService {
     /**
      * 获取微信公众号二维码.
      *
-     * @param entity
+     * @param entity 对象
      * @return String
      */
     String getQrCode(WechatMpQrCodeDTO entity);

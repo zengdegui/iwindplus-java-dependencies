@@ -15,7 +15,7 @@ import com.alipay.api.domain.AlipayTradePrecreateModel;
  */
 public interface AlipayService extends AlipayClient, PayService {
     /**
-     * 获取支付二维码
+     * 获取支付二维码.
      *
      * @param entity 对象
      * @return String

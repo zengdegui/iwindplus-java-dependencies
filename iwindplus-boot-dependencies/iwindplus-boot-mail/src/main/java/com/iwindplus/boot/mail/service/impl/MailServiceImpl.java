@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * 邮箱业务层接口实现类
+ * 邮箱业务层接口实现类.
  *
  * @author zengdegui
  * @since 2018年9月1日

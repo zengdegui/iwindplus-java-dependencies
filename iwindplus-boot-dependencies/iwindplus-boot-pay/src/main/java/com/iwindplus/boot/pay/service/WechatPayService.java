@@ -15,7 +15,7 @@ import com.github.binarywang.wxpay.service.WxPayService;
  */
 public interface WechatPayService extends WxPayService, PayService {
     /**
-     * 获取支付二维码
+     * 获取支付二维码.
      *
      * @param entity 对象
      * @return String

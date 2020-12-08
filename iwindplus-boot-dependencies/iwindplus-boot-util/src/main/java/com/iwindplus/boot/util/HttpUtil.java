@@ -28,7 +28,7 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
     /**
      * Wap网关Via头信息中特有的描述信息.
      */
-    private static String mobileGateWayHeaders[] = new String[]{"ZXWAP", "chinamobile.com", "monternet.com", "infoX",
+    private static String[] mobileGateWayHeaders = new String[]{"ZXWAP", "chinamobile.com", "monternet.com", "infoX",
             "XMS 724Solutions HTG", "Bytemobile",};
     /**
      * 电脑上的IE或Firefox浏览器等的User-Agent关键词.

@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface PayService {
     /**
-     * 支付回调
+     * 支付回调.
      *
      * @param request  请求
      * @param response 响应

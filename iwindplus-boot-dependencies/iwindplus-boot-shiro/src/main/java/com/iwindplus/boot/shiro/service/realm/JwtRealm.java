@@ -9,7 +9,7 @@ import com.iwindplus.boot.shiro.domain.dto.JwtTokenDTO;
 import com.iwindplus.boot.shiro.domain.enumerate.ShiroCodeEnum;
 import com.iwindplus.boot.shiro.domain.vo.LoginVO;
 import com.iwindplus.boot.shiro.service.ShiroService;
-import com.iwindplus.boot.util.JWTUtil;
+import com.iwindplus.boot.util.JwtUtil;
 import com.iwindplus.boot.web.exception.BaseShiroAuthcException;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
@@ -58,7 +58,7 @@ public class JwtRealm extends AuthorizingRealm {
         String token = param.getToken();
         Map<String, String> map = null;
         try {
-            map = JWTUtil.verifyToken(token);
+            map = JwtUtil.verifyToken(token);
         } catch (TokenExpiredException e) {
             throw new BaseShiroAuthcException(ShiroCodeEnum.ACCESS_TOKEN_EXPIRED.value(),
                     ShiroCodeEnum.ACCESS_TOKEN_EXPIRED.desc());

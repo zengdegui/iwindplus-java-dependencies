@@ -14,7 +14,7 @@ import com.iwindplus.boot.pay.domain.dto.PayOrderDTO;
  */
 public interface PayBaseService {
     /**
-     * 通过商户订单号修改订单状态
+     * 通过商户订单号修改订单状态.
      *
      * @param entity 对象
      * @return boolean

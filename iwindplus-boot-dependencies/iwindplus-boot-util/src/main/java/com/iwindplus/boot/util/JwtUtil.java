@@ -21,7 +21,7 @@ import java.util.Map;
  * @author zengdegui
  * @since 2018年9月1日
  */
-public class JWTUtil {
+public class JwtUtil {
     private static final String SECRET = "9a96349e2345385785e804e0f4254dee";
     private static String ISSUER = "admin";
 

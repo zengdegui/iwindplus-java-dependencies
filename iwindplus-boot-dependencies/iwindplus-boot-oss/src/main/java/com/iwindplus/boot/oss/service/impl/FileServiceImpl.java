@@ -18,7 +18,11 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -95,7 +99,6 @@ public class FileServiceImpl extends AbstractOssServiceImpl implements FileServi
 
             String headerValue = String.format("attachment; filename=\"%s\"", fileName);
             response.setHeader("Content-Disposition", headerValue);
-
             // 解析断点续传相关信息
             response.setHeader("Accept-Ranges", "bytes");
             long downloadSize = file.length();

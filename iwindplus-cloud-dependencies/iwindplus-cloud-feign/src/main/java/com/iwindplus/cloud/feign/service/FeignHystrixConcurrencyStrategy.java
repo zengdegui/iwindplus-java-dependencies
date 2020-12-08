@@ -40,6 +40,9 @@ import java.util.concurrent.TimeUnit;
 public class FeignHystrixConcurrencyStrategy extends HystrixConcurrencyStrategy {
     private HystrixConcurrencyStrategy delegate;
 
+    /**
+     * 构造方法.
+     */
     public FeignHystrixConcurrencyStrategy() {
         try {
             this.delegate = HystrixPlugins.getInstance().getConcurrencyStrategy();
