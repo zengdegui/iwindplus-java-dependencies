@@ -27,79 +27,18 @@ import java.util.Set;
  * @since 2020年10月17日
  */
 public class ExceptionUtil {
-    /**
-     * 解析通用异常.
-     *
-     * @param ex 异常
-     * @return ResultVO
-     */
-    public static ResultVO getCommonException(Exception ex) {
+    private static ResultVO getDefaultException(String className) {
         HttpStatus status = null;
         String code = null;
         String message = null;
-        Object data = null;
-        String className = ex.getClass().getName();
         if (StringUtils.contains(className, "NoHandlerFoundException")) {
             status = HttpStatus.NOT_FOUND;
             code = WebCodeEnum.NOT_FOUND.value();
             message = WebCodeEnum.NOT_FOUND.desc();
-        } else if (StringUtils.contains(className, "ConstraintViolationException")) {
-            status = HttpStatus.BAD_REQUEST;
-            code = WebCodeEnum.PARAM_ERROR.value();
-            message = WebCodeEnum.PARAM_ERROR.desc();
-            List<ArgumentInvalidResultVO> invalidArguments = new ArrayList<>();
-            ConstraintViolationException exs = (ConstraintViolationException) ex;
-            Set<ConstraintViolation<?>> violations = exs.getConstraintViolations();
-            violations.forEach(item -> {
-                ArgumentInvalidResultVO argumentInvalidResultVO = ArgumentInvalidResultVO
-                        .builder()
-                        .field(item.getExecutableParameters()[0].toString())
-                        .value(item.getInvalidValue())
-                        .message(item.getMessage())
-                        .build();
-                invalidArguments.add(argumentInvalidResultVO);
-            });
-            data = invalidArguments;
-        } else if (StringUtils.contains(className, "MethodArgumentNotValidException")) {
-            status = HttpStatus.BAD_REQUEST;
-            code = WebCodeEnum.PARAM_ERROR.value();
-            message = WebCodeEnum.PARAM_ERROR.desc();
-            List<ArgumentInvalidResultVO> invalidArguments = new ArrayList<>();
-            MethodArgumentNotValidException exs = (MethodArgumentNotValidException) ex;
-            List<FieldError> fieldErrors = exs.getBindingResult().getFieldErrors();
-            fieldErrors.forEach(item -> {
-                ArgumentInvalidResultVO argumentInvalidResultVO = ArgumentInvalidResultVO
-                        .builder()
-                        .field(item.getField())
-                        .value(item.getRejectedValue())
-                        .message(item.getDefaultMessage())
-                        .build();
-                invalidArguments.add(argumentInvalidResultVO);
-            });
-            data = invalidArguments.get(0);
-        }  else if (StringUtils.contains(className, "MethodArgumentTypeMismatchException")) {
-            status = HttpStatus.BAD_REQUEST;
-            code = WebCodeEnum.PARAM_TYPE_ERROR.value();
-            message = WebCodeEnum.PARAM_TYPE_ERROR.desc();
-            MethodArgumentTypeMismatchException item = (MethodArgumentTypeMismatchException) ex;
-            ArgumentInvalidResultVO argumentInvalidResultVO = ArgumentInvalidResultVO
-                    .builder()
-                    .field(item.getName())
-                    .value(item.getValue())
-                    .message(item.getMessage())
-                    .build();
-            data = argumentInvalidResultVO;
-        } else if (StringUtils.contains(className, "MissingServletRequestParameterException")) {
-            status = HttpStatus.BAD_REQUEST;
-            code = WebCodeEnum.PARAM_MISS.value();
-            message = WebCodeEnum.PARAM_MISS.desc();
-            MissingServletRequestParameterException item = (MissingServletRequestParameterException) ex;
-            ArgumentInvalidResultVO argumentInvalidResultVO = ArgumentInvalidResultVO
-                    .builder()
-                    .field(item.getParameterName())
-                    .message(item.getMessage())
-                    .build();
-            data = argumentInvalidResultVO;
+        } else if (StringUtils.contains(className, "NoHandlerFoundException")) {
+            status = HttpStatus.NOT_FOUND;
+            code = WebCodeEnum.NOT_FOUND.value();
+            message = WebCodeEnum.NOT_FOUND.desc();
         } else if (StringUtils.contains(className, "IllegalArgumentException")) {
             status = HttpStatus.BAD_REQUEST;
             code = WebCodeEnum.ILLEGAL_REQUEST.value();
@@ -134,10 +73,88 @@ public class ExceptionUtil {
             message = WebCodeEnum.UNAUTHORIZED.desc();
         }
         if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(message)) {
-            ResultVO result = ResultVO.builder().status(status).code(code).message(message).data(data)
-                    .build();
+            ResultVO result = ResultVO.builder().status(status).code(code).message(message).build();
             return result;
         }
         return null;
+    }
+
+    /**
+     * 解析通用异常.
+     *
+     * @param ex 异常
+     * @return ResultVO
+     */
+    public static ResultVO getCommonException(Exception ex) {
+        String className = ex.getClass().getName();
+        ResultVO result = ExceptionUtil.getDefaultException(className);
+        if (null == result) {
+            HttpStatus status = null;
+            String code = null;
+            String message = null;
+            Object data = null;
+            if (StringUtils.contains(className, "ConstraintViolationException")) {
+                status = HttpStatus.BAD_REQUEST;
+                code = WebCodeEnum.PARAM_ERROR.value();
+                message = WebCodeEnum.PARAM_ERROR.desc();
+                List<ArgumentInvalidResultVO> invalidArguments = new ArrayList<>();
+                ConstraintViolationException exs = (ConstraintViolationException) ex;
+                Set<ConstraintViolation<?>> violations = exs.getConstraintViolations();
+                violations.forEach(item -> {
+                    ArgumentInvalidResultVO argumentInvalidResultVO = ArgumentInvalidResultVO
+                            .builder()
+                            .field(item.getExecutableParameters()[0].toString())
+                            .value(item.getInvalidValue())
+                            .message(item.getMessage())
+                            .build();
+                    invalidArguments.add(argumentInvalidResultVO);
+                });
+                data = invalidArguments;
+            } else if (StringUtils.contains(className, "MethodArgumentNotValidException")) {
+                status = HttpStatus.BAD_REQUEST;
+                code = WebCodeEnum.PARAM_ERROR.value();
+                message = WebCodeEnum.PARAM_ERROR.desc();
+                List<ArgumentInvalidResultVO> invalidArguments = new ArrayList<>();
+                MethodArgumentNotValidException exs = (MethodArgumentNotValidException) ex;
+                List<FieldError> fieldErrors = exs.getBindingResult().getFieldErrors();
+                fieldErrors.forEach(item -> {
+                    ArgumentInvalidResultVO argumentInvalidResultVO = ArgumentInvalidResultVO
+                            .builder()
+                            .field(item.getField())
+                            .value(item.getRejectedValue())
+                            .message(item.getDefaultMessage())
+                            .build();
+                    invalidArguments.add(argumentInvalidResultVO);
+                });
+                data = invalidArguments.get(0);
+            } else if (StringUtils.contains(className, "MethodArgumentTypeMismatchException")) {
+                status = HttpStatus.BAD_REQUEST;
+                code = WebCodeEnum.PARAM_TYPE_ERROR.value();
+                message = WebCodeEnum.PARAM_TYPE_ERROR.desc();
+                MethodArgumentTypeMismatchException item = (MethodArgumentTypeMismatchException) ex;
+                ArgumentInvalidResultVO argumentInvalidResultVO = ArgumentInvalidResultVO
+                        .builder()
+                        .field(item.getName())
+                        .value(item.getValue())
+                        .message(item.getMessage())
+                        .build();
+                data = argumentInvalidResultVO;
+            } else if (StringUtils.contains(className, "MissingServletRequestParameterException")) {
+                status = HttpStatus.BAD_REQUEST;
+                code = WebCodeEnum.PARAM_MISS.value();
+                message = WebCodeEnum.PARAM_MISS.desc();
+                MissingServletRequestParameterException item = (MissingServletRequestParameterException) ex;
+                ArgumentInvalidResultVO argumentInvalidResultVO = ArgumentInvalidResultVO
+                        .builder()
+                        .field(item.getParameterName())
+                        .message(item.getMessage())
+                        .build();
+                data = argumentInvalidResultVO;
+            }
+            if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(message)) {
+                result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
+            }
+        }
+        return result;
     }
 }
