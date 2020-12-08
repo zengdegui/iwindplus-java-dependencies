@@ -39,7 +39,11 @@ public class ExceptionUtil {
         String message = null;
         Object data = null;
         String className = ex.getClass().getName();
-        if (StringUtils.contains(className, "ConstraintViolationException")) {
+        if (StringUtils.contains(className, "NoHandlerFoundException")) {
+            status = HttpStatus.NOT_FOUND;
+            code = WebCodeEnum.NOT_FOUND.value();
+            message = WebCodeEnum.NOT_FOUND.desc();
+        } else if (StringUtils.contains(className, "ConstraintViolationException")) {
             status = HttpStatus.BAD_REQUEST;
             code = WebCodeEnum.PARAM_ERROR.value();
             message = WebCodeEnum.PARAM_ERROR.desc();
@@ -73,11 +77,7 @@ public class ExceptionUtil {
                 invalidArguments.add(argumentInvalidResultVO);
             });
             data = invalidArguments.get(0);
-        } else if (StringUtils.contains(className, "IllegalArgumentException")) {
-            status = HttpStatus.BAD_REQUEST;
-            code = WebCodeEnum.ILLEGAL_REQUEST.value();
-            message = WebCodeEnum.ILLEGAL_REQUEST.desc();
-        } else if (StringUtils.contains(className, "MethodArgumentTypeMismatchException")) {
+        }  else if (StringUtils.contains(className, "MethodArgumentTypeMismatchException")) {
             status = HttpStatus.BAD_REQUEST;
             code = WebCodeEnum.PARAM_TYPE_ERROR.value();
             message = WebCodeEnum.PARAM_TYPE_ERROR.desc();
@@ -100,6 +100,10 @@ public class ExceptionUtil {
                     .message(item.getMessage())
                     .build();
             data = argumentInvalidResultVO;
+        } else if (StringUtils.contains(className, "IllegalArgumentException")) {
+            status = HttpStatus.BAD_REQUEST;
+            code = WebCodeEnum.ILLEGAL_REQUEST.value();
+            message = WebCodeEnum.ILLEGAL_REQUEST.desc();
         } else if (StringUtils.contains(className, "HttpRequestMethodNotSupportedException")) {
             status = HttpStatus.METHOD_NOT_ALLOWED;
             code = WebCodeEnum.METHOD_NOT_ALLOWED.value();
@@ -124,10 +128,6 @@ public class ExceptionUtil {
             status = HttpStatus.BAD_REQUEST;
             code = WebCodeEnum.NOT_WRITABLE.value();
             message = WebCodeEnum.NOT_WRITABLE.desc();
-        } else if (StringUtils.contains(className, "NoHandlerFoundException")) {
-            status = HttpStatus.NOT_FOUND;
-            code = WebCodeEnum.NOT_FOUND.value();
-            message = WebCodeEnum.NOT_FOUND.desc();
         } else if (StringUtils.contains(className, "UnauthorizedException")) {
             status = HttpStatus.UNAUTHORIZED;
             code = WebCodeEnum.UNAUTHORIZED.value();
