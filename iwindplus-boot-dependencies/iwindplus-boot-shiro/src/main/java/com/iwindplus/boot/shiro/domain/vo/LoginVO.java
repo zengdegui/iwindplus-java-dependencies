@@ -4,7 +4,10 @@
 
 package com.iwindplus.boot.shiro.domain.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -15,6 +18,9 @@ import java.io.Serializable;
  * @since 2018年9月1日
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginVO implements Serializable {
     private static final long serialVersionUID = -2852699111159844963L;
 
