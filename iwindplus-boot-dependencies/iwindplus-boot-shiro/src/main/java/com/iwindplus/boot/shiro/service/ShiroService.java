@@ -36,7 +36,7 @@ public interface ShiroService {
     /**
      * 查找访问权限.
      *
-     * @return ist<AccessPermsVO>
+     * @return List<AccessPermsVO>
      */
     List<AccessPermsVO> listAccessPerms();
 }
