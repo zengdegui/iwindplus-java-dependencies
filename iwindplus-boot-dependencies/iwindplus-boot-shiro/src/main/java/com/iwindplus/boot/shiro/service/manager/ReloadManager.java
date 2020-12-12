@@ -70,7 +70,7 @@ public class ReloadManager {
                     log.debug("更新权限成功！！");
                 }
             } catch (Exception e) {
-                throw new RuntimeException("get ShiroFilter from shiroFilterFactoryBean error!");
+                log.error("get ShiroFilter from shiroFilterFactoryBean error! [{}]", e);
             }
         }
     }
