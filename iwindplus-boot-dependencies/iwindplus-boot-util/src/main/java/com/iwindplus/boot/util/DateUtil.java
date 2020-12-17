@@ -37,6 +37,7 @@ public class DateUtil extends cn.hutool.core.date.DateUtil {
     /**
      * 获取当前时间字符串自定义格式.
      *
+     * @param pattern 格式
      * @return String
      */
     public static String getStringDate(String pattern) {
