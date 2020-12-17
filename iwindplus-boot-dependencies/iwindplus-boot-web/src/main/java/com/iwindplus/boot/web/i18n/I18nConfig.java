@@ -56,6 +56,7 @@ public class I18nConfig {
      * 根据应用部署的服务器系统来决定国际化.
      *
      * @param code 编码
+     * @param defaultMessage 默认消息
      * @return String
      */
     public String getMessageByOS(String code, String defaultMessage) {
