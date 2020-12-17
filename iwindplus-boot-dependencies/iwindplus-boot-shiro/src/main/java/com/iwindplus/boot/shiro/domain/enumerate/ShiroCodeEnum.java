@@ -26,8 +26,14 @@ public enum ShiroCodeEnum {
     PASSWORD_ERROR("password_error", "密码错误"),
     ;
 
+    /**
+     * 值
+     */
     private final String value;
 
+    /**
+     * 描述
+     */
     private final String desc;
 
     private ShiroCodeEnum(final String value, final String desc) {
@@ -35,6 +41,12 @@ public enum ShiroCodeEnum {
         this.desc = desc;
     }
 
+    /**
+     * 通过描述查找枚举
+     *
+     * @param desc 描述
+     * @return ShiroCodeEnum
+     */
     public static ShiroCodeEnum valueOfDesc(String desc) {
         for (ShiroCodeEnum val : ShiroCodeEnum.values()) {
             if (Objects.equals(desc, val.desc())) {
@@ -44,6 +56,12 @@ public enum ShiroCodeEnum {
         return null;
     }
 
+    /**
+     * 通过值查找枚举
+     *
+     * @param value 值
+     * @return ShiroCodeEnum
+     */
     public static ShiroCodeEnum valueOfValue(String value) {
         for (ShiroCodeEnum val : ShiroCodeEnum.values()) {
             if (Objects.equals(value, val.value())) {
