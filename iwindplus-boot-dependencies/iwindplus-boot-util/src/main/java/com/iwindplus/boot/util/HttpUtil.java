@@ -7,6 +7,7 @@ package com.iwindplus.boot.util;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.MediaType;
 
 import javax.servlet.http.HttpServletRequest;
@@ -206,7 +207,7 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
      * @return boolean
      */
     public static boolean isWeChat(HttpServletRequest request) {
-        String userAgent = request.getHeader("user-agent").toLowerCase();
+        String userAgent = request.getHeader("user-agent").toLowerCase(LocaleContextHolder.getLocale());
         return userAgent == null || userAgent.indexOf("micromessenger") == -1 ? false : true;
     }
 }
