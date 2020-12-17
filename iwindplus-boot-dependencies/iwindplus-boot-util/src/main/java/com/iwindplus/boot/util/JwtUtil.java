@@ -62,7 +62,7 @@ public class JwtUtil {
         DecodedJWT jwt = verifier.verify(token);
         Map<String, Claim> map = jwt.getClaims();
         Map<String, String> resultMap = new HashMap<>();
-        map.forEach((k, v) -> resultMap.put(k, v.asString()));
+        map.forEach((key, val) -> resultMap.put(key, val.asString()));
         return resultMap;
     }
 }
