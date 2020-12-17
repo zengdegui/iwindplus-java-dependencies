@@ -18,6 +18,7 @@ import com.iwindplus.boot.excel.domain.dto.ExcelImportFileDTO;
 import com.iwindplus.boot.excel.domain.dto.ExcelImportStreamDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -194,7 +195,7 @@ public class ExcelPoiUtil {
         response.setCharacterEncoding("UTF-8");
         response.setHeader("content-Type", "application/vnd.ms-excel");
         // 针对IE或者以IE为内核的浏览器
-        String userAgent = request.getHeader("user-agent").toLowerCase();
+        String userAgent = request.getHeader("user-agent").toLowerCase(LocaleContextHolder.getLocale());
         if (userAgent.toLowerCase().contains("msie") || StringUtils.contains(userAgent, "trident")
                 || userAgent.toLowerCase().contains("like gecko") || userAgent.toLowerCase().contains("mozilla")) {
             fileName = URLEncoder.encode(fileName, "UTF-8");
