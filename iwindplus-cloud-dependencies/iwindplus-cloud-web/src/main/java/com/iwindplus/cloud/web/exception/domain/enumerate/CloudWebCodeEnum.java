@@ -57,8 +57,14 @@ public enum CloudWebCodeEnum {
     PASSWORD_ERROR("password_error", "密码错误"),
     ;
 
+    /**
+     * 值
+     */
     private final String value;
 
+    /**
+     * 描述
+     */
     private final String desc;
 
     private CloudWebCodeEnum(final String value, final String desc) {
@@ -66,6 +72,12 @@ public enum CloudWebCodeEnum {
         this.desc = desc;
     }
 
+    /**
+     * 通过描述查找枚举
+     *
+     * @param desc 描述
+     * @return CloudWebCodeEnum
+     */
     public static CloudWebCodeEnum valueOfDesc(String desc) {
         for (CloudWebCodeEnum val : CloudWebCodeEnum.values()) {
             if (Objects.equals(desc, val.desc())) {
@@ -75,6 +87,12 @@ public enum CloudWebCodeEnum {
         return null;
     }
 
+    /**
+     * 通过值查找枚举
+     *
+     * @param value 值
+     * @return CloudWebCodeEnum
+     */
     public static CloudWebCodeEnum valueOfValue(String value) {
         for (CloudWebCodeEnum val : CloudWebCodeEnum.values()) {
             if (Objects.equals(value, val.value())) {
