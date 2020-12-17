@@ -347,7 +347,7 @@ public class ShiroConfig {
      * @return ShiroUtil
      */
     @Bean
-    public ShiroUtil ShiroUtil(ShiroFilterFactoryBean shiroFilterFactoryBean, ShiroRealm shiroRealm) {
+    public ShiroUtil shiroUtil(ShiroFilterFactoryBean shiroFilterFactoryBean, ShiroRealm shiroRealm) {
         ShiroUtil shiroUtil = new ShiroUtil();
         ReloadManager reloadManager = new ReloadManager();
         reloadManager.setShiroFilterFactoryBean(shiroFilterFactoryBean);
