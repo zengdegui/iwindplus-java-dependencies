@@ -42,7 +42,7 @@ public enum OssCodeEnum {
      * 通过描述查找枚举
      *
      * @param desc 描述
-     * @return ShiroCodeEnum
+     * @return OssCodeEnum
      */
     public static OssCodeEnum valueOfDesc(String desc) {
         for (OssCodeEnum val : OssCodeEnum.values()) {
@@ -57,7 +57,7 @@ public enum OssCodeEnum {
      * 通过值查找枚举
      *
      * @param value 值
-     * @return ShiroCodeEnum
+     * @return OssCodeEnum
      */
     public static OssCodeEnum valueOfValue(String value) {
         for (OssCodeEnum val : OssCodeEnum.values()) {
