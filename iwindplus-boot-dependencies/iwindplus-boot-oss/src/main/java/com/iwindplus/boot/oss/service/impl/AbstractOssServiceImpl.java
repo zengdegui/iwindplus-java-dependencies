@@ -33,8 +33,19 @@ import java.util.List;
  */
 @Slf4j
 public abstract class AbstractOssServiceImpl implements OssService {
+    /**
+     *上传目录
+     */
     public static final String UOLOAD_DIR = "upload";
+
+    /**
+     * 用户目录
+     */
     public static final String USER_DIR = "user.dir";
+
+    /**
+     * 缓存目录
+     */
     public static final String TMP = "tmp";
 
     @Autowired
