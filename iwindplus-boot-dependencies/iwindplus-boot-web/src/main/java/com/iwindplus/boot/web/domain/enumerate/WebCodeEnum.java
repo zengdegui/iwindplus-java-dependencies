@@ -1,7 +1,6 @@
 /**
  * Copyright (c) iwindplus Technologies Co., Ltd.2011-2020, All rights reserved.
  */
-
 package com.iwindplus.boot.web.domain.enumerate;
 
 import lombok.Getter;
@@ -37,8 +36,14 @@ public enum WebCodeEnum {
     DATA_NOT_EXIST("data_not_exist", "数据不存在"),
     ;
 
+    /**
+     * 值
+     */
     private final String value;
 
+    /**
+     * 描述
+     */
     private final String desc;
 
     private WebCodeEnum(final String value, final String desc) {
@@ -46,6 +51,12 @@ public enum WebCodeEnum {
         this.desc = desc;
     }
 
+    /**
+     * 通过描述查找枚举
+     *
+     * @param desc 描述
+     * @return WebCodeEnum
+     */
     public static WebCodeEnum valueOfDesc(String desc) {
         for (WebCodeEnum val : WebCodeEnum.values()) {
             if (Objects.equals(desc, val.desc())) {
@@ -55,6 +66,12 @@ public enum WebCodeEnum {
         return null;
     }
 
+    /**
+     * 通过值查找枚举
+     *
+     * @param value 值
+     * @return WebCodeEnum
+     */
     public static WebCodeEnum valueOfValue(String value) {
         for (WebCodeEnum val : WebCodeEnum.values()) {
             if (Objects.equals(value, val.value())) {
