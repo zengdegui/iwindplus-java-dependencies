@@ -27,6 +27,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
@@ -196,10 +197,12 @@ public class ExcelPoiUtil {
         response.setHeader("content-Type", "application/vnd.ms-excel");
         // 针对IE或者以IE为内核的浏览器
         String userAgent = request.getHeader("user-agent").toLowerCase(LocaleContextHolder.getLocale());
-        if (userAgent.toLowerCase().contains("msie") || StringUtils.contains(userAgent, "trident")
-                || userAgent.toLowerCase().contains("like gecko") || userAgent.toLowerCase().contains("mozilla")) {
+        if (userAgent.toLowerCase(LocaleContextHolder.getLocale()).contains("msie") || StringUtils.contains(userAgent,
+                "trident") || userAgent.toLowerCase(LocaleContextHolder.getLocale()).contains("like gecko") || userAgent
+                .toLowerCase(LocaleContextHolder.getLocale())
+                .contains("mozilla")) {
             fileName = URLEncoder.encode(fileName, "UTF-8");
-            fileName = new String(fileName.getBytes(), "ISO8859-1");
+            fileName = new String(fileName.getBytes(Charset.defaultCharset()), "ISO8859-1");
         } else {
             fileName = URLEncoder.encode(fileName, "UTF-8");
         }
