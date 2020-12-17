@@ -21,8 +21,14 @@ public enum FeignCodeEnum {
     FAILED("failed", "操作失败"),
     ;
 
+    /**
+     * 值
+     */
     private final String value;
 
+    /**
+     * 描述
+     */
     private final String desc;
 
     private FeignCodeEnum(final String value, final String desc) {
@@ -30,6 +36,12 @@ public enum FeignCodeEnum {
         this.desc = desc;
     }
 
+    /**
+     * 通过描述查找枚举
+     *
+     * @param desc 描述
+     * @return FeignCodeEnum
+     */
     public static FeignCodeEnum valueOfDesc(String desc) {
         for (FeignCodeEnum val : FeignCodeEnum.values()) {
             if (Objects.equals(desc, val.desc())) {
@@ -39,6 +51,12 @@ public enum FeignCodeEnum {
         return null;
     }
 
+    /**
+     * 通过值查找枚举
+     *
+     * @param value 值
+     * @return FeignCodeEnum
+     */
     public static FeignCodeEnum valueOfValue(String value) {
         for (FeignCodeEnum val : FeignCodeEnum.values()) {
             if (Objects.equals(value, val.value())) {
