@@ -20,8 +20,10 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
  */
 @Setter
 public class RedisAuthorizationCodeServices extends RandomValueAuthorizationCodeServices {
-    private final static String AUTHORIZATION_CODE = "authorization_code:";
+    private static final String AUTHORIZATION_CODE = "authorization_code:";
+
     private final RedisConnectionFactory connectionFactory;
+
     private RedisTokenStoreSerializationStrategy serializationStrategy = new JdkSerializationStrategy();
 
     /**
@@ -40,8 +42,8 @@ public class RedisAuthorizationCodeServices extends RandomValueAuthorizationCode
     /**
      * 序列化.
      *
-     * @param object
-     * @return
+     * @param object 对象
+     * @return byte[]
      */
     private byte[] serialize(Object object) {
         return serializationStrategy.serialize(object);
@@ -50,8 +52,8 @@ public class RedisAuthorizationCodeServices extends RandomValueAuthorizationCode
     /**
      * 反序列化.
      *
-     * @param bytes
-     * @return
+     * @param bytes 字节数组
+     * @return OAuth2Authentication
      */
     private OAuth2Authentication deserializeAuthentication(byte[] bytes) {
         return serializationStrategy.deserialize(bytes, OAuth2Authentication.class);
@@ -82,6 +84,7 @@ public class RedisAuthorizationCodeServices extends RandomValueAuthorizationCode
      * 取出授权码并删除授权码(权限码只能用一次，调试时可不删除，code就可多次使用).
      *
      * @param code 授权码
+     * @return OAuth2Authentication
      */
     @Override
     protected OAuth2Authentication remove(String code) {
