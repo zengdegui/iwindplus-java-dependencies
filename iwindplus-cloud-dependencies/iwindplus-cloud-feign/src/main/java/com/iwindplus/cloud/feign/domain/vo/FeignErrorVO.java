@@ -67,6 +67,12 @@ public class FeignErrorVO implements Serializable {
 
     private static final GsonBuilder INSTANCE = new GsonBuilder();
 
+    /**
+     * json转FeignErrorVO
+     *
+     * @param json json
+     * @return FeignErrorVO
+     */
     public static FeignErrorVO fromJson(String json) {
         final FeignErrorVO result = INSTANCE.create().fromJson(json, FeignErrorVO.class);
         if (StringUtils.isNotBlank(result.getCode())) {
