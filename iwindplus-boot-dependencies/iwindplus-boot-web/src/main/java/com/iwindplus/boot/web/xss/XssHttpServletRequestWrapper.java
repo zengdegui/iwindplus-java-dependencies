@@ -30,7 +30,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     /**
      * XssHttpServletRequestWrapper.
      *
-     * @param request
+     * @param request 请求
      */
     public XssHttpServletRequestWrapper(HttpServletRequest request) {
         super(request);
