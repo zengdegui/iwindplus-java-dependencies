@@ -188,10 +188,10 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
      */
     public static boolean isIOSDevice(HttpServletRequest request) {
         boolean isMobile = false;
-        final String[] ios_sys = {"iPhone", "iPad", "iPod"};
+        final String[] iosSys = {"iPhone", "iPad", "iPod"};
         String userAgent = request.getHeader("user-agent");
-        for (int i = 0; !isMobile && userAgent != null && !userAgent.trim().equals("") && i < ios_sys.length; i++) {
-            if (userAgent.contains(ios_sys[i])) {
+        for (int i = 0; !isMobile && userAgent != null && !userAgent.trim().equals("") && i < iosSys.length; i++) {
+            if (userAgent.contains(iosSys[i])) {
                 isMobile = true;
                 break;
             }
