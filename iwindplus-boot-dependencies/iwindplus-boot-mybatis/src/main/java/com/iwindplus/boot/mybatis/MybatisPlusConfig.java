@@ -26,7 +26,7 @@ public class MybatisPlusConfig {
     /**
      * 单页分页条数限制.
      */
-    private static final Long maxLimit = 1000L;
+    private static final Long MAX_LIMIT = 1000L;
 
     /**
      * 创建MybatisPlusInterceptor.
@@ -38,7 +38,7 @@ public class MybatisPlusConfig {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         // 分页
         PaginationInnerInterceptor paginationInnerInterceptor = new PaginationInnerInterceptor();
-        paginationInnerInterceptor.setMaxLimit(maxLimit);
+        paginationInnerInterceptor.setMaxLimit(MAX_LIMIT);
         interceptor.addInnerInterceptor(paginationInnerInterceptor);
         // 乐观锁
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
