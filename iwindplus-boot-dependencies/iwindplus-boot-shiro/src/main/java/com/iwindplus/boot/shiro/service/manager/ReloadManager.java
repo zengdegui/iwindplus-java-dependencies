@@ -67,7 +67,7 @@ public class ReloadManager {
                             manager.createChain(chain.getKey(), chain.getValue().replace(" ", ""));
                         });
                     }
-                    log.debug("更新权限成功！！");
+                    log.info("pdate shiro permission！！");
                 }
             } catch (Exception e) {
                 log.error("get ShiroFilter from shiroFilterFactoryBean error! [{}]", e);
