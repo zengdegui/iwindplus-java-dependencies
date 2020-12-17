@@ -13,8 +13,17 @@ import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 参数去除空格.
@@ -24,7 +33,8 @@ import java.util.*;
  */
 @Slf4j
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
-    private final byte[] body;
+    private byte[] body;
+
     private Map<String, String> customHeaders;
 
     /**
@@ -34,14 +44,23 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
      */
     public XssHttpServletRequestWrapper(HttpServletRequest request) {
         super(request);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream baos = null;
         try {
+            baos = new ByteArrayOutputStream();
             IOUtils.copy(request.getInputStream(), baos);
+            this.body = baos.toByteArray();
+            this.customHeaders = new HashMap<>();
         } catch (IOException e) {
             log.error("Abnormal interception request [{}]", e);
+        } finally {
+            if (null != baos) {
+                try {
+                    baos.close();
+                } catch (IOException e) {
+                    log.error("close IO Exception [{}]", e);
+                }
+            }
         }
-        this.body = baos.toByteArray();
-        this.customHeaders = new HashMap<>();
     }
 
     @Override
