@@ -1,7 +1,6 @@
 /**
  * Copyright (c) iwindplus Technologies Co., Ltd.2011-2020, All rights reserved.
  */
-
 package com.iwindplus.boot.oss.domain.enumerate;
 
 import lombok.Getter;
@@ -24,8 +23,14 @@ public enum OssCodeEnum {
     CREATE_DIR_FAILED("create_dir_failed", "创建目录失败"),
     ;
 
+    /**
+     * 值
+     */
     private final String value;
 
+    /**
+     * 描述
+     */
     private final String desc;
 
     private OssCodeEnum(final String value, final String desc) {
@@ -33,6 +38,12 @@ public enum OssCodeEnum {
         this.desc = desc;
     }
 
+    /**
+     * 通过描述查找枚举
+     *
+     * @param desc 描述
+     * @return ShiroCodeEnum
+     */
     public static OssCodeEnum valueOfDesc(String desc) {
         for (OssCodeEnum val : OssCodeEnum.values()) {
             if (Objects.equals(desc, val.desc())) {
@@ -42,6 +53,12 @@ public enum OssCodeEnum {
         return null;
     }
 
+    /**
+     * 通过值查找枚举
+     *
+     * @param value 值
+     * @return ShiroCodeEnum
+     */
     public static OssCodeEnum valueOfValue(String value) {
         for (OssCodeEnum val : OssCodeEnum.values()) {
             if (Objects.equals(value, val.value())) {
