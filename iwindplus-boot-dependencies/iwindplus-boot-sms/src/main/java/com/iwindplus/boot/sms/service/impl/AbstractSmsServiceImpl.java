@@ -25,6 +25,9 @@ import java.time.LocalDateTime;
  * @since 2020年3月13日
  */
 public abstract class AbstractSmsServiceImpl implements SmsService {
+    /**
+     * 短信业务层基础接口类
+     */
     @Autowired
     protected SmsBaseService smsBaseService;
 
