@@ -16,6 +16,7 @@ import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.error.ErrorAttributeOptions.Include;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -31,6 +32,9 @@ import java.util.Map;
  */
 @Configuration
 public class CustomErrorController extends BasicErrorController {
+    /**
+     * 国际化
+     */
     @Autowired
     protected I18nConfig i18nConfig;
 
@@ -43,7 +47,7 @@ public class CustomErrorController extends BasicErrorController {
         Map<String, Object> body = getErrorAttributes(request, ErrorAttributeOptions.of(Include.MESSAGE));
         HttpStatus status = getStatus(request);
         Map<String, Object> map = new LinkedHashMap<>();
-        map.put(ResultVO.ERROR_CODE, status.name().toLowerCase());
+        map.put(ResultVO.ERROR_CODE, status.name().toLowerCase(LocaleContextHolder.getLocale()));
         map.put(ResultVO.ERROR_MSG, this.i18nConfig.getMessage(WebCodeEnum.FAILED.value()));
         // 输出自定义的Json格式
         if (MapUtils.isNotEmpty(body)) {
