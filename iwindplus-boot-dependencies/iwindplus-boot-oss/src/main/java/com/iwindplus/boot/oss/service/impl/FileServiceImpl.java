@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.servlet.MultipartProperties;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -89,20 +91,23 @@ public class FileServiceImpl extends AbstractOssServiceImpl implements FileServi
                 fileName = new StringBuilder().append(fileName).append(suffixName).toString();
             }
             // 针对IE或者以IE为内核的浏览器
-            String userAgent = request.getHeader("user-agent").toLowerCase();
-            if (userAgent.toLowerCase().contains("msie") || StringUtils.contains(userAgent, "trident")
-                    || userAgent.toLowerCase().contains("like gecko") || userAgent.toLowerCase().contains("mozilla")) {
-                fileName = new String(fileName.getBytes(), "ISO8859-1");
+            String userAgent = request.getHeader("user-agent").toLowerCase(LocaleContextHolder.getLocale());
+            if (userAgent.toLowerCase(LocaleContextHolder.getLocale()).contains("msie") || StringUtils.contains(
+                    userAgent, "trident") || userAgent.toLowerCase(LocaleContextHolder.getLocale())
+                    .contains("like gecko") || userAgent.toLowerCase(LocaleContextHolder.getLocale())
+                    .contains("mozilla")) {
+                fileName = new String(fileName.getBytes(Charset.defaultCharset()), "ISO8859-1");
             } else {
                 fileName = URLEncoder.encode(fileName, "UTF-8");
             }
 
-            String headerValue = String.format("attachment; filename=\"%s\"", fileName);
+            String headerValue = String.format(LocaleContextHolder.getLocale(), "attachment; filename=\"%s\"", fileName);
             response.setHeader("Content-Disposition", headerValue);
             // 解析断点续传相关信息
             response.setHeader("Accept-Ranges", "bytes");
             long downloadSize = file.length();
-            long fromPos = 0, toPos = 0;
+            long fromPos = 0;
+            long toPos = 0;
             if (request.getHeader("Range") == null) {
                 response.setHeader("Content-Length", downloadSize + "");
             } else {
