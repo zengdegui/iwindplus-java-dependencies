@@ -34,18 +34,23 @@ public class ResultVO implements Serializable {
      * 错误编码.
      */
     public static final String ERROR_CODE = "error";
+
     /**
      * 错误信息.
      */
     public static final String ERROR_MSG = "error_description";
+
     private static final long serialVersionUID = 7869786563361406291L;
+
     private static final GsonBuilder INSTANCE = new GsonBuilder();
+
     /**
      * 状态码.
      */
     @JsonIgnore
     @Expose
     private HttpStatus status;
+
     /**
      * 错误编码.
      */
@@ -53,6 +58,7 @@ public class ResultVO implements Serializable {
     @JsonProperty(ERROR_CODE)
     @SerializedName(ERROR_CODE)
     private String code = WebCodeEnum.SUCCESS.value();
+
     /**
      * 错误信息.
      */
@@ -60,11 +66,18 @@ public class ResultVO implements Serializable {
     @JsonProperty(ERROR_MSG)
     @SerializedName(ERROR_MSG)
     private String message = WebCodeEnum.SUCCESS.desc();
+
     /**
      * 数据.
      */
     private Object data;
 
+    /**
+     * json转ResultVO.
+     *
+     * @param json json转ResultVO
+     * @return ResultVO
+     */
     public static ResultVO fromJson(String json) {
         final ResultVO result = INSTANCE.create().fromJson(json, ResultVO.class);
         if (StringUtils.isNotBlank(result.getCode())) {
