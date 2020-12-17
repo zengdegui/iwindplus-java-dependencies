@@ -221,7 +221,7 @@ public class JwtConfig {
      * @return ShiroUtil
      */
     @Bean
-    public ShiroUtil ShiroUtil(ShiroFilterFactoryBean shiroFilterFactoryBean, JwtRealm jwtRealm) {
+    public ShiroUtil shiroUtil(ShiroFilterFactoryBean shiroFilterFactoryBean, JwtRealm jwtRealm) {
         ShiroUtil shiroUtil = new ShiroUtil();
         ReloadManager reloadManager = new ReloadManager();
         reloadManager.setShiroFilterFactoryBean(shiroFilterFactoryBean);
