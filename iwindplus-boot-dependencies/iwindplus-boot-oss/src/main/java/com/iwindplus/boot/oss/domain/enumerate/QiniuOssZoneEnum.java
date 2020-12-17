@@ -1,7 +1,6 @@
 /**
  * Copyright (c) iwindplus Technologies Co., Ltd.2011-2020, All rights reserved.
  */
-
 package com.iwindplus.boot.oss.domain.enumerate;
 
 import lombok.Getter;
@@ -25,15 +24,33 @@ public enum QiniuOssZoneEnum {
     SOUTHEAST_ASIA(4, "东南亚"),
     ;
 
+    /**
+     * 值
+     */
     private final Integer value;
 
+    /**
+     * 描述
+     */
     private final String desc;
 
+    /**
+     * 通过描述查找枚举
+     *
+     * @param desc 描述
+     * @return QiniuOssZoneEnum
+     */
     private QiniuOssZoneEnum(final Integer value, final String desc) {
         this.value = value;
         this.desc = desc;
     }
 
+    /**
+     * 通过值查找枚举
+     *
+     * @param value 值
+     * @return QiniuOssZoneEnum
+     */
     public static QiniuOssZoneEnum valueOfValue(String value) {
         for (QiniuOssZoneEnum val : QiniuOssZoneEnum.values()) {
             if (Objects.equals(value, val.value())) {
