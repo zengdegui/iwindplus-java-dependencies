@@ -1,7 +1,6 @@
 /**
  * Copyright (c) iwindplus Technologies Co., Ltd.2011-2020, All rights reserved.
  */
-
 package com.iwindplus.boot.pay.domain.enumerate;
 
 import lombok.Getter;
@@ -22,8 +21,14 @@ public enum PayCodeEnum {
     PAY_CALLBACK_ERROR("pay_callback_error", "支付回调失败"),
     ;
 
+    /**
+     * 值
+     */
     private final String value;
 
+    /**
+     * 描述
+     */
     private final String desc;
 
     private PayCodeEnum(final String value, final String desc) {
@@ -31,6 +36,12 @@ public enum PayCodeEnum {
         this.desc = desc;
     }
 
+    /**
+     * 通过描述查找枚举.
+     *
+     * @param desc 描述
+     * @return PayCodeEnum
+     */
     public static PayCodeEnum valueOfDesc(String desc) {
         for (PayCodeEnum val : PayCodeEnum.values()) {
             if (Objects.equals(desc, val.desc())) {
@@ -40,6 +51,12 @@ public enum PayCodeEnum {
         return null;
     }
 
+    /**
+     * 通过值查找枚举.
+     *
+     * @param value 值
+     * @return PayCodeEnum
+     */
     public static PayCodeEnum valueOfValue(String value) {
         for (PayCodeEnum val : PayCodeEnum.values()) {
             if (Objects.equals(value, val.value())) {
