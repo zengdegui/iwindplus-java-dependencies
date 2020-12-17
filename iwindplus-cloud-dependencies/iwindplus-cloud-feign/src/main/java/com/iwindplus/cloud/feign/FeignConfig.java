@@ -33,7 +33,7 @@ public class FeignConfig {
     /**
      * 创建Encoder.
      *
-     * @param objectFactory
+     * @param objectFactory objectFactory
      * @return Encoder
      */
     @Bean
@@ -46,7 +46,7 @@ public class FeignConfig {
     /**
      * 创建Decoder.
      *
-     * @param objectFactory
+     * @param objectFactory objectFactory
      * @return Decoder
      */
     @Bean
@@ -63,7 +63,8 @@ public class FeignConfig {
      */
     @Bean
     public Builder feignBuilder() {
-        Builder builder = Feign.builder().requestInterceptor(new FeignRequestInterceptor())
+        Builder builder = Feign.builder()
+                .requestInterceptor(new FeignRequestInterceptor())
                 .errorDecoder(new FeignErrorDecoder());
         log.info("FeignBuilder [{}]", builder);
         return builder;
