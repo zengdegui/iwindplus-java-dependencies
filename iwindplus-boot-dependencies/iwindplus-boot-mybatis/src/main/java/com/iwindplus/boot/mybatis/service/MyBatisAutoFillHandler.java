@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -132,7 +133,7 @@ public class MyBatisAutoFillHandler implements MetaObjectHandler {
 
     private String getOperatorByBody(byte[] body) {
         try {
-            Map<?, ?> map = this.objectMapper.readValue(new String(body), Map.class);
+            Map<?, ?> map = this.objectMapper.readValue(new String(body, Charset.defaultCharset()), Map.class);
             if (MapUtils.isNotEmpty(map)) {
                 Object operator = map.get(MybatisConstant.OPERATOR);
                 if (null != operator) {
