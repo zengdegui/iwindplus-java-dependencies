@@ -25,8 +25,14 @@ public enum WechatCodeEnum {
     USER_INFO_INCOMPLETE("user_info_incomplete", "用户信息不完整"),
     ;
 
+    /**
+     * 值
+     */
     private final String value;
 
+    /**
+     * 描述
+     */
     private final String desc;
 
     private WechatCodeEnum(final String value, final String desc) {
@@ -34,6 +40,12 @@ public enum WechatCodeEnum {
         this.desc = desc;
     }
 
+    /**
+     * 通过描述查找枚举
+     *
+     * @param desc 描述
+     * @return WechatCodeEnum
+     */
     public static WechatCodeEnum valueOfDesc(String desc) {
         for (WechatCodeEnum val : WechatCodeEnum.values()) {
             if (Objects.equals(desc, val.desc())) {
@@ -43,6 +55,12 @@ public enum WechatCodeEnum {
         return null;
     }
 
+    /**
+     * 通过值查找枚举
+     *
+     * @param value 值
+     * @return WechatCodeEnum
+     */
     public static WechatCodeEnum valueOfValue(String value) {
         for (WechatCodeEnum val : WechatCodeEnum.values()) {
             if (Objects.equals(value, val.value())) {
