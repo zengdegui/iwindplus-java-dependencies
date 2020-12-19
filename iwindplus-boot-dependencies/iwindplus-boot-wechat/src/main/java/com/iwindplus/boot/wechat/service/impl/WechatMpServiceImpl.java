@@ -17,6 +17,7 @@ import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpQrcodeService;
 import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -40,9 +41,12 @@ public class WechatMpServiceImpl extends WxMpServiceImpl implements WechatMpServ
 
     @Override
     public String authorize(String clientId, String clientSecret) {
-        String redirectUri = new StringBuilder(this.wechatMpProperty.getRedirectUri()).append("?")
-                .append(WechatConstant.CLIENT_ID).append("=").append(clientId).append("&")
-                .append(WechatConstant.CLIENT_SECRET).append("=").append(clientSecret).toString();
+        StringBuilder sb = new StringBuilder(this.wechatMpProperty.getRedirectUri());
+        if (StringUtils.isNotBlank(clientId) && StringUtils.isNotBlank(clientSecret)) {
+            sb.append("?").append(WechatConstant.CLIENT_ID).append("=").append(clientId).append("&")
+                    .append(WechatConstant.CLIENT_SECRET).append("=").append(clientSecret);
+        }
+        String redirectUri = sb.toString();
         String webScope = null == this.wechatMpProperty.getWebScope() ? WxConsts.OAuth2Scope.SNSAPI_BASE
                 : this.wechatMpProperty.getWebScope();
         String redirectURL = this.getOAuth2Service().buildAuthorizationUrl(redirectUri, webScope,

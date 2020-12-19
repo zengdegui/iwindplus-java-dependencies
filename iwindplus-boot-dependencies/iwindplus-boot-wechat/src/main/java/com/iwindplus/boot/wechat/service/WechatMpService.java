@@ -25,8 +25,8 @@ public interface WechatMpService extends WxMpService {
     /**
      * 获取微信公众号授权地址.
      *
-     * @param clientId     客户端ID
-     * @param clientSecret 客户端密匙
+     * @param clientId     客户端ID(非必填)
+     * @param clientSecret 客户端密匙(非必填)
      * @return String
      */
     String authorize(String clientId, String clientSecret);
