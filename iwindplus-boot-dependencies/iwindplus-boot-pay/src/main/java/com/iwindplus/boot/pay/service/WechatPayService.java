@@ -4,7 +4,6 @@
 
 package com.iwindplus.boot.pay.service;
 
-import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.service.WxPayService;
 
 /**
@@ -14,11 +13,4 @@ import com.github.binarywang.wxpay.service.WxPayService;
  * @since 2020/11/29
  */
 public interface WechatPayService extends WxPayService, PayService {
-    /**
-     * 获取支付二维码.
-     *
-     * @param entity 对象
-     * @return String
-     */
-    String createOrderByQrcode(WxPayUnifiedOrderRequest entity);
 }

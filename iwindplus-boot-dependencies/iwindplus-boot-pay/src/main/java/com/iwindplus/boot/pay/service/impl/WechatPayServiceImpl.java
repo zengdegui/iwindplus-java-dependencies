@@ -9,6 +9,7 @@ import com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.bean.order.WxPayNativeOrderResult;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
+import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderResult;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.impl.WxPayServiceImpl;
 import com.iwindplus.boot.pay.domain.constant.PayConstant;
@@ -37,17 +38,6 @@ import java.time.LocalDateTime;
 public class WechatPayServiceImpl extends WxPayServiceImpl implements WechatPayService {
     @Autowired
     private PayBaseService payBaseService;
-
-    @Override
-    public String createOrderByQrcode(WxPayUnifiedOrderRequest entity) {
-        try {
-            WxPayNativeOrderResult data = (WxPayNativeOrderResult) this.createOrder(entity);
-            return data.getCodeUrl();
-        } catch (WxPayException e) {
-            throw new BaseException(PayCodeEnum.CREATE_ORDER_ERROR.value(),
-                    PayCodeEnum.CREATE_ORDER_ERROR.desc());
-        }
-    }
 
     @Override
     public String payCallback(HttpServletRequest request, HttpServletResponse response) {
