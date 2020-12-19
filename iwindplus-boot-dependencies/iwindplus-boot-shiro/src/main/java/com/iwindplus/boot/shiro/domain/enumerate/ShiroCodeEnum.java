@@ -27,12 +27,12 @@ public enum ShiroCodeEnum {
     ;
 
     /**
-     * 值
+     * 值.
      */
     private final String value;
 
     /**
-     * 描述
+     * 描述.
      */
     private final String desc;
 
@@ -42,7 +42,7 @@ public enum ShiroCodeEnum {
     }
 
     /**
-     * 通过描述查找枚举
+     * 通过描述查找枚举.
      *
      * @param desc 描述
      * @return ShiroCodeEnum
@@ -57,7 +57,7 @@ public enum ShiroCodeEnum {
     }
 
     /**
-     * 通过值查找枚举
+     * 通过值查找枚举.
      *
      * @param value 值
      * @return ShiroCodeEnum

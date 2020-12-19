@@ -127,12 +127,12 @@ public class RedisConfig extends CachingConfigurerSupport {
         CacheErrorHandler cacheErrorHandler = new CacheErrorHandler() {
             @Override
             public void handleCacheGetError(RuntimeException e, Cache cache, Object key) {
-                log.error("RedisCacheConfig.CacheErrorHandler.handleCacheGetError.error.param [{}]", key, e);
+                log.error("handleCacheGetError [{}]", e);
             }
 
             @Override
             public void handleCachePutError(RuntimeException e, Cache cache, Object key, Object value) {
-                log.error("RedisCacheConfig.CacheErrorHandler.handleCachePutError.error.param [{}]", key, e);
+                log.error("handleCachePutError [{}]", e);
             }
 
             @Override
@@ -142,10 +142,9 @@ public class RedisConfig extends CachingConfigurerSupport {
 
             @Override
             public void handleCacheClearError(RuntimeException e, Cache cache) {
-                log.error("RedisCacheConfig.CacheErrorHandler.handleCacheClearError.error [{}]", e);
+                log.error("handleCacheClearError [{}]", e);
             }
         };
-        log.info("CacheErrorHandler [{}]", cacheErrorHandler);
         return cacheErrorHandler;
     }
 }

@@ -58,12 +58,12 @@ public enum CloudWebCodeEnum {
     ;
 
     /**
-     * 值
+     * 值.
      */
     private final String value;
 
     /**
-     * 描述
+     * 描述.
      */
     private final String desc;
 
@@ -73,7 +73,7 @@ public enum CloudWebCodeEnum {
     }
 
     /**
-     * 通过描述查找枚举
+     * 通过描述查找枚举.
      *
      * @param desc 描述
      * @return CloudWebCodeEnum
@@ -88,7 +88,7 @@ public enum CloudWebCodeEnum {
     }
 
     /**
-     * 通过值查找枚举
+     * 通过值查找枚举.
      *
      * @param value 值
      * @return CloudWebCodeEnum

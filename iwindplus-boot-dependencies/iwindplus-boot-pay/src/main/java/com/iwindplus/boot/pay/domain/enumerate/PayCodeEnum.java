@@ -22,12 +22,12 @@ public enum PayCodeEnum {
     ;
 
     /**
-     * 值
+     * 值.
      */
     private final String value;
 
     /**
-     * 描述
+     * 描述.
      */
     private final String desc;
 

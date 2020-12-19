@@ -25,17 +25,17 @@ public enum QiniuOssZoneEnum {
     ;
 
     /**
-     * 值
+     * 值.
      */
     private final Integer value;
 
     /**
-     * 描述
+     * 描述.
      */
     private final String desc;
 
     /**
-     * 通过描述查找枚举
+     * 通过描述查找枚举.
      *
      * @param desc 描述
      * @return QiniuOssZoneEnum
@@ -46,7 +46,7 @@ public enum QiniuOssZoneEnum {
     }
 
     /**
-     * 通过值查找枚举
+     * 通过值查找枚举.
      *
      * @param value 值
      * @return QiniuOssZoneEnum
