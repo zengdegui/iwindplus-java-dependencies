@@ -47,8 +47,7 @@ public class WechatMpServiceImpl extends WxMpServiceImpl implements WechatMpServ
                     .append(WechatConstant.CLIENT_SECRET).append("=").append(clientSecret);
         }
         String redirectUri = sb.toString();
-        String webScope = null == this.wechatMpProperty.getWebScope() ? WxConsts.OAuth2Scope.SNSAPI_BASE
-                : this.wechatMpProperty.getWebScope();
+        String webScope = this.wechatMpProperty.getWebScope();
         String redirectURL = this.getOAuth2Service().buildAuthorizationUrl(redirectUri, webScope,
                 IdUtil.fastSimpleUUID());
         log.info("authorize redirectURL [{}]", redirectURL);

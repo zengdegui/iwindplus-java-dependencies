@@ -5,6 +5,7 @@
 package com.iwindplus.boot.wechat.domain;
 
 import lombok.Data;
+import me.chanjar.weixin.common.api.WxConsts;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -37,27 +38,22 @@ public class WechatMpProperty {
     private String aesKey;
 
     /**
-     * 重定向地址.
+     * 网页授权的scope（默认：不弹出授权页面，直接跳转，只能获取用户openid）.
+     */
+    private String webScope = WxConsts.OAuth2Scope.SNSAPI_BASE;
+
+    /**
+     * 重定向授权地址.
      */
     private String redirectUri;
 
     /**
-     * 登录成功地址.
+     * 绑定成功后跳转地址.
      */
-    private String loginSuccessUri;
-
-    /**
-     * 网页授权的scope（默认：不弹出授权页面，直接跳转，只能获取用户openid）.
-     */
-    private String webScope;
+    private String bindSuccessUri;
 
     /**
      * 绑定用户地址.
      */
     private String bindUserUri;
-
-    /**
-     * 发送短信地址.
-     */
-    private String sendSmsUri;
 }
