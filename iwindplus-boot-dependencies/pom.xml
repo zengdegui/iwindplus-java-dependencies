@@ -56,6 +56,7 @@
         <hibernate-validator.version>6.1.6.Final</hibernate-validator.version>
         <encrypt-body.version>1.0.4.RELEASE</encrypt-body.version>
         <hutool.version>5.4.7</hutool.version>
+        <bcprov-jdk15on.version>1.67</bcprov-jdk15on.version>
         <java-jwt.version>3.11.0</java-jwt.version>
         <jasypt.version>3.0.3</jasypt.version>
     </properties>
@@ -73,6 +74,11 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${bcprov-jdk15on.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
