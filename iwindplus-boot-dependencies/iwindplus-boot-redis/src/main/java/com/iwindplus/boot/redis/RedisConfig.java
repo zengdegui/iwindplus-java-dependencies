@@ -137,7 +137,7 @@ public class RedisConfig extends CachingConfigurerSupport {
 
             @Override
             public void handleCacheEvictError(RuntimeException e, Cache cache, Object key) {
-                log.error("RedisCacheConfig.CacheErrorHandler.handleCacheEvictError.error.param [{}]", key, e);
+                log.error("handleCacheEvictError [{}]", e);
             }
 
             @Override
