@@ -38,7 +38,7 @@
         <mutils-qrcode.version>0.4.0.RELEASE</mutils-qrcode.version>
         <easypoi.version>4.2.0</easypoi.version>
         <easyexcel.version>2.2.6</easyexcel.version>
-        <weixin-java.version>3.9.7.B</weixin-java.version>
+        <weixin-java.version>4.0.1.B</weixin-java.version>
         <alipay.version>4.10.192.ALL</alipay.version>
         <thymeleaf-extras-shiro.version>2.0.0</thymeleaf-extras-shiro.version>
         <nekohtml.version>1.9.22</nekohtml.version>
@@ -128,6 +128,11 @@
             <dependency>
                 <groupId>com.github.binarywang</groupId>
                 <artifactId>weixin-java-pay</artifactId>
+                <version>${weixin-java.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-open</artifactId>
                 <version>${weixin-java.version}</version>
             </dependency>
             <dependency>
