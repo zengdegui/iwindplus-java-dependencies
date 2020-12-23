@@ -16,7 +16,6 @@ import com.netflix.hystrix.exception.HystrixRuntimeException;
 import feign.FeignException;
 import feign.RetryableException;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
@@ -196,22 +195,6 @@ public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
 		String code = WebCodeEnum.NOT_WRITABLE.value();
 		String msg = this.i18nConfig.getMessage(code);
 		String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.NOT_WRITABLE.desc();
-		ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-		return ResponseEntity.status(status).body(entity);
-	}
-
-	/**
-	 * 处理无权限异常.
-	 *
-	 * @param ex 异常
-	 * @return ResponseEntity<ResultVO>
-	 */
-	@ExceptionHandler(UnauthorizedException.class)
-	public ResponseEntity<ResultVO> exceptionHandler(UnauthorizedException ex) {
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
-		String code = WebCodeEnum.UNAUTHORIZED.value();
-		String msg = this.i18nConfig.getMessage(code);
-		String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.UNAUTHORIZED.desc();
 		ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
 		return ResponseEntity.status(status).body(entity);
 	}

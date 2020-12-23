@@ -177,22 +177,6 @@ public class GlobalExceptionHandler {
 	}
 
 	/**
-	 * 处理无权限异常.
-	 *
-	 * @param ex 异常
-	 * @return ResponseEntity<ResultVO>
-	 */
-	@ExceptionHandler(UnauthorizedException.class)
-	public ResponseEntity<ResultVO> exceptionHandler(UnauthorizedException ex) {
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
-		String code = WebCodeEnum.UNAUTHORIZED.value();
-		String msg = this.i18nConfig.getMessage(code);
-		String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.UNAUTHORIZED.desc();
-		ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-		return ResponseEntity.status(status).body(entity);
-	}
-
-	/**
 	 * 处理不合法的参数异常.
 	 *
 	 * @param ex 异常
@@ -325,6 +309,22 @@ public class GlobalExceptionHandler {
 		String message = StringUtils.isNotBlank(msg) ? msg : item.getMessage();
 		Object data = item.getData();
 		ResultVO entity = ResultVO.builder().status(status).code(code).message(message).data(data).build();
+		return ResponseEntity.status(status).body(entity);
+	}
+
+	/**
+	 * 处理无权限异常.
+	 *
+	 * @param ex 异常
+	 * @return ResponseEntity<ResultVO>
+	 */
+	@ExceptionHandler(UnauthorizedException.class)
+	public ResponseEntity<ResultVO> exceptionHandler(UnauthorizedException ex) {
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		String code = WebCodeEnum.UNAUTHORIZED.value();
+		String msg = this.i18nConfig.getMessage(code);
+		String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.UNAUTHORIZED.desc();
+		ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
 		return ResponseEntity.status(status).body(entity);
 	}
 
