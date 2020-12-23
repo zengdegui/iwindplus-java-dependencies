@@ -155,7 +155,7 @@ public class Oauth2Util {
     }
 
     private static void updateToken(TokenStore tokenStore, UserDetailsVO entity,
-                                    Collection<OAuth2AccessToken> accessTokens) {
+            Collection<OAuth2AccessToken> accessTokens) {
         accessTokens.forEach(accessToken -> {
             // 由于没有set方法,使用反射机制强制赋值
             OAuth2Authentication oAuth2Authentication = tokenStore.readAuthentication(accessToken);
@@ -193,7 +193,7 @@ public class Oauth2Util {
     }
 
     private static void updateAuthorities(TokenStore tokenStore, Collection<? extends GrantedAuthority> authorities,
-                                          Collection<OAuth2AccessToken> accessTokens) {
+            Collection<OAuth2AccessToken> accessTokens) {
         accessTokens.forEach(accessToken -> {
             // 由于没有set方法,使用反射机制强制赋值
             OAuth2Authentication oAuth2Authentication = tokenStore.readAuthentication(accessToken);
