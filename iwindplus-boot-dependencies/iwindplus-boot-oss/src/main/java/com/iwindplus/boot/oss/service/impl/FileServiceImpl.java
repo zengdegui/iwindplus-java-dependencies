@@ -24,11 +24,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 
 /**
  * 文件操作业务层接口实现类.
@@ -39,6 +41,7 @@ import java.nio.file.Paths;
 @Slf4j
 public class FileServiceImpl extends AbstractOssServiceImpl implements FileService {
     private static final long BSIZE = 4096;
+
     @Autowired
     private MultipartProperties multipartProperties;
 
@@ -78,30 +81,15 @@ public class FileServiceImpl extends AbstractOssServiceImpl implements FileServi
         RandomAccessFile in = null;
         BufferedOutputStream bos = null;
         try {
+            fileName = getFileName(file, fileName, request);
+            String headerValue = String.format(Locale.ENGLISH, "attachment; filename=\"%s\"",
+                    fileName);
             ServletContext context = request.getServletContext();
             String mimeType = context.getMimeType(file.getAbsolutePath());
             if (mimeType == null) {
                 mimeType = "application/octet-stream";
             }
             response.setContentType(mimeType);
-            if (StringUtils.isBlank(fileName)) {
-                fileName = file.getName();
-            } else {
-                String suffixName = file.getName().substring(file.getName().lastIndexOf("."));
-                fileName = new StringBuilder().append(fileName).append(suffixName).toString();
-            }
-            // 针对IE或者以IE为内核的浏览器
-            String userAgent = request.getHeader("user-agent").toLowerCase(LocaleContextHolder.getLocale());
-            if (userAgent.toLowerCase(LocaleContextHolder.getLocale()).contains("msie") || StringUtils.contains(
-                    userAgent, "trident") || userAgent.toLowerCase(LocaleContextHolder.getLocale())
-                    .contains("like gecko") || userAgent.toLowerCase(LocaleContextHolder.getLocale())
-                    .contains("mozilla")) {
-                fileName = new String(fileName.getBytes(Charset.defaultCharset()), "ISO8859-1");
-            } else {
-                fileName = URLEncoder.encode(fileName, "UTF-8");
-            }
-
-            String headerValue = String.format(LocaleContextHolder.getLocale(), "attachment; filename=\"%s\"", fileName);
             response.setHeader("Content-Disposition", headerValue);
             // 解析断点续传相关信息
             response.setHeader("Accept-Ranges", "bytes");
@@ -129,7 +117,6 @@ public class FileServiceImpl extends AbstractOssServiceImpl implements FileServi
                 response.setHeader("Content-Length", size + "");
                 downloadSize = size;
             }
-
             in = new RandomAccessFile(file, "rw");
             bos = new BufferedOutputStream(response.getOutputStream());
             // 设置下载起始位置
@@ -137,40 +124,69 @@ public class FileServiceImpl extends AbstractOssServiceImpl implements FileServi
                 in.seek(fromPos);
             }
             // 缓冲区大小
-            int bufLen = (int) (downloadSize < BSIZE ? downloadSize : BSIZE);
-            byte[] buffer = new byte[bufLen];
-            int num;
-            int count = 0; // 当前写到客户端的大小
-            while ((num = in.read(buffer)) != -1) {
-                bos.write(buffer, 0, num);
-                count += num;
-                // 处理最后一段，计算不满缓冲区的大小
-                if (downloadSize - count < bufLen) {
-                    bufLen = (int) (downloadSize - count);
-                    if (bufLen == 0) {
-                        break;
-                    }
-                    buffer = new byte[bufLen];
-                }
-            }
+            writeBuffer(in, bos, downloadSize);
             response.flushBuffer();
         } catch (IOException ex) {
             log.error("Data is suspended or interrupted [{}]", ex);
         } finally {
-            if (null != bos) {
-                try {
-                    bos.close();
-                } catch (IOException ex) {
-                    log.error("Closing output stream exception [{}]", ex);
-                }
-            }
-            if (null != in) {
-                try {
-                    in.close();
-                } catch (IOException ex) {
-                    log.error("Closing output stream exception [{}]", ex);
-                }
+            closeStream(in, bos);
+        }
+    }
+
+    private void closeStream(RandomAccessFile in, BufferedOutputStream bos) {
+        if (null != bos) {
+            try {
+                bos.close();
+            } catch (IOException ex) {
+                log.error("Closing output stream exception [{}]", ex);
             }
         }
+        if (null != in) {
+            try {
+                in.close();
+            } catch (IOException ex) {
+                log.error("Closing output stream exception [{}]", ex);
+            }
+        }
+    }
+
+    private void writeBuffer(RandomAccessFile in, BufferedOutputStream bos, long downloadSize) throws IOException {
+        int bufLen = (int) (downloadSize < BSIZE ? downloadSize : BSIZE);
+        byte[] buffer = new byte[bufLen];
+        int num;
+        int count = 0; // 当前写到客户端的大小
+        while ((num = in.read(buffer)) != -1) {
+            bos.write(buffer, 0, num);
+            count += num;
+            // 处理最后一段，计算不满缓冲区的大小
+            if (downloadSize - count < bufLen) {
+                bufLen = (int) (downloadSize - count);
+                if (bufLen == 0) {
+                    break;
+                }
+                buffer = new byte[bufLen];
+            }
+        }
+    }
+
+    private String getFileName(File file, String fileName, HttpServletRequest request)
+            throws UnsupportedEncodingException {
+        if (StringUtils.isBlank(fileName)) {
+            fileName = file.getName();
+        } else {
+            String suffixName = file.getName().substring(file.getName().lastIndexOf("."));
+            fileName = new StringBuilder().append(fileName).append(suffixName).toString();
+        }
+        // 针对IE或者以IE为内核的浏览器
+        String userAgent = request.getHeader("user-agent").toLowerCase(LocaleContextHolder.getLocale());
+        if (userAgent.toLowerCase(LocaleContextHolder.getLocale()).contains("msie") || StringUtils.contains(userAgent,
+                "trident") || userAgent.toLowerCase(LocaleContextHolder.getLocale()).contains("like gecko") || userAgent
+                .toLowerCase(LocaleContextHolder.getLocale())
+                .contains("mozilla")) {
+            fileName = new String(fileName.getBytes(Charset.defaultCharset()), "ISO8859-1");
+        } else {
+            fileName = URLEncoder.encode(fileName, "UTF-8");
+        }
+        return fileName;
     }
 }
