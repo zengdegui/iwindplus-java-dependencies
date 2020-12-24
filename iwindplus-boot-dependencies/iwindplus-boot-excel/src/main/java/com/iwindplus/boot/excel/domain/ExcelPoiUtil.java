@@ -192,7 +192,7 @@ public class ExcelPoiUtil {
      * @throws Exception
      */
     private static void downLoadExcel(String fileName, Workbook workbook, HttpServletRequest request,
-                                      HttpServletResponse response) throws Exception {
+            HttpServletResponse response) throws Exception {
         response.setCharacterEncoding("UTF-8");
         response.setHeader("content-Type", "application/vnd.ms-excel");
         // 针对IE或者以IE为内核的浏览器
