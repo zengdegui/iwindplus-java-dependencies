@@ -27,10 +27,13 @@ public class PermsAuthzFilter extends AuthorizationFilter {
     public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue)
             throws IOException {
         Subject subject = getSubject(request, response);
-        String[] array = (String[]) mappedValue;
-        if (array == null || array.length == 0) {
-            return true;
+        if (mappedValue instanceof String[]) {
+            String[] array = (String[]) mappedValue;
+            if (array == null || array.length == 0) {
+                return true;
+            }
+            return Stream.of(array).anyMatch(entity -> subject.isPermitted(entity));
         }
-        return Stream.of(array).anyMatch(entity -> subject.isPermitted(entity));
+        return false;
     }
 }
