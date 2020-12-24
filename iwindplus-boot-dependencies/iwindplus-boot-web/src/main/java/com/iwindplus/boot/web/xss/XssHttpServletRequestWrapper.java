@@ -4,6 +4,7 @@
 
 package com.iwindplus.boot.web.xss;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +33,7 @@ import java.util.Set;
  * @since 2020年4月3日
  */
 @Slf4j
+@Getter
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     private byte[] body;
 
@@ -120,7 +122,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     @Override
     public String getHeader(String name) {
         String value = this.customHeaders.get(name);
-        if (value != null) {
+        if (StringUtils.isNotBlank(value)) {
             return value;
         }
         return ((HttpServletRequest) getRequest()).getHeader(name);
@@ -137,11 +139,13 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         return Collections.enumeration(set);
     }
 
+    /**
+     * 设置请求头
+     *
+     * @param name  属性
+     * @param value 值
+     */
     public void putHeader(String name, String value) {
         this.customHeaders.put(name, value);
-    }
-
-    public byte[] getBody() {
-        return this.body;
     }
 }
