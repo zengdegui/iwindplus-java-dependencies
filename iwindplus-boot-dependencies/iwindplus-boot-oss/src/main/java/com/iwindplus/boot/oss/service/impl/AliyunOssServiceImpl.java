@@ -49,44 +49,68 @@ public class AliyunOssServiceImpl extends AbstractOssServiceImpl implements Aliy
             long fileSize = entity.getSize();
             super.checkFile(fileSize, this.alibabaOssProperty.getMaxFileSize());
             String sourceFileName = entity.getOriginalFilename();
+            InputStream inputStream = null;
+            OSS ossClient = null;
             try {
-                InputStream inputStream = entity.getInputStream();
-                // 创建上传Object的Metadata
-                ObjectMetadata meta = new ObjectMetadata();
-                meta.setContentLength(entity.getSize());
-                OSS ossClient = null;
-                if (null != this.alibabaOssProperty.getFlagCustom()
-                        && Boolean.TRUE.equals(this.alibabaOssProperty.getFlagCustom())) {
-                    ClientBuilderConfiguration conf = new ClientBuilderConfiguration();
-                    // 创建ClientConfiguration实例，按照您的需要修改默认参数。
-                    conf.setSupportCname(true);
-                    // 开启支持CNAME。CNAME是指将自定义域名绑定到存储空间上。
-                    ossClient = new OSSClientBuilder().build(this.alibabaOssProperty.getEndpoint(),
-                            this.alibabaOssProperty.getAccessKey(), this.alibabaOssProperty.getSecretKey(), conf);
-                } else {
-                    ossClient = new OSSClientBuilder().build(this.alibabaOssProperty.getEndpoint(),
-                            this.alibabaOssProperty.getAccessKey(), this.alibabaOssProperty.getSecretKey());
-                }
+                inputStream = entity.getInputStream();
+                ossClient = getOssClient(ossClient);
                 String fileName = super.getFileName(sourceFileName);
-                PutObjectResult response = ossClient.putObject(this.alibabaOssProperty.getBucket(), fileName,
-                        inputStream, meta);
-                if (null != response) {
-                    Date expiration = new Date(System.currentTimeMillis() + 3600L * 1000);
-                    URL url = ossClient.generatePresignedUrl(this.alibabaOssProperty.getBucket(), fileName, expiration);
-                    String absolutePath = url.toString();
-                    UploadVO data = UploadVO.builder().sourceFileName(sourceFileName).fileName(fileName)
-                            .fileSize(fileSize).absolutePath(absolutePath).relativePath(fileName).build();
-                    list.add(data);
-                }
-                ossClient.shutdown();
-                inputStream.close();
+                getResponse(list, fileSize, sourceFileName, inputStream, ossClient, fileName);
             } catch (IOException e) {
                 log.error("IOException [{}]", e);
-                throw new BaseException(OssCodeEnum.FILE_UPLOAD_FAILED.value(),
-                        OssCodeEnum.FILE_UPLOAD_FAILED.desc());
+                throw new BaseException(OssCodeEnum.FILE_UPLOAD_FAILED.value(), OssCodeEnum.FILE_UPLOAD_FAILED.desc());
+            } finally {
+                if (null != ossClient) {
+                    ossClient.shutdown();
+                }
+                if (null != inputStream) {
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        log.error("IOException [{}]", e);
+                    }
+                }
             }
         });
         return list;
+    }
+
+    private OSS getOssClient(OSS ossClient) {
+        if (null != this.alibabaOssProperty.getFlagCustom() && Boolean.TRUE.equals(
+                this.alibabaOssProperty.getFlagCustom())) {
+            ClientBuilderConfiguration conf = new ClientBuilderConfiguration();
+            // 创建ClientConfiguration实例，按照您的需要修改默认参数。
+            conf.setSupportCname(true);
+            // 开启支持CNAME。CNAME是指将自定义域名绑定到存储空间上。
+            ossClient = new OSSClientBuilder().build(this.alibabaOssProperty.getEndpoint(),
+                    this.alibabaOssProperty.getAccessKey(), this.alibabaOssProperty.getSecretKey(), conf);
+        } else {
+            ossClient = new OSSClientBuilder().build(this.alibabaOssProperty.getEndpoint(),
+                    this.alibabaOssProperty.getAccessKey(), this.alibabaOssProperty.getSecretKey());
+        }
+        return ossClient;
+    }
+
+    private void getResponse(List<UploadVO> list, long fileSize, String sourceFileName, InputStream inputStream,
+            OSS ossClient, String fileName) {
+        // 创建上传Object的Metadata
+        ObjectMetadata meta = new ObjectMetadata();
+        meta.setContentLength(fileSize);
+        PutObjectResult response = ossClient.putObject(this.alibabaOssProperty.getBucket(), fileName, inputStream,
+                meta);
+        if (null != response) {
+            Date expiration = new Date(System.currentTimeMillis() + 3600L * 1000);
+            URL url = ossClient.generatePresignedUrl(this.alibabaOssProperty.getBucket(), fileName, expiration);
+            String absolutePath = url.toString();
+            UploadVO data = UploadVO.builder()
+                    .sourceFileName(sourceFileName)
+                    .fileName(fileName)
+                    .fileSize(fileSize)
+                    .absolutePath(absolutePath)
+                    .relativePath(fileName)
+                    .build();
+            list.add(data);
+        }
     }
 
     @Override
