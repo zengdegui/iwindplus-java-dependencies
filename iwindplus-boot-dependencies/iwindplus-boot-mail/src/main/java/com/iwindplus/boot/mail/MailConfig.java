@@ -1,6 +1,8 @@
-package com.iwindplus.boot.mail;/**
+/**
  * Copyright (c) iwindplus Technologies Co., Ltd.2011-2020, All rights reserved.
  */
+
+package com.iwindplus.boot.mail;
 
 import com.iwindplus.boot.mail.service.MailService;
 import com.iwindplus.boot.mail.service.impl.MailServiceImpl;
