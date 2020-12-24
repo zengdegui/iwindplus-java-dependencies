@@ -163,7 +163,7 @@ public class ShiroConfig {
      */
     @Bean
     public SecurityManager securityManager(ShiroRealm shiroRealm, ShiroSessionManager sessionManager,
-                                           RememberMeManager rememberMeManager, RedisCacheManager redisCacheManager) {
+            RememberMeManager rememberMeManager, RedisCacheManager redisCacheManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         List<Realm> realms = new LinkedList<>();
         realms.add(shiroRealm);
@@ -248,8 +248,8 @@ public class ShiroConfig {
      */
     @Bean
     public ShiroSessionManager sessionManager(RedisSessionDAO sessionDAO, RedisCacheManager redisCacheManager,
-                                              SimpleCookie sessionIdCookie,
-                                              ExecutorServiceSessionValidationScheduler executorServiceSessionValidationScheduler) {
+            SimpleCookie sessionIdCookie,
+            ExecutorServiceSessionValidationScheduler executorServiceSessionValidationScheduler) {
         ShiroSessionManager sessionManager = new ShiroSessionManager();
         // 去掉URL中的JSESSIONID
         sessionManager.setSessionIdUrlRewritingEnabled(false);
