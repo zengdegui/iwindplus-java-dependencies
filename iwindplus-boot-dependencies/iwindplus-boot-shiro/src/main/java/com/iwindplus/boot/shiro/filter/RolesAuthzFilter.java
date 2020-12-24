@@ -25,10 +25,13 @@ public class RolesAuthzFilter extends AuthorizationFilter {
     @Override
     public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         Subject subject = getSubject(request, response);
-        String[] array = (String[]) mappedValue;
-        if (array == null || array.length == 0) {
-            return true;
+        if (mappedValue instanceof String[]) {
+            String[] array = (String[]) mappedValue;
+            if (array == null || array.length == 0) {
+                return true;
+            }
+            return Stream.of(array).anyMatch(entity -> subject.hasRole(entity));
         }
-        return Stream.of(array).anyMatch(entity -> subject.hasRole(entity));
+        return false;
     }
 }
