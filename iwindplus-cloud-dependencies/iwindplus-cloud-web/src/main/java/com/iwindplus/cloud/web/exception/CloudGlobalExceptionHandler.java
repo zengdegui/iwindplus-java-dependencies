@@ -227,11 +227,10 @@ public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
 		String code = WebCodeEnum.PARAM_MISS.value();
 		String msg = this.i18nConfig.getMessage(code);
 		String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.PARAM_MISS.desc();
-		MissingServletRequestParameterException item = (MissingServletRequestParameterException) ex;
 		ArgumentInvalidResultVO data = ArgumentInvalidResultVO
 				.builder()
-				.field(item.getParameterName())
-				.message(item.getMessage())
+				.field(ex.getParameterName())
+				.message(ex.getMessage())
 				.build();
 		ResultVO entity = ResultVO.builder().status(status).code(code).message(message).data(data).build();
 		return ResponseEntity.status(status).body(entity);
