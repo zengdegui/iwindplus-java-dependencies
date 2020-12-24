@@ -24,7 +24,6 @@ import java.util.Date;
  * @since 2018年9月1日
  */
 public class DateUtil extends cn.hutool.core.date.DateUtil {
-
     /**
      * 获取当前时间字符串日期格式：yyyy-MM-dd HH:mm:ss.
      *
