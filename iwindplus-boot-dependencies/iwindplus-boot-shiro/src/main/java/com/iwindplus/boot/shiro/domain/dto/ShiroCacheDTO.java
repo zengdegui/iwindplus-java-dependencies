@@ -93,20 +93,20 @@ public class ShiroCacheDTO<K, V> implements Cache<K, V> {
     }
 
     @SuppressWarnings("unchecked")
-    private K getCacheKey(Object k) {
+    private K getCacheKey(Object key) {
         // 此处很重要,如果key是登录凭证,那么这是访问用户的授权缓存;将登录凭证转为user对象,返回user的id属性做为hash.
         // key,否则会以user对象做为hash
         // key,这样就不好清除指定用户的缓存了
         StringBuilder sb = new StringBuilder();
         sb.append(this.keyPrefix).append(this.name).append(":");
 
-        if (k instanceof PrincipalCollection) {
-            PrincipalCollection pc = (PrincipalCollection) k;
+        if (key instanceof PrincipalCollection) {
+            PrincipalCollection pc = (PrincipalCollection) key;
             String data = (String) pc.asList().get(0);
             sb.append(data);
             return (K) (sb.toString());
         }
-        sb.append(k);
+        sb.append(key);
         return (K) (sb.toString());
     }
 }
