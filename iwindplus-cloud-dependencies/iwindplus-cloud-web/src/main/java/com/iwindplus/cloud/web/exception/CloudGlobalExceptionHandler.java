@@ -247,13 +247,12 @@ public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		String code = WebCodeEnum.PARAM_TYPE_ERROR.value();
 		String msg = this.i18nConfig.getMessage(code);
-		String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.PARAM_TYPE_ERROR.desc();
-		MethodArgumentTypeMismatchException item = (MethodArgumentTypeMismatchException) ex;
+		String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.PARAM_TYPE_ERROR.desc();		
 		ArgumentInvalidResultVO data = ArgumentInvalidResultVO
 				.builder()
-				.field(item.getName())
-				.value(item.getValue())
-				.message(item.getMessage())
+				.field(ex.getName())
+				.value(ex.getValue())
+				.message(ex.getMessage())
 				.build();
 		ResultVO entity = ResultVO.builder().status(status).code(code).message(message).data(data).build();
 		return ResponseEntity.status(status).body(entity);
@@ -272,8 +271,7 @@ public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
 		String msg = this.i18nConfig.getMessage(code);
 		String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.PARAM_ERROR.desc();
 		List<ArgumentInvalidResultVO> data = new ArrayList<>();
-		ConstraintViolationException exs = (ConstraintViolationException) ex;
-		Set<ConstraintViolation<?>> violations = exs.getConstraintViolations();
+		Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
 		violations.forEach(item -> {
 			ArgumentInvalidResultVO argumentInvalidResultVO = ArgumentInvalidResultVO
 					.builder()
@@ -300,8 +298,7 @@ public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
 		String msg = this.i18nConfig.getMessage(code);
 		String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.PARAM_ERROR.desc();
 		List<ArgumentInvalidResultVO> invalidArguments = new ArrayList<>();
-		MethodArgumentNotValidException exs = (MethodArgumentNotValidException) ex;
-		List<FieldError> fieldErrors = exs.getBindingResult().getFieldErrors();
+		List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
 		fieldErrors.forEach(item -> {
 			ArgumentInvalidResultVO argumentInvalidResultVO = ArgumentInvalidResultVO
 					.builder()
@@ -324,12 +321,11 @@ public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(BaseException.class)
 	public ResponseEntity<ResultVO> exceptionHandler(BaseException ex) {
-		BaseException item = (BaseException) ex;
-		HttpStatus status = null != item.getStatus() ? item.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
-		String code = item.getCode();
+		HttpStatus status = null != ex.getStatus() ? ex.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
+		String code = ex.getCode();
 		String msg = this.i18nConfig.getMessage(code);
-		String message = StringUtils.isNotBlank(msg) ? msg : item.getMessage();
-		Object data = item.getData();
+		String message = StringUtils.isNotBlank(msg) ? msg : ex.getMessage();
+		Object data = ex.getData();
 		ResultVO entity = ResultVO.builder().status(status).code(code).message(message).data(data).build();
 		return ResponseEntity.status(status).body(entity);
 	}
@@ -753,13 +749,12 @@ public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
 	 * @return ResponseEntity<ResultVO>
 	 */
 	@ExceptionHandler(FeignErrorException.class)
-	public ResponseEntity<ResultVO> exceptionHandler(FeignErrorException ex) {
-		FeignErrorException item = (FeignErrorException) ex;
-		HttpStatus status = null != item.getStatus() ? item.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
-		String code = item.getCode();
+	public ResponseEntity<ResultVO> exceptionHandler(FeignErrorException ex) {		
+		HttpStatus status = null != ex.getStatus() ? ex.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
+		String code = ex.getCode();
 		String msg = this.i18nConfig.getMessage(code);
-		String message = StringUtils.isNotBlank(msg) ? msg : item.getMessage();
-		Object data = item.getData();
+		String message = StringUtils.isNotBlank(msg) ? msg : ex.getMessage();
+		Object data = ex.getData();
 		ResultVO entity = ResultVO.builder().status(status).code(code).message(message).data(data).build();
 		return ResponseEntity.status(status).body(entity);
 	}
