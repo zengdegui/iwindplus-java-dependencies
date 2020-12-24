@@ -74,7 +74,7 @@ public class AliyunSmsServiceImpl extends AbstractSmsServiceImpl implements Aliy
      * @return CommonResponse
      */
     private CommonResponse send(String accessKeyId, String secret, String signName, String templateCode,
-                                String templateParam, String phoneNumbers, String captcha, String serialNumber, String upExtendCode) {
+            String templateParam, String phoneNumbers, String captcha, String serialNumber, String upExtendCode) {
         IAcsClient acsClient = accessClient(accessKeyId, secret);
         CommonRequest commonRequest = new CommonRequest();
         commonRequest.setSysMethod(MethodType.POST);
