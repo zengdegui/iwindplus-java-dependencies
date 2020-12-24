@@ -34,7 +34,7 @@ import java.util.List;
 @Slf4j
 public abstract class AbstractOssServiceImpl implements OssService {
     /**
-     *上传目录.
+     * 上传目录.
      */
     public static final String UOLOAD_DIR = "upload";
 
