@@ -22,6 +22,7 @@ public interface ShiroService {
      *
      * @param userName 用户名
      * @return LoginVO
+     * @throws BaseShiroAuthcException
      */
     LoginVO getByUserName(String userName) throws BaseShiroAuthcException;
 
@@ -30,6 +31,7 @@ public interface ShiroService {
      *
      * @param userName 用户名
      * @return List<String>
+     * @throws BaseShiroAuthcException
      */
     List<String> listOperatePermissionByUserName(String userName) throws BaseShiroAuthcException;
 
