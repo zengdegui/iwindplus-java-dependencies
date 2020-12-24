@@ -66,7 +66,7 @@ public class FeignHystrixConcurrencyStrategy extends HystrixConcurrencyStrategy 
     }
 
     private void logCurrentStateOfHystrixPlugins(HystrixEventNotifier eventNotifier,
-                                                 HystrixMetricsPublisher metricsPublisher, HystrixPropertiesStrategy propertiesStrategy) {
+            HystrixMetricsPublisher metricsPublisher, HystrixPropertiesStrategy propertiesStrategy) {
         if (log.isDebugEnabled()) {
             log.debug("Current Hystrix plugins configuration is [" + "concurrencyStrategy [" + this.delegate + "],"
                     + "eventNotifier [" + eventNotifier + "]," + "metricPublisher [" + metricsPublisher + "],"
@@ -83,15 +83,15 @@ public class FeignHystrixConcurrencyStrategy extends HystrixConcurrencyStrategy 
 
     @Override
     public ThreadPoolExecutor getThreadPool(HystrixThreadPoolKey threadPoolKey, HystrixProperty<Integer> corePoolSize,
-                                            HystrixProperty<Integer> maximumPoolSize, HystrixProperty<Integer> keepAliveTime, TimeUnit unit,
-                                            BlockingQueue<Runnable> workQueue) {
+            HystrixProperty<Integer> maximumPoolSize, HystrixProperty<Integer> keepAliveTime, TimeUnit unit,
+            BlockingQueue<Runnable> workQueue) {
         return this.delegate.getThreadPool(threadPoolKey, corePoolSize, maximumPoolSize, keepAliveTime, unit,
                 workQueue);
     }
 
     @Override
     public ThreadPoolExecutor getThreadPool(HystrixThreadPoolKey threadPoolKey,
-                                            HystrixThreadPoolProperties threadPoolProperties) {
+            HystrixThreadPoolProperties threadPoolProperties) {
         return this.delegate.getThreadPool(threadPoolKey, threadPoolProperties);
     }
 
@@ -107,6 +107,7 @@ public class FeignHystrixConcurrencyStrategy extends HystrixConcurrencyStrategy 
 
     static class WrappedCallable<T> implements Callable<T> {
         private final Callable<T> target;
+
         private final RequestAttributes requestAttributes;
 
         public WrappedCallable(Callable<T> target, RequestAttributes requestAttributes) {
