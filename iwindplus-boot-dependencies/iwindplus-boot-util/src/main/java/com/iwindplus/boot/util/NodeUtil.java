@@ -8,6 +8,7 @@ import com.iwindplus.boot.util.domain.vo.BaseNodeVO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -21,32 +22,32 @@ public class NodeUtil {
     /**
      * 封装树形结构.
      *
-     * @param <T>   泛型
+     * @param <TT>  泛型
      * @param nodes 节点集合
-     * @return List<T>
+     * @return List<TT>
      */
-    public static <T extends BaseNodeVO<T>> List<T> getTree(List<T> nodes) {
+    public static <TT extends BaseNodeVO<TT>> List<TT> getTree(List<TT> nodes) {
         return findRootNodes(nodes);
     }
 
     /**
      * 找出根节点.
      *
-     * @param <T>   泛型
+     * @param <TT>  泛型
      * @param nodes 节点集合
-     * @return List<T>
+     * @return List<TT>
      */
-    private static <T extends BaseNodeVO<T>> List<T> findRootNodes(List<T> nodes) {
-        List<T> rootNodes = new ArrayList<T>();
+    private static <TT extends BaseNodeVO<TT>> List<TT> findRootNodes(List<TT> nodes) {
+        List<TT> rootNodes = new ArrayList<>();
         nodes.stream().forEach(node -> {
-            if (null == node.getParentId()
-                    || (null != node.getParentId() && StringUtils.equalsIgnoreCase("0", node.getParentId()))) {
+            if (null == node.getParentId() || (null != node.getParentId() && StringUtils.equalsIgnoreCase("0",
+                    node.getParentId()))) {
                 rootNodes.add(node);
                 findChildNodes(node, nodes);
             }
         });
         // 对父节点进行排序
-        rootNodes.sort(Comparator.comparing(T::getSeq));
+        Collections.sort(rootNodes, Comparator.comparing(TT::getSeq));
         return rootNodes;
     }
 
@@ -55,19 +56,19 @@ public class NodeUtil {
      *
      * @param parentNode 父节点对象
      * @param nodes      节点集合
-     * @param <T>        泛型
+     * @param <TT>       泛型
      */
-    private static <T extends BaseNodeVO<T>> void findChildNodes(T parentNode, List<T> nodes) {
-        List<T> children = new ArrayList<T>();
+    private static <TT extends BaseNodeVO<TT>> void findChildNodes(TT parentNode, List<TT> nodes) {
+        List<TT> children = new ArrayList<>();
         parentNode.setNodes(children);
         nodes.stream().forEach(node -> {
-            if (null != node.getParentId() && null != parentNode.getId()
-                    && StringUtils.equalsIgnoreCase(node.getParentId(), parentNode.getId())) {
+            if (null != node.getParentId() && null != parentNode.getId() && StringUtils.equalsIgnoreCase(
+                    node.getParentId(), parentNode.getId())) {
                 children.add(node);
                 findChildNodes(node, nodes);
             }
         });
         // 对子节点进行排序
-        children.sort(Comparator.comparing(T::getSeq));
+        Collections.sort(children, Comparator.comparing(TT::getSeq));
     }
 }
