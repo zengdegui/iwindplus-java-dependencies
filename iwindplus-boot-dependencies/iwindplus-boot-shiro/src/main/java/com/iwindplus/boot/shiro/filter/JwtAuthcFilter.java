@@ -47,8 +47,8 @@ public class JwtAuthcFilter extends BasicHttpAuthenticationFilter {
 
     /**
      * 输出json.
-     *
-     * @param httpServletResponse
+     * 
+     * @param httpServletResponse 响应
      */
     private void getException(HttpServletResponse httpServletResponse) {
         Integer status = HttpStatus.UNAUTHORIZED.value();
