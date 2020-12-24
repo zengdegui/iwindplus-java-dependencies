@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
  * @since 2018年9月1日
  */
 public interface AliyunOssService extends OssService {
-
     /**
      * 文件下载.
      *
