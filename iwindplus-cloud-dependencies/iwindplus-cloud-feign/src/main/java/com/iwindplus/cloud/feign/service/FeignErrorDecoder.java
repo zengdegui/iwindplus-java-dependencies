@@ -27,7 +27,6 @@ import java.util.Optional;
  */
 @Slf4j
 public class FeignErrorDecoder implements ErrorDecoder {
-
     @Override
     public Exception decode(String methodKey, Response response) {
         // response只能获取一次，获取完就被清空了
