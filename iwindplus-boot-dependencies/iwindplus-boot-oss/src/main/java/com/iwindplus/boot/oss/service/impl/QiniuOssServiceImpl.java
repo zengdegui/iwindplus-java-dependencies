@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.servlet.MultipartProperties;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -55,8 +56,9 @@ public class QiniuOssServiceImpl extends AbstractOssServiceImpl implements Qiniu
             long fileSize = entity.getSize();
             super.checkFile(fileSize, this.qiniuOssProperty.getMaxFileSize());
             String sourceFileName = entity.getOriginalFilename();
+            InputStream inputStream = null;
             try {
-                InputStream inputStream = entity.getInputStream();
+                inputStream = entity.getInputStream();
                 String upToken = this.getUpToken();
                 String fileName = super.getFileName(sourceFileName);
                 UploadManager uploadManager = this.getUploadManager();
@@ -65,18 +67,30 @@ public class QiniuOssServiceImpl extends AbstractOssServiceImpl implements Qiniu
                     if (response.isOK()) {
                         QiniuResultVO qiniuResultVO = response.jsonToObject(QiniuResultVO.class);
                         String absolutePath = new StringBuilder(this.qiniuOssProperty.getAccessDomain()).append("/")
-                                .append(qiniuResultVO.getFileName()).toString();
-                        UploadVO data = UploadVO.builder().sourceFileName(sourceFileName).fileName(fileName).fileSize(fileSize)
-                                .absolutePath(absolutePath).relativePath(qiniuResultVO.getFileName()).build();
+                                .append(qiniuResultVO.getFileName())
+                                .toString();
+                        UploadVO data = UploadVO.builder()
+                                .sourceFileName(sourceFileName)
+                                .fileName(fileName)
+                                .fileSize(fileSize)
+                                .absolutePath(absolutePath)
+                                .relativePath(qiniuResultVO.getFileName())
+                                .build();
                         list.add(data);
                     }
                     response.close();
                 }
-                inputStream.close();
             } catch (Exception e) {
                 log.error("Exception [{}]", e);
-                throw new BaseException(OssCodeEnum.FILE_UPLOAD_FAILED.value(),
-                        OssCodeEnum.FILE_UPLOAD_FAILED.desc());
+                throw new BaseException(OssCodeEnum.FILE_UPLOAD_FAILED.value(), OssCodeEnum.FILE_UPLOAD_FAILED.desc());
+            } finally {
+                if (null != inputStream) {
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        log.error("IOException [{}]", e);
+                    }
+                }
             }
         });
         return list;
@@ -90,8 +104,8 @@ public class QiniuOssServiceImpl extends AbstractOssServiceImpl implements Qiniu
      */
     private UploadManager getUploadManager() throws Exception {
         Configuration cfg = new Configuration(this.getRegion());
-        if (null != this.qiniuOssProperty.getBreakpointEnabled()
-                && Boolean.TRUE.equals(this.qiniuOssProperty.getBreakpointEnabled())) {
+        if (null != this.qiniuOssProperty.getBreakpointEnabled() && Boolean.TRUE.equals(
+                this.qiniuOssProperty.getBreakpointEnabled())) {
             String rootPath;
             if (StringUtils.isNotBlank(this.multipartProperties.getLocation())) {
                 rootPath = this.multipartProperties.getLocation();
