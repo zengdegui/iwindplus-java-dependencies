@@ -14,7 +14,6 @@ import me.chanjar.weixin.mp.api.WxMpService;
  * @since 2020年4月10日
  */
 public interface WechatMpService extends WxMpService {
-
     /**
      * 获取微信公众号扫码登录二维码.
      *
