@@ -20,7 +20,6 @@ import org.springframework.web.filter.CorsFilter;
 @Slf4j
 @Configuration
 public class CorsConfig {
-
     /**
      * 创建 CorsFilter.
      *
