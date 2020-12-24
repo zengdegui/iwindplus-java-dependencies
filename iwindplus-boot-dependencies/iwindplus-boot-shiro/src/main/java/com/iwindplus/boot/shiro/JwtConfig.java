@@ -161,14 +161,18 @@ public class JwtConfig {
         realms.add(jwtRealm);
         // 设置Realm，用于获取认证凭证
         securityManager.setRealms(realms);
-        DefaultSubjectDAO subjectDAO = (DefaultSubjectDAO) securityManager.getSubjectDAO();
-        DefaultSessionStorageEvaluator storageEvaluator = (DefaultSessionStorageEvaluator) subjectDAO
-                .getSessionStorageEvaluator();
-        SubjectFactory subjectFactory = new SubjectFactory(storageEvaluator);
-        securityManager.setSubjectFactory(subjectFactory);
-        log.info("SecurityManager [{}]", securityManager);
+        if (securityManager.getSubjectDAO() instanceof DefaultSubjectDAO) {
+            DefaultSubjectDAO subjectDAO = (DefaultSubjectDAO) securityManager.getSubjectDAO();
+            if (subjectDAO.getSessionStorageEvaluator() instanceof DefaultSessionStorageEvaluator) {
+                DefaultSessionStorageEvaluator storageEvaluator
+                        = (DefaultSessionStorageEvaluator) subjectDAO.getSessionStorageEvaluator();
+                SubjectFactory subjectFactory = new SubjectFactory(storageEvaluator);
+                securityManager.setSubjectFactory(subjectFactory);
+            }
+        }
         // 缓存管理器
         securityManager.setCacheManager(redisCacheManager);
+        log.info("SecurityManager [{}]", securityManager);
         return securityManager;
     }
 
