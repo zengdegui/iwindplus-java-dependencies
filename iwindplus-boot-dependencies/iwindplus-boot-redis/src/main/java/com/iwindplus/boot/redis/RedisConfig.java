@@ -67,10 +67,12 @@ public class RedisConfig extends CachingConfigurerSupport {
      */
     @Bean(name = "reactiveRedisTemplate")
     public ReactiveRedisTemplate<String, Object> reactiveRedisTemplate(ReactiveRedisConnectionFactory factory) {
-        RedisSerializationContext<String, Object> serializationContext = RedisSerializationContext
-                .<String, Object>newSerializationContext().key(new StringRedisSerializer())
-                .value(new EntityRedisSerializer()).hashKey(new StringRedisSerializer())
-                .hashValue(new EntityRedisSerializer()).build();
+        RedisSerializationContext<String, Object> serializationContext
+                = RedisSerializationContext.<String, Object>newSerializationContext().key(new StringRedisSerializer())
+                .value(new EntityRedisSerializer())
+                .hashKey(new StringRedisSerializer())
+                .hashValue(new EntityRedisSerializer())
+                .build();
         ReactiveRedisTemplate<String, Object> reactiveRedisTemplate = new ReactiveRedisTemplate<>(factory,
                 serializationContext);
         log.info("ReactiveRedisTemplate [{}]", reactiveRedisTemplate);
@@ -111,7 +113,8 @@ public class RedisConfig extends CachingConfigurerSupport {
                 // 设置缓存有效期一小时
                 .entryTtl(Duration.ofHours(1));
         RedisCacheManager cacheManager = RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(factory))
-                .cacheDefaults(redisCacheConfiguration).build();
+                .cacheDefaults(redisCacheConfiguration)
+                .build();
         log.info("CacheManager [{}]", cacheManager);
         return cacheManager;
     }
@@ -126,23 +129,23 @@ public class RedisConfig extends CachingConfigurerSupport {
     public CacheErrorHandler errorHandler() {
         CacheErrorHandler cacheErrorHandler = new CacheErrorHandler() {
             @Override
-            public void handleCacheGetError(RuntimeException e, Cache cache, Object key) {
-                log.error("handleCacheGetError [{}]", e);
+            public void handleCacheGetError(RuntimeException ee, Cache cache, Object key) {
+                log.error("handleCacheGetError [{}]", ee);
             }
 
             @Override
-            public void handleCachePutError(RuntimeException e, Cache cache, Object key, Object value) {
-                log.error("handleCachePutError [{}]", e);
+            public void handleCachePutError(RuntimeException ee, Cache cache, Object key, Object value) {
+                log.error("handleCachePutError [{}]", ee);
             }
 
             @Override
-            public void handleCacheEvictError(RuntimeException e, Cache cache, Object key) {
-                log.error("handleCacheEvictError [{}]", e);
+            public void handleCacheEvictError(RuntimeException ee, Cache cache, Object key) {
+                log.error("handleCacheEvictError [{}]", ee);
             }
 
             @Override
-            public void handleCacheClearError(RuntimeException e, Cache cache) {
-                log.error("handleCacheClearError [{}]", e);
+            public void handleCacheClearError(RuntimeException ee, Cache cache) {
+                log.error("handleCacheClearError [{}]", ee);
             }
         };
         return cacheErrorHandler;
