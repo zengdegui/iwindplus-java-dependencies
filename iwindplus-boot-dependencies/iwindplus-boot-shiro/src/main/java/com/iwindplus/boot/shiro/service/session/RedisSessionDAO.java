@@ -50,7 +50,6 @@ public class RedisSessionDAO extends EnterpriseCacheSessionDAO {
         String key = this.getKey(sessionId);
         this.redisTemplate.opsForValue().set(key, session, this.timeout, TimeUnit.SECONDS);
         return sessionId;
-
     }
 
     /**
