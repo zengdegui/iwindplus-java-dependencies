@@ -560,8 +560,7 @@ public class GlobalExceptionHandler {
 		ResultVO entity = ResultVO.builder().status(status).code(code).message(message).data(data).build();
 		return ResponseEntity.status(status).body(entity);
 	}
-
-
+	
 	/**
 	 * 处理无权限异常.
 	 *
