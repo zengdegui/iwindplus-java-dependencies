@@ -7,11 +7,9 @@ package com.iwindplus.cloud.web.exception;
 import com.iwindplus.boot.web.domain.enumerate.WebCodeEnum;
 import com.iwindplus.boot.web.domain.vo.ResultVO;
 import com.iwindplus.boot.web.exception.GlobalExceptionHandler;
-import com.iwindplus.boot.web.i18n.I18nConfig;
 import com.iwindplus.cloud.feign.exception.FeignErrorException;
 import com.iwindplus.cloud.web.exception.domain.enumerate.CloudWebCodeEnum;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +25,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Order(0)
 @RestControllerAdvice
 public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
-	@Autowired
-	private I18nConfig i18nConfig;
-
 	/**
 	 * 全局异常捕获.
 	 *
