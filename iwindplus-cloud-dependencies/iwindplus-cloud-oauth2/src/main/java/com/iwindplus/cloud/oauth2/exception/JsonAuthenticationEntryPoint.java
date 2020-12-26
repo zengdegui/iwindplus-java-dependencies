@@ -16,6 +16,7 @@ import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.server.ServerAuthenticationEntryPoint;
 import org.springframework.web.server.ServerWebExchange;
@@ -46,18 +47,27 @@ public class JsonAuthenticationEntryPoint implements ServerAuthenticationEntryPo
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
             DataBufferFactory dataBufferFactory = response.bufferFactory();
-            try {
-                DataBuffer buffer = dataBufferFactory.wrap(
-                        this.objectMapper.writeValueAsString(result.getBody()).getBytes(Charset.defaultCharset()));
-                if (null != buffer) {
-                    return response.writeWith(Mono.just(buffer)).doOnError((error) -> {
-                        DataBufferUtils.release(buffer);
-                    });
-                }
-            } catch (JsonProcessingException ex) {
-                log.error("Json processing exception [{}]", ex);
+            Mono<? extends Void> buffer = getMono(result, response, dataBufferFactory);
+            if (buffer != null) {
+                return buffer;
             }
             return null;
         });
+    }
+
+    private Mono<? extends Void> getMono(ResponseEntity<ResultVO> result, ServerHttpResponse response,
+            DataBufferFactory dataBufferFactory) {
+        try {
+            DataBuffer buffer = dataBufferFactory.wrap(
+                    this.objectMapper.writeValueAsString(result.getBody()).getBytes(Charset.defaultCharset()));
+            if (null != buffer) {
+                return response.writeWith(Mono.just(buffer)).doOnError((error) -> {
+                    DataBufferUtils.release(buffer);
+                });
+            }
+        } catch (JsonProcessingException ex) {
+            log.error("Json processing exception [{}]", ex);
+        }
+        return null;
     }
 }
