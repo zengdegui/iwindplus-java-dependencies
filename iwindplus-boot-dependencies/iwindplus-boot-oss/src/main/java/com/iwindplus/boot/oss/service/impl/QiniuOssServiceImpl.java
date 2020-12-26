@@ -7,6 +7,7 @@ package com.iwindplus.boot.oss.service.impl;
 import com.google.common.collect.Lists;
 import com.iwindplus.boot.oss.domain.QiniuOssProperty;
 import com.iwindplus.boot.oss.domain.enumerate.OssCodeEnum;
+import com.iwindplus.boot.oss.domain.enumerate.QiniuOssZoneEnum;
 import com.iwindplus.boot.oss.domain.vo.QiniuResultVO;
 import com.iwindplus.boot.oss.domain.vo.UploadVO;
 import com.iwindplus.boot.oss.service.QiniuOssService;
@@ -129,28 +130,18 @@ public class QiniuOssServiceImpl extends AbstractOssServiceImpl implements Qiniu
     }
 
     private Region getRegion() {
-        if (null == this.qiniuOssProperty.getZone()) {
+        if (this.qiniuOssProperty.getZone() == QiniuOssZoneEnum.EAST_CHINA) {
+            return Region.huadong();
+        } else if (this.qiniuOssProperty.getZone() == QiniuOssZoneEnum.NORTH_CHINA) {
+            return Region.huabei();
+        } else if (this.qiniuOssProperty.getZone() == QiniuOssZoneEnum.SOUTH_CHINA) {
+            return Region.huanan();
+        } else if (this.qiniuOssProperty.getZone() == QiniuOssZoneEnum.NORTH_AMERICA) {
+            return Region.beimei();
+        } else if (this.qiniuOssProperty.getZone() == QiniuOssZoneEnum.SOUTHEAST_ASIA) {
+            return Region.xinjiapo();
+        } else {
             return Region.autoRegion();
-        }
-        switch (this.qiniuOssProperty.getZone()) {
-            case EAST_CHINA: {
-                return Region.huadong();
-            }
-            case NORTH_CHINA: {
-                return Region.huabei();
-            }
-            case SOUTH_CHINA: {
-                return Region.huanan();
-            }
-            case NORTH_AMERICA: {
-                return Region.beimei();
-            }
-            case SOUTHEAST_ASIA: {
-                return Region.xinjiapo();
-            }
-            default: {
-                return Region.autoRegion();
-            }
         }
     }
 
