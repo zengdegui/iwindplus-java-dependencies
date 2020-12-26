@@ -84,16 +84,20 @@ public class QiniuOssServiceImpl extends AbstractOssServiceImpl implements Qiniu
                 log.error("Exception [{}]", e);
                 throw new BaseException(OssCodeEnum.FILE_UPLOAD_FAILED.value(), OssCodeEnum.FILE_UPLOAD_FAILED.desc());
             } finally {
-                if (null != inputStream) {
-                    try {
-                        inputStream.close();
-                    } catch (IOException e) {
-                        log.error("IOException [{}]", e);
-                    }
-                }
+                closeInputStream(inputStream);
             }
         });
         return list;
+    }
+
+    private void closeInputStream(InputStream inputStream) {
+        if (null != inputStream) {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                log.error("IOException [{}]", e);
+            }
+        }
     }
 
     /**
