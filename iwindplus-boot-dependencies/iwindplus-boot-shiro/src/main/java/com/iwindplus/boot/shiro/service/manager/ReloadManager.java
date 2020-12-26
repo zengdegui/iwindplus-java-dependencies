@@ -40,38 +40,42 @@ public class ReloadManager {
             try {
                 shiroFilter = (AbstractShiroFilter) this.shiroFilterFactoryBean.getObject();
                 if (null != shiroFilter) {
-                    PathMatchingFilterChainResolver filterChainResolver = (PathMatchingFilterChainResolver) shiroFilter
-                            .getFilterChainResolver();
-                    DefaultFilterChainManager manager = (DefaultFilterChainManager) filterChainResolver
-                            .getFilterChainManager();
-                    // 清空老的权限控制.
-                    manager.getFilterChains().clear();
-                    this.shiroFilterFactoryBean.getFilterChainDefinitionMap().clear();
-                    // 配置访问权限.
-                    Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
-                    // 配置访问权限，动态加载权限（从数据库读取然后配置）.
-                    List<AccessPermsVO> entities = this.shiroService.listAccessPerms();
-                    if (!CollectionUtils.isEmpty(entities)) {
-                        entities.stream().forEach(entity -> {
-                            String url = entity.getUrl();
-                            String authority = entity.getAuthority();
-                            filterChainDefinitionMap.put(url, authority);
-                        });
-                    }
-                    this.shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-                    // 重新构建生成.
-                    Map<String, String> chains = this.shiroFilterFactoryBean.getFilterChainDefinitionMap();
-                    // 重新生成过滤链.
-                    if (MapUtils.isNotEmpty(chains)) {
-                        chains.entrySet().stream().forEach(chain -> {
-                            manager.createChain(chain.getKey(), chain.getValue().replace(" ", ""));
-                        });
-                    }
-                    log.info("pdate shiro permission！！");
+                    reloadPermission(shiroFilter);
                 }
             } catch (Exception e) {
                 log.error("get ShiroFilter from shiroFilterFactoryBean error! [{}]", e);
             }
         }
+    }
+
+    private void reloadPermission(AbstractShiroFilter shiroFilter) {
+        PathMatchingFilterChainResolver filterChainResolver = (PathMatchingFilterChainResolver) shiroFilter
+                .getFilterChainResolver();
+        DefaultFilterChainManager manager = (DefaultFilterChainManager) filterChainResolver
+                .getFilterChainManager();
+        // 清空老的权限控制.
+        manager.getFilterChains().clear();
+        this.shiroFilterFactoryBean.getFilterChainDefinitionMap().clear();
+        // 配置访问权限.
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
+        // 配置访问权限，动态加载权限（从数据库读取然后配置）.
+        List<AccessPermsVO> entities = this.shiroService.listAccessPerms();
+        if (!CollectionUtils.isEmpty(entities)) {
+            entities.stream().forEach(entity -> {
+                String url = entity.getUrl();
+                String authority = entity.getAuthority();
+                filterChainDefinitionMap.put(url, authority);
+            });
+        }
+        this.shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        // 重新构建生成.
+        Map<String, String> chains = this.shiroFilterFactoryBean.getFilterChainDefinitionMap();
+        // 重新生成过滤链.
+        if (MapUtils.isNotEmpty(chains)) {
+            chains.entrySet().stream().forEach(chain -> {
+                manager.createChain(chain.getKey(), chain.getValue().replace(" ", ""));
+            });
+        }
+        log.info("pdate shiro permission！！");
     }
 }
