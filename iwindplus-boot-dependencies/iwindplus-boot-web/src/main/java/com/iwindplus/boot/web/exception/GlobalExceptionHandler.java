@@ -10,33 +10,19 @@ import com.iwindplus.boot.web.domain.vo.ResultVO;
 import com.iwindplus.boot.web.i18n.I18nConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.UnauthorizedException;
-import org.springframework.beans.ConversionNotSupportedException;
-import org.springframework.beans.TypeMismatchException;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.http.converter.HttpMessageNotWritableException;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.validation.FieldError;
-import org.springframework.web.HttpMediaTypeNotAcceptableException;
-import org.springframework.web.HttpMediaTypeNotSupportedException;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -51,565 +37,321 @@ import java.util.Set;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-    @Autowired
-    private I18nConfig i18nConfig;
+	@Autowired
+	private I18nConfig i18nConfig;
 
-    /**
-     * 处理空指针异常.
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(NullPointerException ex) {
-        log.error("NullPointerException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.NULL_POINTER.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.NULL_POINTER.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
+	/**
+	 * 全局异常捕获.
+	 *
+	 * @param ex 异常
+	 * @return ResponseEntity<ResultVO>
+	 */
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ResultVO> exception(Exception ex) {
+		ResultVO result = this.getError(ex);
+		return this.getResponse(result);
+	}
 
-    /**
-     * 处理找不到异常.
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(NoHandlerFoundException ex) {
-        log.error("NoHandlerFoundException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.NOT_FOUND;
-        String code = WebCodeEnum.NOT_FOUND.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.NOT_FOUND.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
+	private static ResultVO getException(Exception ex) {
+		String className = ex.getClass().getName();
+		HttpStatus status = null;
+		String code = null;
+		String message = null;
+		Object data = null;
+		if (StringUtils.contains(className, "NullPointerException")) {
+			status = HttpStatus.BAD_REQUEST;
+			code = WebCodeEnum.NULL_POINTER.value();
+			message = WebCodeEnum.NULL_POINTER.desc();
+		} else if (StringUtils.contains(className, "NoHandlerFoundException")) {
+			status = HttpStatus.NOT_FOUND;
+			code = WebCodeEnum.NOT_FOUND.value();
+			message = WebCodeEnum.NOT_FOUND.desc();
+		} else if (StringUtils.contains(className, "HttpRequestMethodNotSupportedException")) {
+			status = HttpStatus.METHOD_NOT_ALLOWED;
+			code = WebCodeEnum.METHOD_NOT_ALLOWED.value();
+			message = WebCodeEnum.METHOD_NOT_ALLOWED.desc();
+		} else if (StringUtils.contains(className, "HttpMediaTypeNotSupportedException")) {
+			status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
+			code = WebCodeEnum.UNSUPPORTED_MEDIA_TYPE.value();
+			message = WebCodeEnum.UNSUPPORTED_MEDIA_TYPE.desc();
+		} else if (StringUtils.contains(className, "HttpMediaTypeNotAcceptableException")) {
+			status = HttpStatus.NOT_ACCEPTABLE;
+			code = WebCodeEnum.NOT_ACCEPTABLE.value();
+			message = WebCodeEnum.NOT_ACCEPTABLE.desc();
+		} else if (StringUtils.contains(className, "HttpMessageNotReadableException")) {
+			status = HttpStatus.BAD_REQUEST;
+			code = WebCodeEnum.NOT_READ.value();
+			message = WebCodeEnum.NOT_READ.desc();
+		} else if (StringUtils.contains(className, "HttpMessageNotWritableException")) {
+			status = HttpStatus.BAD_REQUEST;
+			code = WebCodeEnum.NOT_WRITABLE.value();
+			message = WebCodeEnum.NOT_WRITABLE.desc();
+		} else if (StringUtils.contains(className, "ConversionNotSupportedException")) {
+			status = HttpStatus.BAD_REQUEST;
+			code = WebCodeEnum.CONVERSION_NOT_SUPPORTED.value();
+			message = WebCodeEnum.CONVERSION_NOT_SUPPORTED.desc();
+		} else if (StringUtils.contains(className, "IllegalArgumentException")) {
+			status = HttpStatus.BAD_REQUEST;
+			code = WebCodeEnum.ILLEGAL_REQUEST.value();
+			message = WebCodeEnum.ILLEGAL_REQUEST.desc();
+		}
+		if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(message)) {
+			ResultVO result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
+			return result;
+		}
+		return null;
+	}
 
-    /**
-     * 处理错误的请求方式异常.
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(HttpRequestMethodNotSupportedException ex) {
-        log.error("HttpRequestMethodNotSupportedException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.METHOD_NOT_ALLOWED;
-        String code = WebCodeEnum.METHOD_NOT_ALLOWED.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.METHOD_NOT_ALLOWED.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
+	private static ResultVO getException2(Exception ex) {
+		String className = ex.getClass().getName();
+		ResultVO result = getException(ex);
+		if (null == result) {
+			HttpStatus status = null;
+			String code = null;
+			String message = null;
+			Object data = null;
+			if (StringUtils.contains(className, "UnauthorizedException")) {
+				status = HttpStatus.UNAUTHORIZED;
+				code = WebCodeEnum.UNAUTHORIZED.value();
+				message = WebCodeEnum.UNAUTHORIZED.desc();
+			} else if (StringUtils.contains(className, "FileNotFoundException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.FILE_NOT_FOUND.value();
+				message = WebCodeEnum.FILE_NOT_FOUND.desc();
+			} else if (StringUtils.contains(className, "ClassCastException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.TYPE_CONVERSION_ERROR.value();
+				message = WebCodeEnum.TYPE_CONVERSION_ERROR.desc();
+			} else if (StringUtils.contains(className, "NumberFormatException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.NUMBER_FORMAT_FOUND.value();
+				message = WebCodeEnum.NUMBER_FORMAT_FOUND.desc();
+			} else if (StringUtils.contains(className, "SecurityException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.SECURITY_ERROR.value();
+				message = WebCodeEnum.SECURITY_ERROR.desc();
+			} else if (StringUtils.contains(className, "BadSqlGrammarException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.BAD_SQL_GRAMMAR.value();
+				message = WebCodeEnum.BAD_SQL_GRAMMAR.desc();
+			} else if (StringUtils.contains(className, "SQLException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.SQL_ERROR.value();
+				message = WebCodeEnum.SQL_ERROR.desc();
+			} else if (StringUtils.contains(className, "TypeNotPresentException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.TYPE_NOT_PRESENT.value();
+				message = WebCodeEnum.TYPE_NOT_PRESENT.desc();
+			} else if (StringUtils.contains(className, "IOException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.IO_ERROR.value();
+				message = WebCodeEnum.IO_ERROR.desc();
+			}
+			if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(message)) {
+				result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
+			}
+		}
+		return null;
+	}
 
-    /**
-     * 处理不支持的媒体类型异常.
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(HttpMediaTypeNotSupportedException ex) {
-        log.error("HttpMediaTypeNotSupportedException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
-        String code = WebCodeEnum.UNSUPPORTED_MEDIA_TYPE.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.UNSUPPORTED_MEDIA_TYPE.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
+	private static ResultVO getException3(Exception ex) {
+		String className = ex.getClass().getName();
+		ResultVO result = getException2(ex);
+		if (null == result) {
+			HttpStatus status = null;
+			String code = null;
+			String message = null;
+			Object data = null;
+			if (StringUtils.contains(className, "IOException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.IO_ERROR.value();
+				message = WebCodeEnum.IO_ERROR.desc();
+			} else if (StringUtils.contains(className, "NoSuchMethodException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.NO_SUCH_METHOD.value();
+				message = WebCodeEnum.NO_SUCH_METHOD.desc();
+			} else if (StringUtils.contains(className, "IndexOutOfBoundsException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.INDEX_OUT_OF_BOUNDS.value();
+				message = WebCodeEnum.INDEX_OUT_OF_BOUNDS.desc();
+			} else if (StringUtils.contains(className, "NoSuchBeanDefinitionException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.NO_SUCH_BEAN.value();
+				message = WebCodeEnum.NO_SUCH_BEAN.desc();
+			} else if (StringUtils.contains(className, "TypeMismatchException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.TYPE_MISMATCH.value();
+				message = WebCodeEnum.TYPE_MISMATCH.desc();
+			} else if (StringUtils.contains(className, "StackOverflowError")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.STACK_OVERFLOW.value();
+				message = WebCodeEnum.STACK_OVERFLOW.desc();
+			} else if (StringUtils.contains(className, "ArithmeticException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.ARITHMETIC_ERROR.value();
+				message = WebCodeEnum.ARITHMETIC_ERROR.desc();
+			}
+			if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(message)) {
+				result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
+			}
+		}
+		return null;
+	}
 
-    /**
-     * 处理不可接受异常.
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(HttpMediaTypeNotAcceptableException ex) {
-        log.error("HttpMediaTypeNotAcceptableException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.NOT_ACCEPTABLE;
-        String code = WebCodeEnum.NOT_ACCEPTABLE.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.NOT_ACCEPTABLE.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
+	private static ResultVO getException4(Exception ex) {
+		String className = ex.getClass().getName();
+		ResultVO result = getException3(ex);
+		if (null == result) {
+			HttpStatus status = null;
+			String code = null;
+			String message = null;
+			Object data = null;
+			if (StringUtils.contains(className, "ConstraintViolationException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.PARAM_ERROR.value();
+				message = WebCodeEnum.PARAM_ERROR.desc();
+				List<ArgumentInvalidResultVO> invalidArguments = new ArrayList<>();
+				ConstraintViolationException exs = (ConstraintViolationException) ex;
+				Set<ConstraintViolation<?>> violations = exs.getConstraintViolations();
+				violations.forEach(item -> {
+					ArgumentInvalidResultVO argumentInvalidResultVO = ArgumentInvalidResultVO
+							.builder()
+							.field(item.getExecutableParameters()[0].toString())
+							.value(item.getInvalidValue())
+							.message(item.getMessage())
+							.build();
+					invalidArguments.add(argumentInvalidResultVO);
+				});
+				data = invalidArguments;
+			} else if (StringUtils.contains(className, "MethodArgumentNotValidException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.PARAM_ERROR.value();
+				message = WebCodeEnum.PARAM_ERROR.desc();
+				List<ArgumentInvalidResultVO> invalidArguments = new ArrayList<>();
+				MethodArgumentNotValidException exs = (MethodArgumentNotValidException) ex;
+				List<FieldError> fieldErrors = exs.getBindingResult().getFieldErrors();
+				fieldErrors.forEach(item -> {
+					ArgumentInvalidResultVO argumentInvalidResultVO = ArgumentInvalidResultVO
+							.builder()
+							.field(item.getField())
+							.value(item.getRejectedValue())
+							.message(item.getDefaultMessage())
+							.build();
+					invalidArguments.add(argumentInvalidResultVO);
+				});
+				data = invalidArguments.get(0);
+			}
+			if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(message)) {
+				result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
+			}
+		}
+		return null;
+	}
 
-    /**
-     * 处理转换不支持异常.
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(ConversionNotSupportedException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(ConversionNotSupportedException ex) {
-        log.error("ConversionNotSupportedException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.CONVERSION_NOT_SUPPORTED.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.CONVERSION_NOT_SUPPORTED.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
+	private static ResultVO getException5(Exception ex) {
+		String className = ex.getClass().getName();
+		ResultVO result = getException4(ex);
+		if (null == result) {
+			HttpStatus status = null;
+			String code = null;
+			String message = null;
+			Object data = null;
+			if (StringUtils.contains(className, "MethodArgumentTypeMismatchException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.PARAM_TYPE_ERROR.value();
+				message = WebCodeEnum.PARAM_TYPE_ERROR.desc();
+				MethodArgumentTypeMismatchException item = (MethodArgumentTypeMismatchException) ex;
+				ArgumentInvalidResultVO argumentInvalidResultVO = ArgumentInvalidResultVO
+						.builder()
+						.field(item.getName())
+						.value(item.getValue())
+						.message(item.getMessage())
+						.build();
+				data = argumentInvalidResultVO;
+			} else if (StringUtils.contains(className, "MissingServletRequestParameterException")) {
+				status = HttpStatus.BAD_REQUEST;
+				code = WebCodeEnum.PARAM_MISS.value();
+				message = WebCodeEnum.PARAM_MISS.desc();
+				MissingServletRequestParameterException item = (MissingServletRequestParameterException) ex;
+				ArgumentInvalidResultVO argumentInvalidResultVO = ArgumentInvalidResultVO
+						.builder()
+						.field(item.getParameterName())
+						.message(item.getMessage())
+						.build();
+				data = argumentInvalidResultVO;
+			}
+			if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(message)) {
+				result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
+			}
+		}
+		return result;
+	}
 
-    /**
-     * 处理不可读异常.
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(HttpMessageNotReadableException ex) {
-        log.error("HttpMessageNotReadableException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.NOT_READ.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.NOT_READ.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
+	/**
+	 * 获取异常错误.
+	 *
+	 * @param ex 异常
+	 * @return ResultVO
+	 */
+	public static ResultVO getError(Exception ex) {
+		log.error("Global exception handling [{}]", ex);
+		ResultVO result = getException5(ex);
+		if (null == result) {
+			HttpStatus status = null;
+			String code = null;
+			String message = null;
+			Object data = null;
+			String className = ex.getClass().getName();
+			if (StringUtils.contains(className, "BaseException")) {
+				// 自定义异常
+				status = ((BaseException) ex).getStatus();
+				code = ((BaseException) ex).getCode();
+				message = ((BaseException) ex).getMessage();
+				data = ((BaseException) ex).getData();
+			} else if (StringUtils.contains(className, "BaseShiroAuthcException")) {
+				// shiro认证异常
+				status = ((BaseShiroAuthcException) ex).getStatus();
+				code = ((BaseShiroAuthcException) ex).getCode();
+				message = ((BaseShiroAuthcException) ex).getMessage();
+				data = ((BaseShiroAuthcException) ex).getData();
+			}
+			if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(message)) {
+				result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
+			}
+		}
+		return result;
+	}
 
-    /**
-     * 处理不可写异常.
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(HttpMessageNotWritableException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(HttpMessageNotWritableException ex) {
-        log.error("HttpMessageNotWritableException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.NOT_WRITABLE.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.NOT_WRITABLE.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
+	/**
+	 * 返回响应信息.
+	 *
+	 * @param entity 结果
+	 * @return ResponseEntity<ResultVO>
+	 */
+	public ResponseEntity<ResultVO> getResponse(ResultVO entity) {
+		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+		if (null == entity) {
+			String code = WebCodeEnum.FAILED.value();
+			String message = WebCodeEnum.FAILED.desc();
+			entity = ResultVO.builder().status(status).code(code).message(message).build();
+		} else {
+			if (null != entity.getStatus()) {
+				status = entity.getStatus();
+			}
+		}
+		this.getI18nInfo(entity);
+		return ResponseEntity.status(status).body(entity);
+	}
 
-    /**
-     * 处理不合法的参数异常.
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(IllegalArgumentException ex) {
-        log.error("IllegalArgumentException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.ILLEGAL_REQUEST.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.ILLEGAL_REQUEST.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 处理参数缺失异常.
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(MissingServletRequestParameterException ex) {
-        log.error("MissingServletRequestParameterException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.PARAM_MISS.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.PARAM_MISS.desc();
-        ArgumentInvalidResultVO data = ArgumentInvalidResultVO.builder()
-                .field(ex.getParameterName())
-                .message(ex.getMessage())
-                .build();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).data(data).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 处理参数类型不正确异常.
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(MethodArgumentTypeMismatchException ex) {
-        log.error("MethodArgumentTypeMismatchException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.PARAM_TYPE_ERROR.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.PARAM_TYPE_ERROR.desc();
-        ArgumentInvalidResultVO data = ArgumentInvalidResultVO.builder()
-                .field(ex.getName())
-                .value(ex.getValue())
-                .message(ex.getMessage())
-                .build();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).data(data).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 处理不合法的参数异常.
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(ConstraintViolationException ex) {
-        log.error("ConstraintViolationException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.PARAM_ERROR.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.PARAM_ERROR.desc();
-        List<ArgumentInvalidResultVO> data = new ArrayList<>();
-        Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
-        violations.forEach(item -> {
-            ArgumentInvalidResultVO argumentInvalidResultVO = ArgumentInvalidResultVO.builder()
-                    .field(item.getExecutableParameters()[0].toString())
-                    .value(item.getInvalidValue())
-                    .message(item.getMessage())
-                    .build();
-            data.add(argumentInvalidResultVO);
-        });
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).data(data).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 处理不合法的参数异常.
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(MethodArgumentNotValidException ex) {
-        log.error("MethodArgumentNotValidException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.PARAM_ERROR.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.PARAM_ERROR.desc();
-        List<ArgumentInvalidResultVO> invalidArguments = new ArrayList<>();
-        List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
-        fieldErrors.forEach(item -> {
-            ArgumentInvalidResultVO argumentInvalidResultVO = ArgumentInvalidResultVO.builder()
-                    .field(item.getField())
-                    .value(item.getRejectedValue())
-                    .message(item.getDefaultMessage())
-                    .build();
-            invalidArguments.add(argumentInvalidResultVO);
-        });
-        ArgumentInvalidResultVO data = invalidArguments.get(0);
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).data(data).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 文件找不到
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(FileNotFoundException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(FileNotFoundException ex) {
-        log.error("FileNotFoundException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.FILE_NOT_FOUND.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.FILE_NOT_FOUND.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 类型转换异常
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(ClassCastException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(ClassCastException ex) {
-        log.error("ClassCastException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.TYPE_CONVERSION_ERROR.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.TYPE_CONVERSION_ERROR.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 数字格式异常
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(NumberFormatException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(NumberFormatException ex) {
-        log.error("NumberFormatException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.NUMBER_FORMAT_FOUND.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.NUMBER_FORMAT_FOUND.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 安全异常
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(SecurityException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(SecurityException ex) {
-        log.error("SecurityException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.SECURITY_ERROR.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.SECURITY_ERROR.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * sql语法错误异常异常
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(BadSqlGrammarException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(BadSqlGrammarException ex) {
-        log.error("BadSqlGrammarException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.BAD_SQL_GRAMMAR.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.BAD_SQL_GRAMMAR.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * sql异常
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(SQLException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(SQLException ex) {
-        log.error("SQLException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.SQL_ERROR.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.SQL_ERROR.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 类型不存在异常
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(TypeNotPresentException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(TypeNotPresentException ex) {
-        log.error("TypeNotPresentException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.TYPE_NOT_PRESENT.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.TYPE_NOT_PRESENT.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * IO异常
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(IOException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(IOException ex) {
-        log.error("IOException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.IO_ERROR.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.IO_ERROR.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 未知方法异常
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(NoSuchMethodException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(NoSuchMethodException ex) {
-        log.error("NoSuchMethodException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.NO_SUCH_METHOD.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.NO_SUCH_METHOD.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 数组越界异常
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(IndexOutOfBoundsException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(IndexOutOfBoundsException ex) {
-        log.error("IndexOutOfBoundsException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.INDEX_OUT_OF_BOUNDS.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.INDEX_OUT_OF_BOUNDS.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 无法注入bean异常
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(NoSuchBeanDefinitionException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(NoSuchBeanDefinitionException ex) {
-        log.error("NoSuchBeanDefinitionException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.NO_SUCH_BEAN.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.NO_SUCH_BEAN.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 类型不匹配异常
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(TypeMismatchException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(TypeMismatchException ex) {
-        log.error("TypeMismatchException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.TYPE_MISMATCH.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.TYPE_MISMATCH.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 栈溢出异常
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(StackOverflowError.class)
-    public ResponseEntity<ResultVO> exceptionHandler(StackOverflowError ex) {
-        log.error("StackOverflowError [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.STACK_OVERFLOW.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.STACK_OVERFLOW.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 除数不能为0异常
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(ArithmeticException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(ArithmeticException ex) {
-        log.error("ArithmeticException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String code = WebCodeEnum.ARITHMETIC_ERROR.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.ARITHMETIC_ERROR.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 处理自定义异常.
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(BaseException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(BaseException ex) {
-        log.error("BaseException [{}]", ex.getMessage(), ex);
-        HttpStatus status = null != ex.getStatus() ? ex.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
-        String code = ex.getCode();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : ex.getMessage();
-        Object data = ex.getData();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).data(data).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 处理无权限异常.
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(UnauthorizedException ex) {
-        log.error("UnauthorizedException [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.UNAUTHORIZED;
-        String code = WebCodeEnum.UNAUTHORIZED.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.UNAUTHORIZED.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 处理自定义shiro异常.
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(BaseShiroAuthcException.class)
-    public ResponseEntity<ResultVO> exceptionHandler(BaseShiroAuthcException ex) {
-        log.error("BaseShiroAuthcException [{}]", ex.getMessage(), ex);
-        HttpStatus status = null != ex.getStatus() ? ex.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
-        String code = ex.getCode();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : ex.getMessage();
-        Object data = ex.getData();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).data(data).build();
-        return ResponseEntity.status(status).body(entity);
-    }
-
-    /**
-     * 处理其他异常.
-     *
-     * @param ex 异常
-     * @return ResponseEntity<ResultVO>
-     */
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ResultVO> exceptionHandler(Exception ex) {
-        log.error("Exception [{}]", ex.getMessage(), ex);
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        String code = WebCodeEnum.FAILED.value();
-        String msg = this.i18nConfig.getMessage(code);
-        String message = StringUtils.isNotBlank(msg) ? msg : WebCodeEnum.FAILED.desc();
-        ResultVO entity = ResultVO.builder().status(status).code(code).message(message).build();
-        return ResponseEntity.status(status).body(entity);
-    }
+	/**
+	 * 错误信息国际化.
+	 *
+	 * @param entity 结果
+	 */
+	protected void getI18nInfo(ResultVO entity) {
+		String message = this.i18nConfig.getMessage(entity.getCode());
+		if (StringUtils.isNotBlank(message)) {
+			entity.setMessage(message);
+		}
+	}
 }

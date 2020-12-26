@@ -39,7 +39,7 @@ public class JsonAuthenticationEntryPoint implements ServerAuthenticationEntryPo
 
     @Override
     public Mono<Void> commence(ServerWebExchange exchange, AuthenticationException exception) {
-        ResponseEntity<ResultVO> result = this.globalExceptionHandler.resolveException(exception);
+        ResponseEntity<ResultVO> result = this.globalExceptionHandler.exception(exception);
         return Mono.defer(() -> {
             return Mono.just(exchange.getResponse());
         }).flatMap((response) -> {

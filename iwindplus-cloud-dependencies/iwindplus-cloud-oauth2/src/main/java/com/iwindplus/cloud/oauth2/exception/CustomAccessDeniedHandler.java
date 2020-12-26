@@ -35,7 +35,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exception)
             throws IOException, ServletException {
-        ResponseEntity<ResultVO> responseEntity = this.globalExceptionHandler.resolveException(exception);
+        ResponseEntity<ResultVO> responseEntity = this.globalExceptionHandler.exception(exception);
         ResultVO result = responseEntity.getBody();
         if (null != result) {
             Integer status = HttpStatus.FORBIDDEN.value();

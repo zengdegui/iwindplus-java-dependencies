@@ -39,7 +39,7 @@ public class JsonAccessDeniedHandler implements ServerAccessDeniedHandler {
 
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, AccessDeniedException exception) {
-        ResponseEntity<ResultVO> result = this.globalExceptionHandler.resolveException(exception);
+        ResponseEntity<ResultVO> result = this.globalExceptionHandler.exception(exception);
         return Mono.defer(() -> {
             return Mono.just(exchange.getResponse());
         }).flatMap((response) -> {

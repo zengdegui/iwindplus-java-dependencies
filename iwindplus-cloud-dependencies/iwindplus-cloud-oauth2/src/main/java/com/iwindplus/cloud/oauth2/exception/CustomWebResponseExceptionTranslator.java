@@ -23,7 +23,7 @@ public class CustomWebResponseExceptionTranslator implements WebResponseExceptio
 
     @Override
     public ResponseEntity translate(Exception ex) throws Exception {
-        ResponseEntity<ResultVO> result = this.globalExceptionHandler.resolveException(ex);
+        ResponseEntity<ResultVO> result = this.globalExceptionHandler.exception(ex);
         return result;
     }
 }

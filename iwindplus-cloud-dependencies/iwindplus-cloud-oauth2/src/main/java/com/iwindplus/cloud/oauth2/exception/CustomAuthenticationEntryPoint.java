@@ -35,7 +35,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
             throws IOException, ServletException {
-        ResponseEntity<ResultVO> responseEntity = this.globalExceptionHandler.resolveException(exception);
+        ResponseEntity<ResultVO> responseEntity = this.globalExceptionHandler.exception(exception);
         ResultVO result = responseEntity.getBody();
         if (null != result) {
             Integer status = HttpStatus.UNAUTHORIZED.value();
