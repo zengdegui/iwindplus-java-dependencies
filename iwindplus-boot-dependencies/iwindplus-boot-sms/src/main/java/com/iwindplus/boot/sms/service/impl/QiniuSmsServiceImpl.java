@@ -52,18 +52,11 @@ public class QiniuSmsServiceImpl extends AbstractSmsServiceImpl implements Qiniu
         parameters.put(this.qiniuSmsProperty.getTemplateParam(), captcha);
         try {
             Response response = smsManager.sendMessage(this.qiniuSmsProperty.getTemplateCode(),
-                    new String[]{entity.getMobile()}, parameters);
+                    new String[] {entity.getMobile()}, parameters);
             String json = this.objectMapper.writeValueAsString(response);
             log.info("Qiniu cloud SMS sending return value [{}]", json);
             if (null != response && response.isOK()) {
-                String bizId = null;
-                Map<?, ?> map = this.objectMapper.readValue(response.bodyString(), Map.class);
-                if (MapUtils.isNotEmpty(map)) {
-                    Object jobId = map.get("job_id");
-                    if (null != jobId) {
-                        bizId = jobId.toString();
-                    }
-                }
+                String bizId = getBizId(response);
                 SmsLogDTO param = new SmsLogDTO();
                 param.setBizId(bizId);
                 param.setMobile(entity.getMobile());
@@ -81,5 +74,16 @@ public class QiniuSmsServiceImpl extends AbstractSmsServiceImpl implements Qiniu
         } catch (QiniuException e) {
             log.error("Qiniu cloud SMS service is abnormal [{}]", e);
         }
+    }
+
+    private String getBizId(Response response) throws JsonProcessingException, QiniuException {
+        Map<?, ?> map = this.objectMapper.readValue(response.bodyString(), Map.class);
+        if (MapUtils.isNotEmpty(map)) {
+            Object jobId = map.get("job_id");
+            if (null != jobId) {
+                return jobId.toString();
+            }
+        }
+        return null;
     }
 }
