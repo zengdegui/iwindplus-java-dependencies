@@ -65,20 +65,7 @@ public class QiniuOssServiceImpl extends AbstractOssServiceImpl implements Qiniu
                 UploadManager uploadManager = this.getUploadManager();
                 if (null != uploadManager) {
                     Response response = uploadManager.put(inputStream, fileName, upToken, null, null);
-                    if (response.isOK()) {
-                        QiniuResultVO qiniuResultVO = response.jsonToObject(QiniuResultVO.class);
-                        String absolutePath = new StringBuilder(this.qiniuOssProperty.getAccessDomain()).append("/")
-                                .append(qiniuResultVO.getFileName())
-                                .toString();
-                        UploadVO data = UploadVO.builder()
-                                .sourceFileName(sourceFileName)
-                                .fileName(fileName)
-                                .fileSize(fileSize)
-                                .absolutePath(absolutePath)
-                                .relativePath(qiniuResultVO.getFileName())
-                                .build();
-                        list.add(data);
-                    }
+                    buildResult(list, fileSize, sourceFileName, fileName, response);
                     response.close();
                 }
             } catch (Exception e) {
@@ -89,6 +76,24 @@ public class QiniuOssServiceImpl extends AbstractOssServiceImpl implements Qiniu
             }
         });
         return list;
+    }
+
+    private void buildResult(List<UploadVO> list, long fileSize, String sourceFileName, String fileName,
+            Response response) throws com.qiniu.common.QiniuException {
+        if (response.isOK()) {
+            QiniuResultVO qiniuResultVO = response.jsonToObject(QiniuResultVO.class);
+            String absolutePath = new StringBuilder(this.qiniuOssProperty.getAccessDomain()).append("/")
+                    .append(qiniuResultVO.getFileName())
+                    .toString();
+            UploadVO data = UploadVO.builder()
+                    .sourceFileName(sourceFileName)
+                    .fileName(fileName)
+                    .fileSize(fileSize)
+                    .absolutePath(absolutePath)
+                    .relativePath(qiniuResultVO.getFileName())
+                    .build();
+            list.add(data);
+        }
     }
 
     private void closeInputStream(InputStream inputStream) {
@@ -117,16 +122,21 @@ public class QiniuOssServiceImpl extends AbstractOssServiceImpl implements Qiniu
             } else {
                 rootPath = System.getProperty(USER_DIR);
             }
-            Path path = Paths.get(rootPath, TMP);
-            if (!Files.exists(path)) {
-                Files.createDirectories(path);
-            }
+            Path path = getPath(rootPath);
             // 设置断点续传文件进度保存目录
             FileRecorder fileRecorder = new FileRecorder(path.toString());
             return new UploadManager(cfg, fileRecorder);
         } else {
             return new UploadManager(cfg);
         }
+    }
+
+    private Path getPath(String rootPath) throws IOException {
+        Path path = Paths.get(rootPath, TMP);
+        if (!Files.exists(path)) {
+            Files.createDirectories(path);
+        }
+        return path;
     }
 
     private Region getRegion() {
