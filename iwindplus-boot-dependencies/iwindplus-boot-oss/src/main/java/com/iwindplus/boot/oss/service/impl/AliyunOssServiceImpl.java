@@ -63,16 +63,20 @@ public class AliyunOssServiceImpl extends AbstractOssServiceImpl implements Aliy
                 if (null != ossClient) {
                     ossClient.shutdown();
                 }
-                if (null != inputStream) {
-                    try {
-                        inputStream.close();
-                    } catch (IOException e) {
-                        log.error("IOException [{}]", e);
-                    }
-                }
+                closeInputStream(inputStream);
             }
         });
         return list;
+    }
+
+    private void closeInputStream(InputStream inputStream) {
+        if (null != inputStream) {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                log.error("IOException [{}]", e);
+            }
+        }
     }
 
     private OSS getOssClient(OSS ossClient) {
