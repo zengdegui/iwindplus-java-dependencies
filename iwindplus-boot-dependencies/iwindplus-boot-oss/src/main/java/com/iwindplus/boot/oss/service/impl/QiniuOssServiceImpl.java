@@ -12,6 +12,7 @@ import com.iwindplus.boot.oss.domain.vo.QiniuResultVO;
 import com.iwindplus.boot.oss.domain.vo.UploadVO;
 import com.iwindplus.boot.oss.service.QiniuOssService;
 import com.iwindplus.boot.web.exception.BaseException;
+import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.Region;
@@ -79,7 +80,7 @@ public class QiniuOssServiceImpl extends AbstractOssServiceImpl implements Qiniu
     }
 
     private void buildResult(List<UploadVO> list, long fileSize, String sourceFileName, String fileName,
-            Response response) throws com.qiniu.common.QiniuException {
+            Response response) throws QiniuException {
         if (response.isOK()) {
             QiniuResultVO qiniuResultVO = response.jsonToObject(QiniuResultVO.class);
             String absolutePath = new StringBuilder(this.qiniuOssProperty.getAccessDomain()).append("/")
