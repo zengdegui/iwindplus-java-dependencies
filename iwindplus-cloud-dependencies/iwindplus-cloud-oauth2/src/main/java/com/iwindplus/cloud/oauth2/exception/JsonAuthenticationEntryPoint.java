@@ -44,19 +44,14 @@ public class JsonAuthenticationEntryPoint implements ServerAuthenticationEntryPo
         return Mono.defer(() -> {
             return Mono.just(exchange.getResponse());
         }).flatMap((response) -> {
-            response.setStatusCode(HttpStatus.UNAUTHORIZED);
-            response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-            DataBufferFactory dataBufferFactory = response.bufferFactory();
-            Mono<? extends Void> buffer = getMono(result, response, dataBufferFactory);
-            if (buffer != null) {
-                return buffer;
-            }
-            return null;
+            return getMono(result, response);
         });
     }
 
-    private Mono<? extends Void> getMono(ResponseEntity<ResultVO> result, ServerHttpResponse response,
-            DataBufferFactory dataBufferFactory) {
+    private Mono<? extends Void> getMono(ResponseEntity<ResultVO> result, ServerHttpResponse response) {
+        response.setStatusCode(HttpStatus.UNAUTHORIZED);
+        response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+        DataBufferFactory dataBufferFactory = response.bufferFactory();
         try {
             DataBuffer buffer = dataBufferFactory.wrap(
                     this.objectMapper.writeValueAsString(result.getBody()).getBytes(Charset.defaultCharset()));
