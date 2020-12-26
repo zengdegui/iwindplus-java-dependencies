@@ -57,22 +57,7 @@ public class AlipayServiceImpl extends DefaultAlipayClient implements AlipayServ
                 String json = this.objectMapper.writeValueAsString(params);
                 AlipayNotifyVO data = this.objectMapper.readValue(json, AlipayNotifyVO.class);
                 if (StringUtils.equalsIgnoreCase(WebCodeEnum.SUCCESS.name(), data.getTradeStatus())) {
-                    // 支付宝订单号
-                    String thirdPayNo = data.getTradeNo();
-                    // 商户订单号
-                    String orderNo = data.getOutTradeNo();
-                    // 付款时间
-                    Date timeEnd = data.getGmtPayment();
-                    LocalDateTime gmtPay = DateUtil.toLocalDateTime(timeEnd);
-                    PayOrderDTO entity = PayOrderDTO.builder()
-                            .orderNo(orderNo)
-                            .gmtPay(gmtPay)
-                            .payChannel(PayConstant.ALIPAY)
-                            .status(PayConstant.PAID)
-                            .thirdPayNo(thirdPayNo)
-                            .build();
-                    boolean result = payBaseService.editStatusByOrderNo(entity);
-                    if (result) {
+                    if (updateOrderStatus(data)) {
                         return WebCodeEnum.SUCCESS.value();
                     }
                 }
@@ -81,5 +66,27 @@ public class AlipayServiceImpl extends DefaultAlipayClient implements AlipayServ
             log.error("Alipay callBack Exception [{}]", e);
         }
         return WebCodeEnum.FAILED.value();
+    }
+
+    private boolean updateOrderStatus(AlipayNotifyVO data) {
+        // 支付宝订单号
+        String thirdPayNo = data.getTradeNo();
+        // 商户订单号
+        String orderNo = data.getOutTradeNo();
+        // 付款时间
+        Date timeEnd = data.getGmtPayment();
+        LocalDateTime gmtPay = DateUtil.toLocalDateTime(timeEnd);
+        PayOrderDTO entity = PayOrderDTO.builder()
+                .orderNo(orderNo)
+                .gmtPay(gmtPay)
+                .payChannel(PayConstant.ALIPAY)
+                .status(PayConstant.PAID)
+                .thirdPayNo(thirdPayNo)
+                .build();
+        boolean result = payBaseService.editStatusByOrderNo(entity);
+        if (result) {
+            return true;
+        }
+        return false;
     }
 }
