@@ -38,10 +38,8 @@ public class WechatPayServiceImpl extends WxPayServiceImpl implements WechatPayS
         try {
             String xmlResult = IOUtils.toString(request.getInputStream(), request.getCharacterEncoding());
             WxPayOrderNotifyResult data = this.parseOrderNotifyResult(xmlResult);
-            if (StringUtils.equalsIgnoreCase(WebCodeEnum.SUCCESS.name(), data.getResultCode())) {
-                if (updateOrderStatus(data)) {
-                    return WxPayNotifyResponse.success(WebCodeEnum.SUCCESS.value());
-                }
+            if (updateOrderStatus(data)) {
+                return WxPayNotifyResponse.success(WebCodeEnum.SUCCESS.value());
             }
         } catch (Exception e) {
             log.error("Wechat pay Exception [{}]", e);
@@ -50,23 +48,25 @@ public class WechatPayServiceImpl extends WxPayServiceImpl implements WechatPayS
     }
 
     private boolean updateOrderStatus(WxPayOrderNotifyResult data) {
-        // 微信订单号
-        String thirdPayNo = data.getTransactionId();
-        // 商户订单号
-        String orderNo = data.getOutTradeNo();
-        // 付款时间
-        String timeEnd = data.getTimeEnd();
-        LocalDateTime gmtPay = DateUtil.parseLocalDateTime(timeEnd);
-        PayOrderDTO entity = PayOrderDTO.builder()
-                .orderNo(orderNo)
-                .gmtPay(gmtPay)
-                .payChannel(PayConstant.WECHAT_PAY)
-                .status(PayConstant.PAID)
-                .thirdPayNo(thirdPayNo)
-                .build();
-        boolean result = payBaseService.editStatusByOrderNo(entity);
-        if (result) {
-            return true;
+        if (StringUtils.equalsIgnoreCase(WebCodeEnum.SUCCESS.name(), data.getResultCode())) {
+            // 微信订单号
+            String thirdPayNo = data.getTransactionId();
+            // 商户订单号
+            String orderNo = data.getOutTradeNo();
+            // 付款时间
+            String timeEnd = data.getTimeEnd();
+            LocalDateTime gmtPay = DateUtil.parseLocalDateTime(timeEnd);
+            PayOrderDTO entity = PayOrderDTO.builder()
+                    .orderNo(orderNo)
+                    .gmtPay(gmtPay)
+                    .payChannel(PayConstant.WECHAT_PAY)
+                    .status(PayConstant.PAID)
+                    .thirdPayNo(thirdPayNo)
+                    .build();
+            boolean result = payBaseService.editStatusByOrderNo(entity);
+            if (result) {
+                return true;
+            }
         }
         return false;
     }
