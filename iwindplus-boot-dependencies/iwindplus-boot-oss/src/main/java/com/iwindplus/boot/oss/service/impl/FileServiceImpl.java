@@ -81,9 +81,8 @@ public class FileServiceImpl extends AbstractOssServiceImpl implements FileServi
         RandomAccessFile in = null;
         BufferedOutputStream bos = null;
         try {
-            fileName = getFileName(file, fileName, request);
             String headerValue = String.format(Locale.ENGLISH, "attachment; filename=\"%s\"",
-                    fileName);
+                    getFileName(file, fileName, request));
             ServletContext context = request.getServletContext();
             String mimeType = context.getMimeType(file.getAbsolutePath());
             if (mimeType == null) {
@@ -171,11 +170,12 @@ public class FileServiceImpl extends AbstractOssServiceImpl implements FileServi
 
     private String getFileName(File file, String fileName, HttpServletRequest request)
             throws UnsupportedEncodingException {
+        String name;
         if (StringUtils.isBlank(fileName)) {
-            fileName = file.getName();
+            name = file.getName();
         } else {
             String suffixName = file.getName().substring(file.getName().lastIndexOf("."));
-            fileName = new StringBuilder().append(fileName).append(suffixName).toString();
+            name = new StringBuilder().append(fileName).append(suffixName).toString();
         }
         // 针对IE或者以IE为内核的浏览器
         String userAgent = request.getHeader("user-agent").toLowerCase(LocaleContextHolder.getLocale());
@@ -183,10 +183,9 @@ public class FileServiceImpl extends AbstractOssServiceImpl implements FileServi
                 "trident") || userAgent.toLowerCase(LocaleContextHolder.getLocale()).contains("like gecko") || userAgent
                 .toLowerCase(LocaleContextHolder.getLocale())
                 .contains("mozilla")) {
-            fileName = new String(fileName.getBytes(Charset.defaultCharset()), "ISO8859-1");
+            return new String(name.getBytes(Charset.defaultCharset()), "ISO8859-1");
         } else {
-            fileName = URLEncoder.encode(fileName, "UTF-8");
+            return URLEncoder.encode(name, "UTF-8");
         }
-        return fileName;
     }
 }
