@@ -38,9 +38,9 @@ public class CustomTokenEnhancer extends TokenEnhancerChain {
                 token.setRefreshToken(new DefaultOAuth2RefreshToken(this.buildTokenValue()));
             }
         }
-
         if (null != authentication.getPrincipal() && authentication.getPrincipal() instanceof UserDetailsVO) {
-            UserDetailsVO userDetails = (UserDetailsVO) authentication.getPrincipal();
+            // 设置额外用户信息
+            UserDetailsVO userDetails = ((UserDetailsVO) authentication.getPrincipal());
             userDetails.setClientId(authentication.getOAuth2Request().getClientId());
             Map<String, Object> additionalInformation = Maps.newHashMap();
             additionalInformation.put(Oauth2Constant.OPENID, userDetails.getOpenid());
