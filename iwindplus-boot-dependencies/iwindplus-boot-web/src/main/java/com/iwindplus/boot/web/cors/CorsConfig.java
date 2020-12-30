@@ -27,12 +27,12 @@ public class CorsConfig {
      */
     @Bean
     public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
+        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
         CorsFilter corsFilter = new CorsFilter(urlBasedCorsConfigurationSource);
         log.info("CorsFilter [{}]", corsFilter);
