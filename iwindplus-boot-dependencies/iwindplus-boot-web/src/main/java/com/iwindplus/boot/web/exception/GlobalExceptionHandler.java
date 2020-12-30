@@ -135,7 +135,7 @@ public class GlobalExceptionHandler {
                 result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
             }
         }
-        return null;
+        return result;
     }
 
     private static ResultVO getException3(Exception ex) {
@@ -179,7 +179,7 @@ public class GlobalExceptionHandler {
                 result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
             }
         }
-        return null;
+        return result;
     }
 
     private static ResultVO getException4(Exception ex) {
@@ -227,7 +227,7 @@ public class GlobalExceptionHandler {
                 result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
             }
         }
-        return null;
+        return result;
     }
 
     private static ResultVO getException5(Exception ex) {
