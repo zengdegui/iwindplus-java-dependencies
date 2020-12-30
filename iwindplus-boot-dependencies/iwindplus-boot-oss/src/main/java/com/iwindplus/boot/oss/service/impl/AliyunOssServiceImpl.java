@@ -53,7 +53,7 @@ public class AliyunOssServiceImpl extends AbstractOssServiceImpl implements Aliy
             OSS ossClient = null;
             try {
                 inputStream = entity.getInputStream();
-                ossClient = getOssClient(ossClient);
+                ossClient = getOssClient();
                 String fileName = super.getFileName(sourceFileName);
                 getResponse(list, fileSize, sourceFileName, inputStream, ossClient, fileName);
             } catch (IOException e) {
@@ -79,7 +79,8 @@ public class AliyunOssServiceImpl extends AbstractOssServiceImpl implements Aliy
         }
     }
 
-    private OSS getOssClient(OSS ossClient) {
+    private OSS getOssClient() {
+        OSS ossClient = null;
         if (null != this.alibabaOssProperty.getFlagCustom() && Boolean.TRUE.equals(
                 this.alibabaOssProperty.getFlagCustom())) {
             ClientBuilderConfiguration conf = new ClientBuilderConfiguration();
