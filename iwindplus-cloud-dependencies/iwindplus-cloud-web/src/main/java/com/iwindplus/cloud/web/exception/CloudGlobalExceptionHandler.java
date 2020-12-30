@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @author zengdegui
  * @since 2018年9月1日
  */
-@Order(0)
+@Order(1)
 @RestControllerAdvice
 public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
     private static ResultVO getException(Exception ex) {
@@ -62,7 +62,7 @@ public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
                 result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
             }
         }
-        return null;
+        return result;
     }
 
     private static ResultVO getException2(Exception ex) {
@@ -109,7 +109,7 @@ public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
                 result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
             }
         }
-        return null;
+        return result;
     }
 
     private static ResultVO getException3(Exception ex) {
@@ -161,7 +161,7 @@ public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
                 result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
             }
         }
-        return null;
+        return result;
     }
 
     private static ResultVO getException4(Exception ex) {
@@ -212,7 +212,7 @@ public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
                 result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
             }
         }
-        return null;
+        return result;
     }
 
     /**
