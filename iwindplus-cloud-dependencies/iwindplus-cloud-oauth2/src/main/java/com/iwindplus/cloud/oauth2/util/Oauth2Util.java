@@ -181,7 +181,8 @@ public class Oauth2Util {
      * @param clientId    客户端
      * @param authorities 权限
      */
-    public static void updateOClientAuthorities(TokenStore tokenStore, String clientId, Collection<? extends GrantedAuthority> authorities) {
+    public static void updateClientAuthorities(TokenStore tokenStore, String clientId,
+            Collection<? extends GrantedAuthority> authorities) {
         if (authorities == null) {
             return;
         }
