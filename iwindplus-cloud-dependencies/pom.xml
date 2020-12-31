@@ -26,7 +26,6 @@
 
         <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
         <spring-cloud-alibaba.version>2.2.3.RELEASE</spring-cloud-alibaba.version>
-        <spring-security-oauth2.version>2.5.0.RELEASE</spring-security-oauth2.version>
     </properties>
 
     <dependencyManagement>
@@ -51,11 +50,6 @@
                 <version>${spring-cloud-alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security.oauth</groupId>
-                <artifactId>spring-security-oauth2</artifactId>
-                <version>${spring-security-oauth2.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.iwindplus.cloud</groupId>
