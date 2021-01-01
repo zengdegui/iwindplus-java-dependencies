@@ -49,7 +49,7 @@ public class AlipayServiceImpl extends DefaultAlipayClient implements AlipayServ
     }
 
     @Override
-    public String payCallback(HttpServletRequest request, HttpServletResponse response) {
+    public String payCallback(HttpServletRequest request) {
         Map<String, String> params = HttpUtil.getParams(request);
         try {
             // 验证签名

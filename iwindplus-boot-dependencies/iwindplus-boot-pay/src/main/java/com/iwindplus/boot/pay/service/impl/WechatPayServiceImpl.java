@@ -35,7 +35,7 @@ public class WechatPayServiceImpl extends WxPayServiceImpl implements WechatPayS
     private PayBaseService payBaseService;
 
     @Override
-    public String payCallback(HttpServletRequest request, HttpServletResponse response) {
+    public String payCallback(HttpServletRequest request) {
         try {
             String xmlResult = IOUtils.toString(request.getInputStream(), request.getCharacterEncoding());
             WxPayOrderNotifyResult data = this.parseOrderNotifyResult(xmlResult);

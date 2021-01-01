@@ -18,8 +18,7 @@ public interface PayService {
      * 支付回调.
      *
      * @param request  请求
-     * @param response 响应
      * @return String
      */
-    String payCallback(HttpServletRequest request, HttpServletResponse response);
+    String payCallback(HttpServletRequest request);
 }
