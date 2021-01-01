@@ -10,6 +10,7 @@ import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.service.impl.WxPayServiceImpl;
 import com.iwindplus.boot.pay.domain.constant.PayConstant;
 import com.iwindplus.boot.pay.domain.dto.PayOrderDTO;
+import com.iwindplus.boot.pay.domain.enumerate.PayChannelEnum;
 import com.iwindplus.boot.pay.service.PayBaseService;
 import com.iwindplus.boot.pay.service.WechatPayService;
 import com.iwindplus.boot.web.domain.enumerate.WebCodeEnum;
@@ -59,7 +60,7 @@ public class WechatPayServiceImpl extends WxPayServiceImpl implements WechatPayS
             PayOrderDTO entity = PayOrderDTO.builder()
                     .orderNo(orderNo)
                     .gmtPay(gmtPay)
-                    .payChannel(PayConstant.WECHAT_PAY)
+                    .payChannel(PayChannelEnum.WECHAT_PAY)
                     .status(PayConstant.PAID)
                     .thirdPayNo(thirdPayNo)
                     .build();

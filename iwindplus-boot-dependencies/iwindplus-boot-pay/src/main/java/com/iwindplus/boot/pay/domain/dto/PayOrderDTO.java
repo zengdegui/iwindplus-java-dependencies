@@ -4,6 +4,7 @@
 
 package com.iwindplus.boot.pay.domain.dto;
 
+import com.iwindplus.boot.pay.domain.enumerate.PayChannelEnum;
 import lombok.Builder;
 import lombok.Data;
 
@@ -37,7 +38,7 @@ public class PayOrderDTO implements Serializable {
     /**
      * 支付渠道.
      */
-    private String payChannel;
+    private PayChannelEnum payChannel;
 
     /**
      * 订单状态.

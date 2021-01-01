@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iwindplus.boot.pay.domain.AlipayProperty;
 import com.iwindplus.boot.pay.domain.constant.PayConstant;
 import com.iwindplus.boot.pay.domain.dto.PayOrderDTO;
+import com.iwindplus.boot.pay.domain.enumerate.PayChannelEnum;
 import com.iwindplus.boot.pay.domain.vo.AlipayNotifyVO;
 import com.iwindplus.boot.pay.service.AlipayService;
 import com.iwindplus.boot.pay.service.PayBaseService;
@@ -78,7 +79,7 @@ public class AlipayServiceImpl extends DefaultAlipayClient implements AlipayServ
             PayOrderDTO entity = PayOrderDTO.builder()
                     .orderNo(orderNo)
                     .gmtPay(gmtPay)
-                    .payChannel(PayConstant.ALIPAY)
+                    .payChannel(PayChannelEnum.ALIPAY)
                     .status(PayConstant.PAID)
                     .thirdPayNo(thirdPayNo)
                     .build();

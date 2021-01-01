@@ -17,17 +17,17 @@ import java.util.Objects;
 @Getter
 @Accessors(fluent = true)
 public enum QiniuOssZoneEnum {
-    EAST_CHINA(0, "华东"),
-    NORTH_CHINA(1, "华北"),
-    SOUTH_CHINA(2, "华南"),
-    NORTH_AMERICA(3, "北美"),
-    SOUTHEAST_ASIA(4, "东南亚"),
+    EAST_CHINA("east_china", "华东"),
+    NORTH_CHINA("north_china", "华北"),
+    SOUTH_CHINA("south_china", "华南"),
+    NORTH_AMERICA("north_america", "北美"),
+    SOUTHEAST_ASIA("southeast_asia", "东南亚"),
     ;
 
     /**
      * 值.
      */
-    private final Integer value;
+    private final String value;
 
     /**
      * 描述.
@@ -40,7 +40,7 @@ public enum QiniuOssZoneEnum {
      * @param desc 描述
      * @return QiniuOssZoneEnum
      */
-    private QiniuOssZoneEnum(final Integer value, final String desc) {
+    private QiniuOssZoneEnum(final String value, final String desc) {
         this.value = value;
         this.desc = desc;
     }
