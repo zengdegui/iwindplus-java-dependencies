@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 import java.util.Objects;
 
 /**
- * 订单支付渠道枚举.
+ * 支付渠道枚举.
  *
  * @author zengdegui
  * @since 2018年10月11日
