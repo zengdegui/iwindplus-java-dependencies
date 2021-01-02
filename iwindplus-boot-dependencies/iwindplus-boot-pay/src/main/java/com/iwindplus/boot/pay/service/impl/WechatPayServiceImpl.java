@@ -4,6 +4,7 @@
 
 package com.iwindplus.boot.pay.service.impl;
 
+import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
@@ -56,7 +57,7 @@ public class WechatPayServiceImpl extends WxPayServiceImpl implements WechatPayS
             String orderNo = data.getOutTradeNo();
             // 付款时间
             String timeEnd = data.getTimeEnd();
-            LocalDateTime gmtPay = DateUtil.parseLocalDateTime(timeEnd);
+            LocalDateTime gmtPay = DateUtil.parseLocalDateTime(timeEnd, DatePattern.PURE_DATETIME_PATTERN);
             PayOrderDTO entity = PayOrderDTO.builder()
                     .orderNo(orderNo)
                     .gmtPay(gmtPay)
