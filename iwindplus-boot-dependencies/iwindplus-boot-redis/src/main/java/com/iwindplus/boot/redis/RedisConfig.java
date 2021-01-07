@@ -116,9 +116,6 @@ public class RedisConfig extends CachingConfigurerSupport {
         // 生成一个默认配置，通过config对象即可对缓存进行自定义配置
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
         // 设置缓存的默认过期时间，也是使用Duration设置
-        redisCacheConfiguration = redisCacheConfiguration
-                // 设置缓存有效期一小时
-                .entryTtl(Duration.ofHours(1));
         RedisCacheManager cacheManager = RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(factory))
                 .cacheDefaults(redisCacheConfiguration)
                 .build();
