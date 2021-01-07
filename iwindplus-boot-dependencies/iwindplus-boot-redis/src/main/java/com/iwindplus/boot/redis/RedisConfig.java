@@ -4,7 +4,6 @@
 
 package com.iwindplus.boot.redis;
 
-import com.iwindplus.boot.redis.serializer.EntityRedisSerializer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -21,6 +20,7 @@ import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -67,11 +67,15 @@ public class RedisConfig extends CachingConfigurerSupport {
      */
     @Bean(name = "reactiveRedisTemplate")
     public ReactiveRedisTemplate<String, Object> reactiveRedisTemplate(ReactiveRedisConnectionFactory factory) {
+        // 使用Jackson2JsonRedisSerialize 替换默认序列化(默认采用的是JDK序列化)
+        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
+        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(
+                Object.class);
         RedisSerializationContext<String, Object> serializationContext
-                = RedisSerializationContext.<String, Object>newSerializationContext().key(new StringRedisSerializer())
-                .value(new EntityRedisSerializer())
-                .hashKey(new StringRedisSerializer())
-                .hashValue(new EntityRedisSerializer())
+                = RedisSerializationContext.<String, Object>newSerializationContext().key(stringRedisSerializer)
+                .value(jackson2JsonRedisSerializer)
+                .hashKey(stringRedisSerializer)
+                .hashValue(jackson2JsonRedisSerializer)
                 .build();
         ReactiveRedisTemplate<String, Object> reactiveRedisTemplate = new ReactiveRedisTemplate<>(factory,
                 serializationContext);
@@ -87,12 +91,15 @@ public class RedisConfig extends CachingConfigurerSupport {
      */
     @Bean(name = "redisTemplate")
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
+        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
+        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(
+                Object.class);
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
         redisTemplate.setConnectionFactory(factory);
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new EntityRedisSerializer());
-        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashValueSerializer(new EntityRedisSerializer());
+        redisTemplate.setKeySerializer(stringRedisSerializer);
+        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setHashKeySerializer(stringRedisSerializer);
+        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
         redisTemplate.setEnableTransactionSupport(true);
         log.info("RedisTemplate [{}]", redisTemplate);
         return redisTemplate;
