@@ -69,8 +69,7 @@ public class UserDetailsVO implements UserDetails {
             return Collections.emptyList();
         }
         Collection<GrantedAuthority> list = Lists.newArrayList();
-        List<String> authorities2 = this.authorities;
-        authorities2.forEach(param -> {
+        this.authorities.forEach(param -> {
             GrantedAuthority grantedAuthority = new GrantedAuthority() {
                 private static final long serialVersionUID = 1L;
 
