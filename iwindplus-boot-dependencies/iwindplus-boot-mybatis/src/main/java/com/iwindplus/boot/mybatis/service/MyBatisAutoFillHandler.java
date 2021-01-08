@@ -89,7 +89,7 @@ public class MyBatisAutoFillHandler implements MetaObjectHandler {
             // 设置更新人
             String operator = this.getOperator();
             if (StringUtils.isNotBlank(operator)) {
-                this.strictInsertFill(metaObject, MybatisConstant.MODIFIER, String.class, operator);
+                this.strictUpdateFill(metaObject, MybatisConstant.MODIFIER, String.class, operator);
             }
         }
     }
