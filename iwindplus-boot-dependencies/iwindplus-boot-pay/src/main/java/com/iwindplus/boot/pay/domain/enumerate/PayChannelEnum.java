@@ -15,28 +15,34 @@ import java.util.Objects;
 @Getter
 @Accessors(fluent = true)
 public enum PayChannelEnum {
-	ALIPAY("alipay", "支付宝"),
-	WECHAT_PAY("wechat_pay", "微信"),
-	CREDIT_CARD_PAY("credit_card_pay", "信用卡"),
-	BANK_CARD_PAY("bank_card_pay", "银行卡"),
-	;
+    ALIPAY("alipay", "支付宝"),
+    WECHAT_PAY("wechat_pay", "微信"),
+    CREDIT_CARD_PAY("credit_card_pay", "信用卡"),
+    BANK_CARD_PAY("bank_card_pay", "银行卡"),
+    ;
 
-	@EnumValue
-	private final String value;
+    @EnumValue
+    private final String value;
 
-	private final String desc;
+    private final String desc;
 
-	private PayChannelEnum(final String value, final String desc) {
-		this.value = value;
-		this.desc = desc;
-	}
+    private PayChannelEnum(final String value, final String desc) {
+        this.value = value;
+        this.desc = desc;
+    }
 
-	public static PayChannelEnum valueOfValue(String value) {
-		for (PayChannelEnum val : PayChannelEnum.values()) {
-			if (Objects.equals(value, val.value())) {
-				return val;
-			}
-		}
-		return null;
-	}
+    /**
+     * 通过值查找枚举.
+     *
+     * @param value 值
+     * @return PayChannelEnum
+     */
+    public static PayChannelEnum valueOfValue(String value) {
+        for (PayChannelEnum val : PayChannelEnum.values()) {
+            if (Objects.equals(value, val.value())) {
+                return val;
+            }
+        }
+        return null;
+    }
 }
