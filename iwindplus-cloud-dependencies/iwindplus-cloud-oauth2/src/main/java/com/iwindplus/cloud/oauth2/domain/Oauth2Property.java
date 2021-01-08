@@ -37,7 +37,7 @@ public class Oauth2Property {
     private String jwtSigningKey;
 
     /**
-     * 免鉴权地址.
+     * 白名单（url地址）.
      */
-    private String[] permitUri;
+    private String[] whiteList;
 }
