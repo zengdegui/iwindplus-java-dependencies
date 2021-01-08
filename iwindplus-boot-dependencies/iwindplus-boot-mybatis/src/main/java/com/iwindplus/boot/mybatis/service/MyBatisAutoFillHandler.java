@@ -99,7 +99,16 @@ public class MyBatisAutoFillHandler implements MetaObjectHandler {
      *
      * @return String
      */
-    private String getOperator() {
+    public String getOperator() {
+        return this.getOperator2();
+    }
+
+    /**
+     * 获取操作人.
+     *
+     * @return String
+     */
+    private String getOperator2() {
         if (null == this.request) {
             return null;
         }
