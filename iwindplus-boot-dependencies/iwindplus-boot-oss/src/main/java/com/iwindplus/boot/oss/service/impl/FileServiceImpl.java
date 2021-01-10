@@ -40,7 +40,7 @@ import java.util.Locale;
  */
 @Slf4j
 public class FileServiceImpl extends AbstractOssServiceImpl implements FileService {
-    private static final long BSIZE = 4096;
+    private static final long BSIZE = 8192;
 
     @Autowired
     private MultipartProperties multipartProperties;
