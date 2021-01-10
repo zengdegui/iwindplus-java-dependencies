@@ -5,6 +5,7 @@
 package com.iwindplus.cloud.web;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +25,9 @@ public class CloudWebConfig {
      *
      * @return RestTemplate
      */
-    @LoadBalanced
     @Bean
+    @ConditionalOnMissingBean
+    @LoadBalanced
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
         log.info("RestTemplate [{}]", restTemplate);
