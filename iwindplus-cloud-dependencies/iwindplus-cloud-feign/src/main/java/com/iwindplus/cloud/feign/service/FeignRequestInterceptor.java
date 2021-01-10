@@ -27,6 +27,8 @@ public class FeignRequestInterceptor implements RequestInterceptor {
     public void apply(RequestTemplate template) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (null != attributes) {
+            // 设置子线程共享
+            RequestContextHolder.setRequestAttributes(attributes, true);
             deliveryHeader(template, attributes);
         }
     }

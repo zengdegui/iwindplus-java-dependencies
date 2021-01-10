@@ -35,117 +35,127 @@ import java.util.Set;
 @Slf4j
 @Getter
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
-    private byte[] body;
+	private byte[] body;
 
-    private Map<String, String> customHeaders;
+	private Map<String, String> customHeaders;
 
-    /**
-     * XssHttpServletRequestWrapper.
-     *
-     * @param request 请求
-     */
-    public XssHttpServletRequestWrapper(HttpServletRequest request) {
-        super(request);
-        ByteArrayOutputStream baos = null;
-        try {
-            baos = new ByteArrayOutputStream();
-            IOUtils.copy(request.getInputStream(), baos);
-            this.body = baos.toByteArray();
-            this.customHeaders = new HashMap<>();
-        } catch (IOException e) {
-            log.error("Abnormal interception request [{}]", e);
-        } finally {
-            if (null != baos) {
-                try {
-                    baos.close();
-                } catch (IOException e) {
-                    log.error("close IO Exception [{}]", e);
-                }
-            }
-        }
-    }
+	/**
+	 * XssHttpServletRequestWrapper.
+	 *
+	 * @param request 请求
+	 */
+	public XssHttpServletRequestWrapper(HttpServletRequest request) {
+		super(request);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ServletInputStream inputStream = null;
+		try {
+			inputStream = request.getInputStream();
+			if (null != inputStream) {
+				IOUtils.copy(inputStream, baos);
+				this.body = baos.toByteArray();
+				this.customHeaders = new HashMap<>();
+			}
+		} catch (IOException e) {
+			log.error("Abnormal interception request [{}]", e);
+		} finally {
+			if (null != inputStream) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+					log.error("IOException [{}]", e);
+				}
+			}
+			if (null != baos) {
+				try {
+					baos.close();
+				} catch (IOException e) {
+					log.error("close IO Exception [{}]", e);
+				}
+			}
+		}
+	}
 
-    @Override
-    public BufferedReader getReader() throws IOException {
-        return new BufferedReader(new InputStreamReader(getInputStream()));
-    }
+	@Override
+	public BufferedReader getReader() throws IOException {
+		return new BufferedReader(new InputStreamReader(getInputStream()));
+	}
 
-    @Override
-    public ServletInputStream getInputStream() throws IOException {
-        final ByteArrayInputStream bais = new ByteArrayInputStream(this.body);
-        return new ServletInputStream() {
-            @Override
-            public int read() throws IOException {
-                return bais.read();
-            }
+	@Override
+	public ServletInputStream getInputStream() throws IOException {
+		final ByteArrayInputStream bais = new ByteArrayInputStream(this.body);
+		return new ServletInputStream() {
+			@Override
+			public int read() throws IOException {
+				return bais.read();
+			}
 
-            @Override
-            public boolean isFinished() {
-                return false;
-            }
+			@Override
+			public boolean isFinished() {
+				return false;
+			}
 
-            @Override
-            public boolean isReady() {
-                return false;
-            }
+			@Override
+			public boolean isReady() {
+				return false;
+			}
 
-            @Override
-            public void setReadListener(ReadListener readListener) {
-            }
-        };
-    }
+			@Override
+			public void setReadListener(ReadListener readListener) {
+			}
+		};
+	}
 
-    @Override
-    public String getParameter(String name) {
-        String value = super.getParameter(name);
-        if (StringUtils.isNotBlank(value)) {
-            String parameter = StringUtils.trim(value);
-            String escapeParameter = StringEscapeUtils.escapeHtml4(parameter);
-            return escapeParameter;
-        }
-        return null;
-    }
+	@Override
+	public String getParameter(String name) {
+		String value = super.getParameter(name);
+		if (StringUtils.isNotBlank(value)) {
+			String parameter = StringUtils.trim(value);
+			String escapeParameter = StringEscapeUtils.escapeHtml4(parameter);
+			return escapeParameter;
+		}
+		return null;
+	}
 
-    @Override
-    public String[] getParameterValues(String name) {
-        String[] parameterValues = super.getParameterValues(name);
-        if (parameterValues == null) {
-            return null;
-        }
-        for (int i = 0; i < parameterValues.length; i++) {
-            String value = parameterValues[i];
-            parameterValues[i] = StringUtils.trim(value).trim();
-        }
-        return parameterValues;
-    }
+	@Override
+	public String[] getParameterValues(String name) {
+		String[] parameterValues = super.getParameterValues(name);
+		if (parameterValues == null) {
+			return null;
+		}
+		for (int i = 0; i < parameterValues.length; i++) {
+			String value = parameterValues[i];
+			parameterValues[i] = StringUtils.trim(value).trim();
+		}
+		return parameterValues;
+	}
 
-    @Override
-    public String getHeader(String name) {
-        String value = this.customHeaders.get(name);
-        if (StringUtils.isNotBlank(value)) {
-            return value;
-        }
-        return ((HttpServletRequest) getRequest()).getHeader(name);
-    }
+	@Override
+	public String getHeader(String name) {
+		String value = this.customHeaders.get(name);
+		if (StringUtils.isNotBlank(value)) {
+			return value;
+		}
+		return ((HttpServletRequest) getRequest()).getHeader(name);
+	}
 
-    @Override
-    public Enumeration<String> getHeaderNames() {
-        Set<String> set = new HashSet<>(this.customHeaders.keySet());
-        Enumeration<String> enumeration = ((HttpServletRequest) getRequest()).getHeaderNames();
-        while (enumeration.hasMoreElements()) {
-            String name = enumeration.nextElement();
-            set.add(name);
-        }
-        return Collections.enumeration(set);
-    }
+	@Override
+	public Enumeration<String> getHeaderNames() {
+		Set<String> set = new HashSet<>(this.customHeaders.keySet());
+		Enumeration<String> enumeration = ((HttpServletRequest) getRequest()).getHeaderNames();
+		while (enumeration.hasMoreElements()) {
+			String name = enumeration.nextElement();
+			set.add(name);
+		}
+		return Collections.enumeration(set);
+	}
 
-    /**
-     * 设置请求头
-     *
-     * @param name  属性
-     * @param value 值
-     */
-    public void putHeader(String name, String value) {
-        this.customHeaders.put(name, value);
-    }
+	/**
+	 * 设置请求头
+	 *
+	 * @param name  属性
+	 * @param value 值
+	 */
+	public void putHeader(String name, String value) {
+		this.customHeaders.put(name, value);
+	}
 }

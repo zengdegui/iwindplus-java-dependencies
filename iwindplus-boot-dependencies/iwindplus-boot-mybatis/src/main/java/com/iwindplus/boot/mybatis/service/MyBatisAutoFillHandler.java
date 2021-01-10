@@ -112,30 +112,34 @@ public class MyBatisAutoFillHandler implements MetaObjectHandler {
         if (null == this.request) {
             return null;
         }
-        String operator = null;
-        XssHttpServletRequestWrapper requestWrapper = new XssHttpServletRequestWrapper(this.request);
-        // Cookie不为空返回
-        Cookie[] cookies = requestWrapper.getCookies();
-        for (Cookie cookie : cookies) {
-            if (StringUtils.equals(MybatisConstant.OPERATOR, cookie.getName())) {
-                operator = cookie.getValue();
+        try {
+            String operator = null;
+            XssHttpServletRequestWrapper requestWrapper = new XssHttpServletRequestWrapper(this.request);
+            // Cookie不为空返回
+            Cookie[] cookies = requestWrapper.getCookies();
+            for (Cookie cookie : cookies) {
+                if (StringUtils.equals(MybatisConstant.OPERATOR, cookie.getName())) {
+                    operator = cookie.getValue();
+                    return operator;
+                }
+            }
+            // 请求头不为空返回
+            operator = requestWrapper.getHeader(MybatisConstant.OPERATOR);
+            if (StringUtils.isNotBlank(operator)) {
                 return operator;
             }
-        }
-        // 请求头不为空返回
-        operator = requestWrapper.getHeader(MybatisConstant.OPERATOR);
-        if (StringUtils.isNotBlank(operator)) {
-            return operator;
-        }
-        // 请求参数不为空返回
-        operator = requestWrapper.getParameter(MybatisConstant.OPERATOR);
-        if (StringUtils.isNotBlank(operator)) {
-            return operator;
-        }
-        // 请求body体不为空返回
-        byte[] body = requestWrapper.getBody();
-        if (ArrayUtils.isNotEmpty(body)) {
-            return this.getOperatorByBody(body);
+            // 请求参数不为空返回
+            operator = requestWrapper.getParameter(MybatisConstant.OPERATOR);
+            if (StringUtils.isNotBlank(operator)) {
+                return operator;
+            }
+            // 请求body体不为空返回
+            byte[] body = requestWrapper.getBody();
+            if (ArrayUtils.isNotEmpty(body)) {
+                return this.getOperatorByBody(body);
+            }
+        } catch (Exception e) {
+            log.error("XssHttpServletRequestWrapper Exception [{}]", e);
         }
         return null;
     }
