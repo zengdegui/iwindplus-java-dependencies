@@ -4,7 +4,9 @@
 
 package com.iwindplus.boot.mybatis;
 
+import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.baomidou.mybatisplus.extension.MybatisMapWrapperFactory;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
@@ -61,5 +63,15 @@ public class MybatisPlusConfig {
         MyBatisAutoFillHandler myBatisAutoFillHandler = new MyBatisAutoFillHandler();
         log.info("MetaObjectHandler [{}]", myBatisAutoFillHandler);
         return myBatisAutoFillHandler;
+    }
+
+    /**
+     * Map下划线自动转驼峰
+     *
+     * @return ConfigurationCustomizer
+     */
+    @Bean
+    public ConfigurationCustomizer configurationCustomizer() {
+        return i -> i.setObjectWrapperFactory(new MybatisMapWrapperFactory());
     }
 }
