@@ -5,7 +5,10 @@
 package com.iwindplus.boot.mail.domain.dto;
 
 import com.iwindplus.boot.oss.domain.vo.UploadVO;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
