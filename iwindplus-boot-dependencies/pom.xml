@@ -34,6 +34,7 @@
         <mybatis-plus.version>3.4.1</mybatis-plus.version>
         <druid-spring.version>1.2.4</druid-spring.version>
         <dynamic-datasource.version>3.3.1</dynamic-datasource.version>
+        <lock4j.version>2.1.0</lock4j.version>
         <fastjson.version>1.2.75</fastjson.version>
         <shiro.version>1.7.0</shiro.version>
         <mutils-qrcode.version>0.4.0.RELEASE</mutils-qrcode.version>
@@ -100,6 +101,11 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
                 <version>${dynamic-datasource.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>lock4j-spring-boot-starter</artifactId>
+                <version>${lock4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
