@@ -26,52 +26,57 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 public class MybatisPlusConfig {
-    /**
-     * 单页分页条数限制.
-     */
-    private static final Long MAX_LIMIT = 1000L;
+	/**
+	 * 单页分页条数限制.
+	 */
+	private static final Long MAX_LIMIT = 1000L;
 
-    /**
-     * 创建MybatisPlusInterceptor.
-     *
-     * @return MybatisPlusInterceptor
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public MybatisPlusInterceptor mybatisPlusInterceptor() {
-        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        // 分页
-        PaginationInnerInterceptor paginationInnerInterceptor = new PaginationInnerInterceptor();
-        paginationInnerInterceptor.setMaxLimit(MAX_LIMIT);
-        interceptor.addInnerInterceptor(paginationInnerInterceptor);
-        // 乐观锁
-        interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
-        // 防止全表更新与删除
-        interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
-        log.info("mybatisPlusInterceptor [{}]", interceptor);
-        return interceptor;
-    }
+	/**
+	 * 创建MybatisPlusInterceptor.
+	 *
+	 * @return MybatisPlusInterceptor
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	public MybatisPlusInterceptor mybatisPlusInterceptor() {
+		MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+		// 分页
+		PaginationInnerInterceptor paginationInnerInterceptor = new PaginationInnerInterceptor();
+		paginationInnerInterceptor.setMaxLimit(MAX_LIMIT);
+		interceptor.addInnerInterceptor(paginationInnerInterceptor);
+		// 乐观锁
+		interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+		// 防止全表更新与删除
+		interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
+		log.info("mybatisPlusInterceptor [{}]", interceptor);
+		return interceptor;
+	}
 
-    /**
-     * 字段自动化填充.
-     *
-     * @return MetaObjectHandler
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public MetaObjectHandler metaObjectHandler() {
-        MyBatisAutoFillHandler myBatisAutoFillHandler = new MyBatisAutoFillHandler();
-        log.info("MetaObjectHandler [{}]", myBatisAutoFillHandler);
-        return myBatisAutoFillHandler;
-    }
+	/**
+	 * 字段自动化填充.
+	 *
+	 * @return MetaObjectHandler
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	public MetaObjectHandler metaObjectHandler() {
+		MyBatisAutoFillHandler myBatisAutoFillHandler = new MyBatisAutoFillHandler();
+		log.info("MetaObjectHandler [{}]", myBatisAutoFillHandler);
+		return myBatisAutoFillHandler;
+	}
 
-    /**
-     * Map下划线自动转驼峰
-     *
-     * @return ConfigurationCustomizer
-     */
-    @Bean
-    public ConfigurationCustomizer configurationCustomizer() {
-        return i -> i.setObjectWrapperFactory(new MybatisMapWrapperFactory());
-    }
+	/**
+	 * 创建ConfigurationCustomizer
+	 *
+	 * @return ConfigurationCustomizer
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	public ConfigurationCustomizer configurationCustomizer() {
+		return i -> {
+			// 创建Map下划线自动转驼峰
+			i.setObjectWrapperFactory(new MybatisMapWrapperFactory());
+			i.setUseDeprecatedExecutor(false);
+		};
+	}
 }
