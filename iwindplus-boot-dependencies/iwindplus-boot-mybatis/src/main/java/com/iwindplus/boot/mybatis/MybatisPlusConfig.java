@@ -66,7 +66,7 @@ public class MybatisPlusConfig {
 	}
 
 	/**
-	 * 创建ConfigurationCustomizer
+	 * 创建ConfigurationCustomizer.
 	 *
 	 * @return ConfigurationCustomizer
 	 */
