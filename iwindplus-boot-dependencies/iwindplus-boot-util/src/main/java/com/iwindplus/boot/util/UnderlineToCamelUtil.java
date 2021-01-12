@@ -39,7 +39,7 @@ public class UnderlineToCamelUtil {
      * 驼峰转下划线
      *
      * @param str 字符串
-     * @return humpToLine2
+     * @return String
      */
     public static String camelToUnderline(String str) {
         Matcher matcher = camelPattern.matcher(str);
