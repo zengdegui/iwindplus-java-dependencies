@@ -73,10 +73,10 @@ public class MybatisPlusConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public ConfigurationCustomizer configurationCustomizer() {
-		return i -> {
+		return result -> {
 			// 创建Map下划线自动转驼峰
-			i.setObjectWrapperFactory(new MybatisMapWrapperFactory());
-			i.setUseDeprecatedExecutor(false);
+			result.setObjectWrapperFactory(new MybatisMapWrapperFactory());
+			result.setUseDeprecatedExecutor(false);
 		};
 	}
 }
