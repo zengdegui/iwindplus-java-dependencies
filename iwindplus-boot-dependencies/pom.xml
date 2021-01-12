@@ -61,6 +61,7 @@
         <bcprov-jdk15on.version>1.68</bcprov-jdk15on.version>
         <java-jwt.version>3.12.0</java-jwt.version>
         <jasypt.version>3.0.3</jasypt.version>
+        <velocity.version>1.7</velocity.version>
     </properties>
 
     <dependencyManagement>
@@ -96,6 +97,11 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-annotation</artifactId>
                 <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity</artifactId>
+                <version>${velocity.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
