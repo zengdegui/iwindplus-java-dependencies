@@ -44,4 +44,9 @@ public class SmsLogDTO implements Serializable {
      * 过期时间.
      */
     private LocalDateTime gmtTimeout;
+
+    /**
+     * 应用主键.
+     */
+    private String appId;
 }

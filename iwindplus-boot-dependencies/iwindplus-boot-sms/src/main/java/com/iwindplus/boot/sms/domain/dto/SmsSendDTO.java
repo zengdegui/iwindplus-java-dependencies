@@ -36,4 +36,9 @@ public class SmsSendDTO implements Serializable {
      */
     @Builder.Default
     private Boolean flagCheckMobile = false;
+
+    /**
+     * 应用主键.
+     */
+    private String appId;
 }
