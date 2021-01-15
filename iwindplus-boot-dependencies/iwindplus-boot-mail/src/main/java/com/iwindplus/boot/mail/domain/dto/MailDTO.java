@@ -51,17 +51,17 @@ public class MailDTO implements Serializable {
     /**
      * 收件人（必填）.
      */
-    private String[] to;
+    private List<String> to;
 
     /**
      * 抄送人.
      */
-    private String[] cc;
+    private List<String> cc;
 
     /**
      * 密送人.
      */
-    private String[] bcc;
+    private List<String> bcc;
 
     /**
      * 邮件标题（必填）.

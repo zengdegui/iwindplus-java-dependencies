@@ -43,12 +43,12 @@ public class MailServiceImpl implements MailService {
 		MimeMessage message = null;
 		message = sender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
-		helper.setTo(entity.getTo());
-		if (entity.getCc() != null && entity.getCc().length > 0) {
-			helper.setCc(entity.getCc());
+		helper.setTo(entity.getTo().stream().toArray(String[]::new));
+		if (CollectionUtils.isNotEmpty(entity.getCc())) {
+			helper.setCc(entity.getCc().stream().toArray(String[]::new));
 		}
-		if (entity.getBcc() != null && entity.getBcc().length > 0) {
-			helper.setBcc(entity.getBcc());
+		if (CollectionUtils.isNotEmpty(entity.getBcc())) {
+			helper.setBcc(entity.getBcc().stream().toArray(String[]::new));
 		}
 		helper.setFrom(new InternetAddress(sender.getUsername(), entity.getNickName(), "UTF-8"));
 		helper.setSubject(entity.getSubject());
