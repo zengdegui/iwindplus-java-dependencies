@@ -144,7 +144,7 @@ public class FileServiceImpl extends AbstractOssServiceImpl implements FileServi
             try {
                 in.close();
             } catch (IOException ex) {
-                log.error("Closing output stream exception [{}]", ex);
+                log.error("Closing input stream exception [{}]", ex);
             }
         }
     }
