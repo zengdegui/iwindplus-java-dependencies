@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <groupId>com.iwindplus</groupId>
-    <artifactId>iwindplus-platform-dependencies</artifactId>
-    <version>1.0.18-SNAPSHOT</version>
+    <artifactId>iwindplus-java-dependencies</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
 
@@ -24,7 +24,7 @@
         <!-- 正式版本 -->
         <nexus-releases-url>http://8.135.100.226:8081/repository/maven-releases/</nexus-releases-url>
         <!-- 源码 -->
-        <source-url>scm:git:https://github.com/zengdegui/iwindplus-platform-dependencies.git</source-url>
+        <source-url>scm:git:https://github.com/zengdegui/iwindplus-java-dependencies.git</source-url>
     </properties>
 
     <dependencyManagement>
@@ -47,14 +47,14 @@
         <!-- 快照版本 -->
         <snapshotRepository>
             <id>snapshots</id>
-            <name>iwindplus-platform-snapshots</name>
+            <name>iwindplus-snapshots</name>
             <url>${nexus-snapshots-url}</url>
             <uniqueVersion>true</uniqueVersion>
         </snapshotRepository>
         <!-- 正式版本 -->
         <repository>
             <id>releases</id>
-            <name>iwindplus-platform-releases</name>
+            <name>iwindplus-releases</name>
             <url>${nexus-releases-url}</url>
             <uniqueVersion>true</uniqueVersion>
         </repository>
