@@ -51,7 +51,6 @@
             <url>${nexus-snapshots-url}</url>
             <uniqueVersion>true</uniqueVersion>
         </snapshotRepository>
-
         <!-- 正式版本 -->
         <repository>
             <id>releases</id>
