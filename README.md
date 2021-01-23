@@ -1,4 +1,5 @@
-iwindplus-java-dependencies包含两个模块
+iwindplus-java-dependencies包含两个模块：
+
 分别为iwindplus-boot-dependencies,iwindplus-cloud-dependencies
 其中iwindplus-boot-dependencies是基于springboot封装的模块
 iwindplus-cloud-dependencies是基于springcloud封装的模板,其中申明了spring-cloud-alibaba-dependencies版本
