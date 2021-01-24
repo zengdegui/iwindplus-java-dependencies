@@ -27,7 +27,7 @@ public abstract class AbstractSmsServiceImpl implements SmsService {
 	protected SmsBaseService smsBaseService;
 
 	@Override
-	public void validate(String mobile, String captcha, String appId) {
+	public boolean validate(String mobile, String captcha, String appId) {
 		LocalDateTime data = this.smsBaseService.getGmtTimeoutByMobile(mobile,
 				captcha, DateUtil.getTimesMorning(), DateUtil.getTimesNight(), appId);
 		if (null == data) {
@@ -38,6 +38,7 @@ public abstract class AbstractSmsServiceImpl implements SmsService {
 		if (now.isAfter(data)) {
 			throw new BaseException(SmsCodeEnum.CAPTCHA_EXPIRED.value(), SmsCodeEnum.CAPTCHA_EXPIRED.desc());
 		}
+		return true;
 	}
 
 	/**
@@ -49,7 +50,7 @@ public abstract class AbstractSmsServiceImpl implements SmsService {
 	 * @param limitCountEveryDay 限制每小时次数
 	 * @param limitCountHour     限制手机每天次数
 	 */
-	protected void check(String mobile, Boolean flagCheckMobile, String appId, Integer limitCountEveryDay, Integer limitCountHour) {
+	protected boolean check(String mobile, Boolean flagCheckMobile, String appId, Integer limitCountEveryDay, Integer limitCountHour) {
 		// 当校验手机标志位位true时，校验手机是否存在.
 		if (null != flagCheckMobile && flagCheckMobile) {
 			// 校验手机是否存在.
@@ -75,5 +76,6 @@ public abstract class AbstractSmsServiceImpl implements SmsService {
 						SmsCodeEnum.CAPTCHA_LIMIT_HOUR.desc());
 			}
 		}
+		return true;
 	}
 }

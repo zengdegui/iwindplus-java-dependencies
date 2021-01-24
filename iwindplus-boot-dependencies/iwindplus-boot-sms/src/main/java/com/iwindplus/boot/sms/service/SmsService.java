@@ -17,8 +17,9 @@ public interface SmsService {
 	 * @param mobile          手机
 	 * @param flagCheckMobile 是否校验手机标志
 	 * @param appId           应用主键
+	 * @return boolean
 	 */
-	void sendMobileCaptcha(String mobile, Boolean flagCheckMobile, String appId);
+	boolean sendMobileCaptcha(String mobile, Boolean flagCheckMobile, String appId);
 
 	/**
 	 * 判断短信验证码是否正确.
@@ -26,6 +27,7 @@ public interface SmsService {
 	 * @param mobile  手机
 	 * @param captcha 验证码
 	 * @param appId   应用主键
+	 * @return boolean
 	 */
-	void validate(String mobile, String captcha, String appId);
+	boolean validate(String mobile, String captcha, String appId);
 }

@@ -104,7 +104,7 @@ public class AliyunSmsServiceImpl extends AbstractSmsServiceImpl implements Aliy
 	}
 
 	@Override
-	public void sendMobileCaptcha(String mobile, Boolean flagCheckMobile, String appId) {
+	public boolean sendMobileCaptcha(String mobile, Boolean flagCheckMobile, String appId) {
 		this.check(mobile, flagCheckMobile, appId, aliyunSmsProperty.getLimitCountEveryDay(),
 				aliyunSmsProperty.getLimitCountHour());
 		Integer length = this.aliyunSmsProperty.getCaptchaLength();
@@ -130,9 +130,10 @@ public class AliyunSmsServiceImpl extends AbstractSmsServiceImpl implements Aliy
 							.gmtTimeout(gmtTimeout)
 							.appId(appId)
 							.build();
-					this.smsBaseService.save(param);
+					return this.smsBaseService.save(param);
 				}
 			}
 		}
+		return false;
 	}
 }

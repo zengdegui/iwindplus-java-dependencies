@@ -39,7 +39,7 @@ public class QiniuSmsServiceImpl extends AbstractSmsServiceImpl implements Qiniu
 	private ObjectMapper objectMapper;
 
 	@Override
-	public void sendMobileCaptcha(String mobile, Boolean flagCheckMobile, String appId) {
+	public boolean sendMobileCaptcha(String mobile, Boolean flagCheckMobile, String appId) {
 		this.check(mobile, flagCheckMobile, appId, this.qiniuSmsProperty.getLimitCountEveryDay(),
 				this.qiniuSmsProperty.getLimitCountHour());
 		Integer length = this.qiniuSmsProperty.getCaptchaLength();
@@ -68,13 +68,14 @@ public class QiniuSmsServiceImpl extends AbstractSmsServiceImpl implements Qiniu
 						.gmtTimeout(gmtTimeout)
 						.appId(appId)
 						.build();
-				this.smsBaseService.save(param);
+				return this.smsBaseService.save(param);
 			}
 		} catch (JsonProcessingException ex) {
 			log.error("Json processing exception [{}]", ex);
 		} catch (QiniuException e) {
 			log.error("Qiniu cloud SMS service is abnormal [{}]", e);
 		}
+		return false;
 	}
 
 	private String getBizId(Response response) throws JsonProcessingException, QiniuException {

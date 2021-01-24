@@ -86,7 +86,7 @@ public class LingkaiSmsServiceImpl extends AbstractSmsServiceImpl implements Lin
 	}
 
 	@Override
-	public void sendMobileCaptcha(String mobile, Boolean flagCheckMobile, String appId) {
+	public boolean sendMobileCaptcha(String mobile, Boolean flagCheckMobile, String appId) {
 		this.check(mobile, flagCheckMobile, appId, this.lingkaiSmsProperty.getLimitCountEveryDay(),
 				this.lingkaiSmsProperty.getLimitCountHour());
 		Integer length = this.lingkaiSmsProperty.getCaptchaLength();
@@ -112,7 +112,8 @@ public class LingkaiSmsServiceImpl extends AbstractSmsServiceImpl implements Lin
 					.gmtTimeout(gmtTimeout)
 					.appId(appId)
 					.build();
-			this.smsBaseService.save(param);
+			return this.smsBaseService.save(param);
 		}
+		return false;
 	}
 }
