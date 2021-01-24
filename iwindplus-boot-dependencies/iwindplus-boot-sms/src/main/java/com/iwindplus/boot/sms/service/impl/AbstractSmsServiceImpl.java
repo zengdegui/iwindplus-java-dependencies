@@ -49,6 +49,7 @@ public abstract class AbstractSmsServiceImpl implements SmsService {
 	 * @param appId              应用主键
 	 * @param limitCountEveryDay 限制每小时次数
 	 * @param limitCountHour     限制手机每天次数
+	 * @return boolean
 	 */
 	protected boolean check(String mobile, Boolean flagCheckMobile, String appId, Integer limitCountEveryDay, Integer limitCountHour) {
 		// 当校验手机标志位位true时，校验手机是否存在.
