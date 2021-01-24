@@ -59,17 +59,21 @@ public abstract class AbstractSmsServiceImpl implements SmsService {
 			}
 		}
 		// 限制每天发送次数.
-		Integer countByMobile = this.smsBaseService.countByMobile(mobile,
-				DateUtil.getTimesMorning(), DateUtil.getTimesNight(), appId);
-		if (countByMobile >= limitCountEveryDay) {
-			throw new BaseException(SmsCodeEnum.CAPTCHA_LIMIT_EVERYDAY.value(),
-					SmsCodeEnum.CAPTCHA_LIMIT_EVERYDAY.desc());
+		if (null != limitCountEveryDay) {
+			Integer countByMobile = this.smsBaseService.countByMobile(mobile,
+					DateUtil.getTimesMorning(), DateUtil.getTimesNight(), appId);
+			if (countByMobile >= limitCountEveryDay) {
+				throw new BaseException(SmsCodeEnum.CAPTCHA_LIMIT_EVERYDAY.value(),
+						SmsCodeEnum.CAPTCHA_LIMIT_EVERYDAY.desc());
+			}
 		}
 		// 限制每小时发送条数.
-		Integer countHourByMobile = this.smsBaseService.countHourByMobile(mobile, appId);
-		if (countHourByMobile >= limitCountHour) {
-			throw new BaseException(SmsCodeEnum.CAPTCHA_LIMIT_HOUR.value(),
-					SmsCodeEnum.CAPTCHA_LIMIT_HOUR.desc());
+		if (null != limitCountHour) {
+			Integer countHourByMobile = this.smsBaseService.countHourByMobile(mobile, appId);
+			if (countHourByMobile >= limitCountHour) {
+				throw new BaseException(SmsCodeEnum.CAPTCHA_LIMIT_HOUR.value(),
+						SmsCodeEnum.CAPTCHA_LIMIT_HOUR.desc());
+			}
 		}
 	}
 }
