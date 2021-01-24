@@ -23,17 +23,23 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SmsValidateDTO implements Serializable {
-    private static final long serialVersionUID = -7294630501228380972L;
+	private static final long serialVersionUID = -7294630501228380972L;
 
-    /**
-     * 手机（必填）.
-     */
-    @NotBlank(message = "{mobile.notBlank}")
-    private String mobile;
+	/**
+	 * 手机（必填）.
+	 */
+	@NotBlank(message = "{mobile.notBlank}")
+	private String mobile;
 
-    /**
-     * 验证码（必填）.
-     */
-    @NotBlank(message = "{captcha.notBlank}")
-    private String captcha;
+	/**
+	 * 验证码（必填）.
+	 */
+	@NotBlank(message = "{captcha.notBlank}")
+	private String captcha;
+
+	/**
+	 * 应用主键.
+	 */
+	@NotBlank(message = "{appId.notBlank}")
+	private String appId;
 }

@@ -40,5 +40,6 @@ public class SmsSendDTO implements Serializable {
     /**
      * 应用主键.
      */
+    @NotBlank(message = "{appId.notBlank}")
     private String appId;
 }
