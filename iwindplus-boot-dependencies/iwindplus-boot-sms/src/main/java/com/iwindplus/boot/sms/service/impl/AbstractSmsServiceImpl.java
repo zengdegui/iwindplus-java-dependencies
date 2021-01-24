@@ -4,9 +4,6 @@
 
 package com.iwindplus.boot.sms.service.impl;
 
-import com.iwindplus.boot.sms.domain.SmsCommonProperty;
-import com.iwindplus.boot.sms.domain.dto.SmsSendDTO;
-import com.iwindplus.boot.sms.domain.dto.SmsValidateDTO;
 import com.iwindplus.boot.sms.domain.enumerate.SmsCodeEnum;
 import com.iwindplus.boot.sms.service.SmsBaseService;
 import com.iwindplus.boot.sms.service.SmsService;
@@ -30,9 +27,9 @@ public abstract class AbstractSmsServiceImpl implements SmsService {
 	protected SmsBaseService smsBaseService;
 
 	@Override
-	public void validate(SmsValidateDTO entity) {
-		LocalDateTime data = this.smsBaseService.getGmtTimeoutByMobile(entity.getMobile().trim(),
-				entity.getCaptcha(), DateUtil.getTimesMorning(), DateUtil.getTimesNight(), entity.getAppId());
+	public void validate(String mobile, String captcha, String appId) {
+		LocalDateTime data = this.smsBaseService.getGmtTimeoutByMobile(mobile,
+				captcha, DateUtil.getTimesMorning(), DateUtil.getTimesNight(), appId);
 		if (null == data) {
 			throw new BaseException(SmsCodeEnum.CAPTCHA_ERROR.value(), SmsCodeEnum.CAPTCHA_ERROR.desc());
 		}
@@ -46,28 +43,31 @@ public abstract class AbstractSmsServiceImpl implements SmsService {
 	/**
 	 * 验证，校验.
 	 *
-	 * @param entity   对象
-	 * @param property 属性
+	 * @param mobile             手机
+	 * @param flagCheckMobile    是否校验手机标志
+	 * @param appId              应用主键
+	 * @param limitCountEveryDay 限制每小时次数
+	 * @param limitCountHour     限制手机每天次数
 	 */
-	protected void check(SmsSendDTO entity, SmsCommonProperty property) {
+	protected void check(String mobile, Boolean flagCheckMobile, String appId, Integer limitCountEveryDay, Integer limitCountHour) {
 		// 当校验手机标志位位true时，校验手机是否存在.
-		if (null != entity.getFlagCheckMobile() && entity.getFlagCheckMobile()) {
+		if (null != flagCheckMobile && flagCheckMobile) {
 			// 校验手机是否存在.
-			if (!this.smsBaseService.getMobileIsExist(entity.getMobile().trim(), entity.getAppId())) {
+			if (!this.smsBaseService.getMobileIsExist(mobile, appId)) {
 				throw new BaseException(SmsCodeEnum.MOBILE_NOT_EXIST.value(),
 						SmsCodeEnum.MOBILE_NOT_EXIST.desc());
 			}
 		}
 		// 限制每天发送次数.
-		Integer countByMobile = this.smsBaseService.countByMobile(entity.getMobile().trim(),
-				DateUtil.getTimesMorning(), DateUtil.getTimesNight(), entity.getAppId());
-		if (countByMobile >= property.getLimitCountEveryDay()) {
+		Integer countByMobile = this.smsBaseService.countByMobile(mobile,
+				DateUtil.getTimesMorning(), DateUtil.getTimesNight(), appId);
+		if (countByMobile >= limitCountEveryDay) {
 			throw new BaseException(SmsCodeEnum.CAPTCHA_LIMIT_EVERYDAY.value(),
 					SmsCodeEnum.CAPTCHA_LIMIT_EVERYDAY.desc());
 		}
 		// 限制每小时发送条数.
-		Integer countHourByMobile = this.smsBaseService.countHourByMobile(entity.getMobile(), entity.getAppId());
-		if (countHourByMobile >= property.getLimitCountHour()) {
+		Integer countHourByMobile = this.smsBaseService.countHourByMobile(mobile, appId);
+		if (countHourByMobile >= limitCountHour) {
 			throw new BaseException(SmsCodeEnum.CAPTCHA_LIMIT_HOUR.value(),
 					SmsCodeEnum.CAPTCHA_LIMIT_HOUR.desc());
 		}

@@ -4,9 +4,6 @@
 
 package com.iwindplus.boot.sms.service;
 
-import com.iwindplus.boot.sms.domain.dto.SmsSendDTO;
-import com.iwindplus.boot.sms.domain.dto.SmsValidateDTO;
-
 /**
  * 短信业务层接口类.
  *
@@ -14,18 +11,21 @@ import com.iwindplus.boot.sms.domain.dto.SmsValidateDTO;
  * @since 2018年9月1日
  */
 public interface SmsService {
-    /**
-     * 发送短信验证码.
-     *
-     * @param entity 对象
-     */
-    void sendMobileCaptcha(SmsSendDTO entity);
+	/**
+	 * 发送短信验证码.
+	 *
+	 * @param mobile          手机
+	 * @param flagCheckMobile 是否校验手机标志
+	 * @param appId           应用主键
+	 */
+	void sendMobileCaptcha(String mobile, Boolean flagCheckMobile, String appId);
 
-    /**
-     * 判断短信验证码是否正确.
-     *
-     * @param entity 对象
-     * @return boolean
-     */
-    void validate(SmsValidateDTO entity);
+	/**
+	 * 判断短信验证码是否正确.
+	 *
+	 * @param mobile  手机
+	 * @param captcha 验证码
+	 * @param appId   应用主键
+	 */
+	void validate(String mobile, String captcha, String appId);
 }

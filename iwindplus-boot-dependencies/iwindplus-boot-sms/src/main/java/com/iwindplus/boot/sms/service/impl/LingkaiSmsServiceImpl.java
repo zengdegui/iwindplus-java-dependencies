@@ -8,7 +8,6 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.util.RandomUtil;
 import com.iwindplus.boot.sms.domain.LingkaiSmsProperty;
 import com.iwindplus.boot.sms.domain.dto.SmsLogDTO;
-import com.iwindplus.boot.sms.domain.dto.SmsSendDTO;
 import com.iwindplus.boot.sms.service.LingkaiSmsService;
 import com.iwindplus.boot.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -87,14 +86,15 @@ public class LingkaiSmsServiceImpl extends AbstractSmsServiceImpl implements Lin
 	}
 
 	@Override
-	public void sendMobileCaptcha(SmsSendDTO entity) {
-		this.check(entity, lingkaiSmsProperty);
+	public void sendMobileCaptcha(String mobile, Boolean flagCheckMobile, String appId) {
+		this.check(mobile, flagCheckMobile, appId, this.lingkaiSmsProperty.getLimitCountEveryDay(),
+				this.lingkaiSmsProperty.getLimitCountHour());
 		Integer length = this.lingkaiSmsProperty.getCaptchaLength();
 		// 产生随机数字短信验证码
 		String captcha = RandomUtil.randomNumbers(length);
 		String response = this.send(this.lingkaiSmsProperty.getUrl(), this.lingkaiSmsProperty.getUsername(),
 				this.lingkaiSmsProperty.getPassword(), this.lingkaiSmsProperty.getTemplateCode(),
-				this.lingkaiSmsProperty.getTemplateParam(), entity.getMobile(), captcha);
+				this.lingkaiSmsProperty.getTemplateParam(), mobile, captcha);
 		log.info("Return value of Lingkai SMS [{}]", response);
 		if (StringUtils.isNotBlank(response) && Integer.valueOf(response).intValue() > 0) {
 			LocalDateTime now = LocalDateTime.now();
@@ -107,10 +107,10 @@ public class LingkaiSmsServiceImpl extends AbstractSmsServiceImpl implements Lin
 			SmsLogDTO param = SmsLogDTO
 					.builder()
 					.bizId(bizId)
-					.mobile(entity.getMobile())
+					.mobile(mobile)
 					.content(captcha)
 					.gmtTimeout(gmtTimeout)
-					.appId(entity.getAppId())
+					.appId(appId)
 					.build();
 			this.smsBaseService.save(param);
 		}

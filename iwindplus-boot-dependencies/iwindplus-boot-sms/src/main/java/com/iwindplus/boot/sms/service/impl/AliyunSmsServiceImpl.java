@@ -20,7 +20,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iwindplus.boot.sms.domain.AliyunSmsProperty;
 import com.iwindplus.boot.sms.domain.dto.SmsLogDTO;
-import com.iwindplus.boot.sms.domain.dto.SmsSendDTO;
 import com.iwindplus.boot.sms.service.AliyunSmsService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -105,14 +104,15 @@ public class AliyunSmsServiceImpl extends AbstractSmsServiceImpl implements Aliy
 	}
 
 	@Override
-	public void sendMobileCaptcha(SmsSendDTO entity) {
-		this.check(entity, aliyunSmsProperty);
+	public void sendMobileCaptcha(String mobile, Boolean flagCheckMobile, String appId) {
+		this.check(mobile, flagCheckMobile, appId, aliyunSmsProperty.getLimitCountEveryDay(),
+				aliyunSmsProperty.getLimitCountHour());
 		Integer length = this.aliyunSmsProperty.getCaptchaLength();
 		// 产生随机数字短信验证码
 		String captcha = RandomUtil.randomNumbers(length);
 		CommonResponse response = this.send(this.aliyunSmsProperty.getAccessKey(),
 				this.aliyunSmsProperty.getSecretKey(), this.aliyunSmsProperty.getSignName(),
-				this.aliyunSmsProperty.getTemplateCode(), this.aliyunSmsProperty.getTemplateParam(), entity.getMobile(),
+				this.aliyunSmsProperty.getTemplateCode(), this.aliyunSmsProperty.getTemplateParam(), mobile,
 				captcha, IdUtil.fastSimpleUUID(), null);
 		if (null != response && response.getHttpStatus() == 200) {
 			if (StringUtils.isNotBlank(response.getData())) {
@@ -125,10 +125,10 @@ public class AliyunSmsServiceImpl extends AbstractSmsServiceImpl implements Aliy
 					SmsLogDTO param = SmsLogDTO
 							.builder()
 							.bizId(bizId)
-							.mobile(entity.getMobile())
+							.mobile(mobile)
 							.content(captcha)
 							.gmtTimeout(gmtTimeout)
-							.appId(entity.getAppId())
+							.appId(appId)
 							.build();
 					this.smsBaseService.save(param);
 				}

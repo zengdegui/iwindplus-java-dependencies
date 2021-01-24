@@ -9,7 +9,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iwindplus.boot.sms.domain.QiniuSmsProperty;
 import com.iwindplus.boot.sms.domain.dto.SmsLogDTO;
-import com.iwindplus.boot.sms.domain.dto.SmsSendDTO;
 import com.iwindplus.boot.sms.service.QiniuSmsService;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
@@ -40,8 +39,9 @@ public class QiniuSmsServiceImpl extends AbstractSmsServiceImpl implements Qiniu
 	private ObjectMapper objectMapper;
 
 	@Override
-	public void sendMobileCaptcha(SmsSendDTO entity) {
-		this.check(entity, qiniuSmsProperty);
+	public void sendMobileCaptcha(String mobile, Boolean flagCheckMobile, String appId) {
+		this.check(mobile, flagCheckMobile, appId, this.qiniuSmsProperty.getLimitCountEveryDay(),
+				this.qiniuSmsProperty.getLimitCountHour());
 		Integer length = this.qiniuSmsProperty.getCaptchaLength();
 		// 产生随机数字短信验证码.
 		String captcha = RandomUtil.randomNumbers(length);
@@ -52,7 +52,7 @@ public class QiniuSmsServiceImpl extends AbstractSmsServiceImpl implements Qiniu
 		parameters.put(this.qiniuSmsProperty.getTemplateParam(), captcha);
 		try {
 			Response response = smsManager.sendMessage(this.qiniuSmsProperty.getTemplateCode(),
-					new String[]{entity.getMobile()}, parameters);
+					new String[]{mobile}, parameters);
 			String json = this.objectMapper.writeValueAsString(response);
 			log.info("Qiniu cloud SMS sending return value [{}]", json);
 			if (null != response && response.isOK()) {
@@ -63,10 +63,10 @@ public class QiniuSmsServiceImpl extends AbstractSmsServiceImpl implements Qiniu
 				SmsLogDTO param = SmsLogDTO
 						.builder()
 						.bizId(bizId)
-						.mobile(entity.getMobile())
+						.mobile(mobile)
 						.content(captcha)
 						.gmtTimeout(gmtTimeout)
-						.appId(entity.getAppId())
+						.appId(appId)
 						.build();
 				this.smsBaseService.save(param);
 			}
