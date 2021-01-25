@@ -4,7 +4,6 @@
 
 package com.iwindplus.boot.util.domain.vo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -18,32 +17,30 @@ import java.util.List;
  */
 @Data
 public class BaseNodeVO<T> implements Serializable {
-    private static final long serialVersionUID = -5005483907155448572L;
+	private static final long serialVersionUID = -5005483907155448572L;
 
-    /**
-     * 主键.
-     */
-    private String id;
+	/**
+	 * 主键.
+	 */
+	private String id;
 
-    /**
-     * 节点名称.
-     */
-    private String name;
+	/**
+	 * 节点名称.
+	 */
+	private String name;
 
-    /**
-     * 上级主键.
-     */
-    @JsonIgnore
-    private String parentId;
+	/**
+	 * 上级主键.
+	 */
+	private String parentId;
 
-    /**
-     * 排序号.
-     */
-    @JsonIgnore
-    private Integer seq;
+	/**
+	 * 排序号.
+	 */
+	private Integer seq;
 
-    /**
-     * 子节点.
-     */
-    private List<T> nodes;
+	/**
+	 * 子节点.
+	 */
+	private List<T> nodes;
 }
