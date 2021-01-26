@@ -20,8 +20,8 @@ public class MultipartFileToFileUtil {
     private static final int BSIZE = 8192;
 
     /**
-     * MultipartFile转File
-     * 
+     * MultipartFile转File.
+     *
      * @param file 文件
      * @return File
      * @throws Exception
@@ -74,7 +74,7 @@ public class MultipartFileToFileUtil {
     }
 
     /**
-     * 删除本地临时文件
+     * 删除本地临时文件.
      *
      * @param file 文件
      */
