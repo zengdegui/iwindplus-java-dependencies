@@ -21,8 +21,9 @@ public class MultipartFileToFileUtil {
 
     /**
      * MultipartFile转File
-     *
+     * 
      * @param file 文件
+     * @return File
      * @throws Exception
      */
     public static File multipartFileToFile(MultipartFile file) throws Exception {
