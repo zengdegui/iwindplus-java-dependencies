@@ -64,7 +64,6 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
      * @return Map<String, String>
      */
     public static Map<String, String> getParams(HttpServletRequest request) {
-        log.debug(">>>>" + request.getQueryString());
         Map<String, String> params = new HashMap<String, String>();
         Map<String, String[]> requestParams = request.getParameterMap();
         if (MapUtils.isEmpty(requestParams)) {
