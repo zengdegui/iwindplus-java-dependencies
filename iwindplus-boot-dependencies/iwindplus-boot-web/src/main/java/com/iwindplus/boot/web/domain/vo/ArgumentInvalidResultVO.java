@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
  * 校验无效数据结果视图对象.
  *
  * @author zengdegui
- * @since 2020年11月6日
+ * @since 2020/11/6
  */
 @Data
 @Builder

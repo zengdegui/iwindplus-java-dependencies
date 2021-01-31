@@ -27,7 +27,7 @@ import org.springframework.util.Base64Utils;
  * 微信相关业务接口实现类.
  *
  * @author zengdegui
- * @since 2019年10月10日
+ * @since 2019/10/10
  */
 @Slf4j
 public class WechatMaServiceImpl extends WxMaServiceImpl implements WechatMaService {

@@ -17,7 +17,7 @@ import java.io.Serializable;
  * excel导出基础通用实体类.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Data
 @Builder

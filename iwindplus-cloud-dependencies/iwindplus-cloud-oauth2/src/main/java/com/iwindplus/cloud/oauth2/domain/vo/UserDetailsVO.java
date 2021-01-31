@@ -13,7 +13,7 @@ import java.util.List;
  * 自定义认证用户信息.
  *
  * @author zengdegui
- * @since 2020年4月3日
+ * @since 2020/4/3
  */
 public class UserDetailsVO implements UserDetails {
     private static final long serialVersionUID = -123308657146774881L;

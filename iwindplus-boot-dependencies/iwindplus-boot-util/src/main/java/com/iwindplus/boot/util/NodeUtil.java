@@ -16,7 +16,7 @@ import java.util.List;
  * 树形无限极工具类.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 public class NodeUtil {
     /**

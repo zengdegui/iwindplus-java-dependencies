@@ -23,7 +23,7 @@ import java.io.IOException;
  * 自定义访问拒绝处理.
  *
  * @author zengdegui
- * @since 2020年3月25日
+ * @since 2020/3/25
  */
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Autowired

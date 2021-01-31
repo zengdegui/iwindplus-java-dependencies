@@ -28,7 +28,7 @@ import java.nio.charset.Charset;
  * 网关未认证处理.
  *
  * @author zengdegui
- * @since 2020年4月22日
+ * @since 2020/4/22
  */
 @Slf4j
 public class JsonAuthenticationEntryPoint implements ServerAuthenticationEntryPoint {

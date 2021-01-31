@@ -15,7 +15,7 @@ import java.io.IOException;
  * xss过滤器.
  *
  * @author zengdegui
- * @since 2020年4月19日
+ * @since 2020/4/19
  */
 @Component
 @WebFilter(urlPatterns = {"/*"}, filterName = "xssFilter")

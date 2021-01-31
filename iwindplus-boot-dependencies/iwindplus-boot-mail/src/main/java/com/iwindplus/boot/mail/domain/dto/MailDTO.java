@@ -18,7 +18,7 @@ import java.util.List;
  * 邮件消息
  *
  * @author zengdegui
- * @since 2020年4月28日
+ * @since 2020/4/28
  */
 @Data
 @Builder

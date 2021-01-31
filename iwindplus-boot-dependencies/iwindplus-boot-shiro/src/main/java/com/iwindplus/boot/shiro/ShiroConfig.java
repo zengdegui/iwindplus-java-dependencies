@@ -49,7 +49,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 有状态配置.
  *
  * @author zengdegui
- * @since 2018年9月6日
+ * @since 2018/9/6
  */
 @Slf4j
 public class ShiroConfig {

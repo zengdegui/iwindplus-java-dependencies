@@ -17,7 +17,7 @@ import java.io.Serializable;
  * 优化单次请求需要多次访问redis的问题.
  *
  * @author zengdegui
- * @since 2018年9月27日
+ * @since 2018/9/27
  */
 public class ShiroSessionManager extends DefaultWebSessionManager {
     /**

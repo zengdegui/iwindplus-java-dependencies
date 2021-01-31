@@ -15,7 +15,7 @@ import java.util.List;
  * 基于注解导出excel数据传输对象.
  *
  * @author zengdegui
- * @since 2020年9月20日
+ * @since 2020/9/20
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

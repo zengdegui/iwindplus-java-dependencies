@@ -28,17 +28,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
- * localdate 日期相关配置.
+ * localdate 期相关配置.
  *
  * @author zengdegui
- * @since 2020年11月8日
+ * @since 2020/11/8
  */
 @Slf4j
 @Configuration
 public class LocalDateFormatConfig {
     /**
      * 创建Jackson2ObjectMapperBuilderCustomizer.
-     * 处理日期序列化，long类型数据丢失精度等问题
+     * 处理期序列化，long类型数据丢失精度等问题
      *
      * @return Jackson2ObjectMapperBuilderCustomizer
      */
@@ -62,7 +62,7 @@ public class LocalDateFormatConfig {
     }
 
     /**
-     * LocalDateTime日期转换器，用于接收日期格式数据
+     * LocalDateTime期转换器，用于接收期格式数据
      *
      * @return Converter<String, LocalDateTime>
      */

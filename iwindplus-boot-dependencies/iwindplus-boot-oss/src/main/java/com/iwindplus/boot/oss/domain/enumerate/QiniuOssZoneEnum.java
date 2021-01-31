@@ -12,7 +12,7 @@ import java.util.Objects;
  * 七牛云对象存储服务器区域枚举.
  *
  * @author zengdegui
- * @since 2018年10月11日
+ * @since 2018/10/11
  */
 @Getter
 @Accessors(fluent = true)

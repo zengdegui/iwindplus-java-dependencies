@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * 短信业务层基础接口类.
  *
  * @author zengdegui
- * @since 2019年8月13日
+ * @since 2019/8/13
  */
 public interface SmsBaseService {
 	/**

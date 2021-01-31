@@ -36,7 +36,7 @@ import java.util.Map;
  * 认证信息帮助类.
  *
  * @author zengdegui
- * @since 2020年4月1日
+ * @since 2020/4/1
  */
 @Slf4j
 public class Oauth2Util {

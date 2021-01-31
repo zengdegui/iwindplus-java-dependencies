@@ -13,7 +13,7 @@ import java.io.Serializable;
  * 微信公众号二维码数据传输对象.
  *
  * @author zengdegui
- * @since 2019年7月16日
+ * @since 2019/7/16
  */
 @Data
 public class WechatMpQrCodeDTO implements Serializable {

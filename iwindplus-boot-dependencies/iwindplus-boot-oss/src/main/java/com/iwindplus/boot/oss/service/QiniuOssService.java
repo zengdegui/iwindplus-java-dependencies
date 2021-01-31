@@ -8,7 +8,7 @@ package com.iwindplus.boot.oss.service;
  * 七牛云对象存储业务层接口类.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 public interface QiniuOssService extends OssService {
 }

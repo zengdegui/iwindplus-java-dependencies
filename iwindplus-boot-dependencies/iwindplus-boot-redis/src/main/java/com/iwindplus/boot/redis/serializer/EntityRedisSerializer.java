@@ -13,7 +13,7 @@ import org.springframework.data.redis.serializer.SerializationException;
  * redis Object 序列化，反序列化工具.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 public class EntityRedisSerializer implements RedisSerializer<Object> {
     /**

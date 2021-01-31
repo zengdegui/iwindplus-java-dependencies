@@ -29,7 +29,7 @@ import java.io.IOException;
  * 登陆过滤，器扩展自FormAuthenticationFilter：增加了针对ajax请求的处理.
  *
  * @author zengdegui
- * @since 2018年9月6日
+ * @since 2018/9/6
  */
 @Slf4j
 public class FormAuthcFilter extends FormAuthenticationFilter {

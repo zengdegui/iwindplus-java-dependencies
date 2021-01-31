@@ -21,7 +21,7 @@ import java.util.Map;
  * 用户自定义accessToken，增加额外信息.
  *
  * @author zengdegui
- * @since 2019年10月12日
+ * @since 2019/10/12
  */
 public class CustomTokenEnhancer extends TokenEnhancerChain {
     @Override

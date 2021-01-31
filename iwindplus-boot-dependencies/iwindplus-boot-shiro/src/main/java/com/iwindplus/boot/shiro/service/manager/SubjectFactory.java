@@ -11,7 +11,7 @@ import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
  * 扩展自DefaultWebSubjectFactory,对于无状态的TOKEN不创建session.
  *
  * @author zengdegui
- * @since 2018年9月5日
+ * @since 2018/9/5
  */
 public class SubjectFactory extends DefaultWebSubjectFactory {
     private final DefaultSessionStorageEvaluator storageEvaluator;

@@ -12,7 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * 微信公众号相关属性.
  *
  * @author zengdegui
- * @since 2018年10月10日
+ * @since 2018/10/10
  */
 @Data
 @ConfigurationProperties(prefix = "wechat.mp")

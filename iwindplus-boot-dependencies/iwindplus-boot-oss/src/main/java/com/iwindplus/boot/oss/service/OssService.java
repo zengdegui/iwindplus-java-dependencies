@@ -13,7 +13,7 @@ import java.util.List;
  * 对象存储业务层接口类.
  *
  * @author zengdegui
- * @since 2019年8月14日
+ * @since 2019/8/14
  */
 public interface OssService {
     /**

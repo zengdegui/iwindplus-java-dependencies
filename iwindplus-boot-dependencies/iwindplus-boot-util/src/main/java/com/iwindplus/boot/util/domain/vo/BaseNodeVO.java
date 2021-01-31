@@ -13,7 +13,7 @@ import java.util.List;
  * 基础节点对象.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Data
 public class BaseNodeVO<T> implements Serializable {

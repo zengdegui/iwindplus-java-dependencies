@@ -23,7 +23,7 @@ import java.util.Map;
  * 自定义jwt token服务.
  *
  * @author zengdegui
- * @since 2020年4月24日
+ * @since 2020/4/24
  */
 @Setter
 @Getter

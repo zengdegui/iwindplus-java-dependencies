@@ -19,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * oauth2配置.
  *
  * @author zengdegui
- * @since 2020年11月8日
+ * @since 2020/11/8
  */
 @Slf4j
 @Configuration

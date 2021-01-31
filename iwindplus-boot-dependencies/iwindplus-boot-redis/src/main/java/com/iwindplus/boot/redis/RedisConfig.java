@@ -30,7 +30,7 @@ import java.time.Duration;
  * Redis配置.
  *
  * @author zengdegui
- * @since 2018年9月5日
+ * @since 2018/9/5
  */
 @Slf4j
 @Configuration

@@ -10,7 +10,7 @@ import java.util.Objects;
  * 支付渠道枚举.
  *
  * @author zengdegui
- * @since 2018年10月11日
+ * @since 2018/10/11
  */
 @Getter
 @Accessors(fluent = true)

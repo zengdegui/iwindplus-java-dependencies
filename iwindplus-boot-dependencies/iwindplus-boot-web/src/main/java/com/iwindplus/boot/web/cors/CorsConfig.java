@@ -15,7 +15,7 @@ import org.springframework.web.filter.CorsFilter;
  * 跨域相关配置.
  *
  * @author zengdegui
- * @since 2019年6月12日
+ * @since 2019/6/12
  */
 @Slf4j
 @Configuration

@@ -19,7 +19,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
  * 资源服务器.
  *
  * @author zengdegui
- * @since 2020年4月1日
+ * @since 2020/4/1
  */
 @Setter
 @Getter

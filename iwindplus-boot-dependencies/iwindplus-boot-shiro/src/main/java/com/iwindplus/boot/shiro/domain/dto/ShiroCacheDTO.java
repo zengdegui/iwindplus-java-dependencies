@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * redis实现shiro缓存.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 public class ShiroCacheDTO<K, V> implements Cache<K, V> {
     private RedisTemplate<K, V> redisTemplate;

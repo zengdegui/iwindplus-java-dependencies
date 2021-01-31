@@ -16,7 +16,7 @@ import org.apache.shiro.subject.Subject;
  * shiro工具类.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Setter
 public class ShiroUtil {

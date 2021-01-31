@@ -16,7 +16,7 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
  * redis授权码模式授权码服务-操作授权码生成、存储、删除.
  *
  * @author zengdegui
- * @since 2020年4月21日
+ * @since 2020/4/21
  */
 @Setter
 public class RedisAuthorizationCodeServices extends RandomValueAuthorizationCodeServices {

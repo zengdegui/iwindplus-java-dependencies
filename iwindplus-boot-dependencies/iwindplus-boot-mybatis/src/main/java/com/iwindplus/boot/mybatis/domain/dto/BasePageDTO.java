@@ -16,7 +16,7 @@ import java.util.List;
  * 基础通用分页相关实体类.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Data
 @NoArgsConstructor

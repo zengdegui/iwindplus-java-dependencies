@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
  * 自定义shiro认证异常.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Getter
 @EqualsAndHashCode(callSuper = true)

@@ -14,7 +14,7 @@ import org.springframework.security.oauth2.provider.error.WebResponseExceptionTr
  * 异常转换器.
  *
  * @author zengdegui
- * @since 2019年6月4日
+ * @since 2019/6/4
  */
 @SuppressWarnings("rawtypes")
 public class CustomWebResponseExceptionTranslator implements WebResponseExceptionTranslator {

@@ -10,7 +10,7 @@ import lombok.Data;
  * 短信相关公用属性.
  *
  * @author zengdegui
- * @since 2020年9月20日
+ * @since 2020/9/20
  */
 @Data
 public class SmsCommonProperty {

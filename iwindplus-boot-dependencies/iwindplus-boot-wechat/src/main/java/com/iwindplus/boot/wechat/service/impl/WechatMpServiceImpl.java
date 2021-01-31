@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 微信公众号相关业务层接口实现类.
  *
  * @author zengdegui
- * @since 2020年4月10日
+ * @since 2020/4/10
  */
 @Slf4j
 public class WechatMpServiceImpl extends WxMpServiceImpl implements WechatMpService {

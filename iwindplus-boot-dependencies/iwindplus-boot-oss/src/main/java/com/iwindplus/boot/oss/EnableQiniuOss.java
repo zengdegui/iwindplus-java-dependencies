@@ -14,7 +14,7 @@ import java.lang.annotation.*;
  * 控制是否启用七牛云对象存储操作服务.
  *
  * @author zengdegui
- * @since 2019年8月13日
+ * @since 2019/8/13
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

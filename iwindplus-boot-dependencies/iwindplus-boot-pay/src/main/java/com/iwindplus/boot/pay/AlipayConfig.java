@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean;
  * 支付宝支付配置管理.
  *
  * @author zengdegui
- * @since 2018年10月18日
+ * @since 2018/10/18
  */
 @Slf4j
 public class AlipayConfig {

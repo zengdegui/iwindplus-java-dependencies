@@ -19,7 +19,7 @@ import java.util.Map;
  * JWTUtil加解密工具类.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 public class JwtUtil {
     private static final String SECRET = "9a96349e2345385785e804e0f4254dee";

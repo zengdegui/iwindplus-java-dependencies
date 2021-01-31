@@ -20,7 +20,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
  * 微信小程序配置管理.
  *
  * @author zengdegui
- * @since 2019年7月16日
+ * @since 2019/7/16
  */
 @Slf4j
 public class WechatMaConfig {

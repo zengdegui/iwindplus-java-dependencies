@@ -23,7 +23,7 @@ import java.io.Serializable;
  * 结果视图对象.
  *
  * @author zengdegui
- * @since 2020年10月31日
+ * @since 2020/10/31
  */
 @Data
 @Builder

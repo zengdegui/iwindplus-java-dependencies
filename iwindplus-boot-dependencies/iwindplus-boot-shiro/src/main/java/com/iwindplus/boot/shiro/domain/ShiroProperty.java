@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * shiro权限相关属性.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Data
 @ConfigurationProperties(prefix = "shiro", ignoreUnknownFields = true)

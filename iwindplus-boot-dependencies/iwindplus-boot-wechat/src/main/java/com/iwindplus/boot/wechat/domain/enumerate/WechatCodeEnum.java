@@ -13,7 +13,7 @@ import java.util.Objects;
  * 业务编码返回值枚举.
  *
  * @author zengdegui
- * @since 2020年6月13日
+ * @since 2020/6/13
  */
 @Getter
 @Accessors(fluent = true)

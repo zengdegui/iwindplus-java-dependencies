@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * 自定义网关配置.
  *
  * @author zengdegui
- * @since 2020年4月24日
+ * @since 2020/4/24
  */
 @Data
 @ConfigurationProperties(prefix = "oauth2")

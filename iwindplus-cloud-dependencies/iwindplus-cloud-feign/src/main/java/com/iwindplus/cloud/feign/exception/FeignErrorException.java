@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Getter
 public class FeignErrorException extends HystrixBadRequestException {

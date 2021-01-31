@@ -19,7 +19,7 @@ import java.util.Properties;
  * 国际化配置.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Configuration
 public class I18nConfig {

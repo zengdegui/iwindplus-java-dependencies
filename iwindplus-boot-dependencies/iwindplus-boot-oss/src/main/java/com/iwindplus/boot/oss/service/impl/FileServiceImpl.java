@@ -36,7 +36,7 @@ import java.util.Locale;
  * 文件操作业务层接口实现类.
  *
  * @author zengdegui
- * @since 2019年8月14日
+ * @since 2019/8/14
  */
 @Slf4j
 public class FileServiceImpl extends AbstractOssServiceImpl implements FileService {

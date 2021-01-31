@@ -22,7 +22,7 @@ import java.util.Map;
  * 处理多个文件上传.
  *
  * @author zengdegui
- * @since 2020年3月26日
+ * @since 2020/3/26
  */
 public class FeignSpringFormEncoder extends SpringFormEncoder {
     public FeignSpringFormEncoder(Encoder delegate) {

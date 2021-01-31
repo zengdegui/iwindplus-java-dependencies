@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * MD5加密.
  *
  * @author zengdegui
- * @since 2019年6月5日
+ * @since 2019/6/5
  */
 public class Md5PasswordEncoder implements PasswordEncoder {
     @Override

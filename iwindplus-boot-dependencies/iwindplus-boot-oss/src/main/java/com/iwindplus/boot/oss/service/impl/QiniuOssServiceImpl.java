@@ -38,7 +38,7 @@ import java.util.List;
  * 七牛云对象存储操作业务层接口实现类.
  *
  * @author zengdegui
- * @since 2019年8月9日
+ * @since 2019/8/9
  */
 @Slf4j
 public class QiniuOssServiceImpl extends AbstractOssServiceImpl implements QiniuOssService {

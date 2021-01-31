@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * redis实现共享session.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

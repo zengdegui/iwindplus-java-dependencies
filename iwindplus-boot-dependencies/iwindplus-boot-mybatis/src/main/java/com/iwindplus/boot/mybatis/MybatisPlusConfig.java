@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Configuration;
  * mybatis plus配置.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Slf4j
 @Configuration

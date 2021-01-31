@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentMap;
  * redis实现shiro缓存管理器.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Setter
 public class RedisCacheManager implements CacheManager {

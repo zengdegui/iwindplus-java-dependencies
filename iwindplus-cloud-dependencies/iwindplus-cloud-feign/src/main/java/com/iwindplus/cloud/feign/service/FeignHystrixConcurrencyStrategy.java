@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  * 返回现有并发策略的线程池、Queue；将策略加到Spring容器即可；
  *
  * @author zengdegui
- * @since 2019年9月3日
+ * @since 2019/9/3
  */
 @Slf4j
 public class FeignHystrixConcurrencyStrategy extends HystrixConcurrencyStrategy {

@@ -9,7 +9,7 @@ package com.iwindplus.cloud.feign.domain.constant;
  * 常数.
  *
  * @author zengdegui
- * @since 2018年12月27日
+ * @since 2018/12/27
  */
 public class FeignConstant {
     /**

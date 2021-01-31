@@ -20,7 +20,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
  * 微信公众号配置管理.
  *
  * @author zengdegui
- * @since 2020年4月10日
+ * @since 2020/4/10
  */
 @Slf4j
 public class WechatMpConfig {

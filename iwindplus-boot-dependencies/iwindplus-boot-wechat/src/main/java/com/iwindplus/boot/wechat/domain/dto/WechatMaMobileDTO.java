@@ -13,7 +13,7 @@ import java.io.Serializable;
  * 微信小程获取手机方式数据传输对象.
  *
  * @author zengdegui
- * @since 2020年3月12日
+ * @since 2020/3/12
  */
 @Data
 public class WechatMaMobileDTO implements Serializable {

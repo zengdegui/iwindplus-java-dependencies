@@ -28,7 +28,7 @@ import java.util.Map;
  * 七牛云短信业务层接口实现类.
  *
  * @author zengdegui
- * @since 2019年8月13日
+ * @since 2019/8/13
  */
 @Slf4j
 public class QiniuSmsServiceImpl extends AbstractSmsServiceImpl implements QiniuSmsService {

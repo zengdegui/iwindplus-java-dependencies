@@ -32,7 +32,7 @@ import java.net.URLEncoder;
  * 无状态认证过滤器.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Slf4j
 public class JwtAuthcFilter extends BasicHttpAuthenticationFilter {

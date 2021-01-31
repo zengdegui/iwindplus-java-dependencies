@@ -29,7 +29,7 @@ import java.util.List;
  * 用户密码方式relam.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Setter
 public class ShiroRealm extends AuthorizingRealm {

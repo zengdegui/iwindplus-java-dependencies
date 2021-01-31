@@ -12,7 +12,7 @@ import org.apache.shiro.authc.AuthenticationToken;
  * 无状态令牌类.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Data
 @Builder

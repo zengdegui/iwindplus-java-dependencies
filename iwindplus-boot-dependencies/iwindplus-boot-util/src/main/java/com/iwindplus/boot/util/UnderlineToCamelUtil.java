@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  * 驼峰下划线互转工具类.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 public class UnderlineToCamelUtil {
     private static Pattern underlinePattern = Pattern.compile("_(\\w)");

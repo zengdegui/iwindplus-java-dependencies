@@ -32,7 +32,7 @@ import java.util.Set;
  * 全局异常处理.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Order(2)
 @RestControllerAdvice

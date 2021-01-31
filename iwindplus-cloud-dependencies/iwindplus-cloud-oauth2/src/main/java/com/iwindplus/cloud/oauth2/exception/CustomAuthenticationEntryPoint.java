@@ -23,7 +23,7 @@ import java.io.IOException;
  * 自定义未认证处理.
  *
  * @author zengdegui
- * @since 2020年3月26日
+ * @since 2020/3/26
  */
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Autowired

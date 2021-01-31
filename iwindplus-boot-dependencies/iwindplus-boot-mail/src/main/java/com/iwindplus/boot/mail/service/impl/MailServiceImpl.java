@@ -23,7 +23,7 @@ import java.util.Properties;
  * 邮箱业务层接口实现类.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Slf4j
 public class MailServiceImpl implements MailService {

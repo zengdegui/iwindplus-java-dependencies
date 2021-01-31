@@ -28,7 +28,7 @@ import java.util.Map;
  * 覆盖springboot默认异常处理.
  *
  * @author zengdegui
- * @since 2019年6月4日
+ * @since 2019/6/4
  */
 @Configuration
 public class CustomErrorController extends BasicErrorController {

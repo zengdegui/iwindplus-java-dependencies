@@ -23,7 +23,7 @@ import java.util.Map;
  * shiro 热加载权限.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Slf4j
 @Setter

@@ -14,7 +14,7 @@ import com.iwindplus.boot.wechat.domain.vo.WechatUserInfoVO;
  * 微信小程序相关业务层接口类.
  *
  * @author zengdegui
- * @since 2019年10月10日
+ * @since 2019/10/10
  */
 public interface WechatMaService extends WxMaService {
     /**

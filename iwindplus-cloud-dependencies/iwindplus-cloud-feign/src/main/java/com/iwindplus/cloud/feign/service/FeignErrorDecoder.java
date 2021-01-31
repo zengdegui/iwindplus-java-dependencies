@@ -23,7 +23,7 @@ import java.util.Optional;
  * feign统一的错误对象.
  *
  * @author zengdegui
- * @since 2019年11月20日
+ * @since 2019/11/20
  */
 @Slf4j
 public class FeignErrorDecoder implements ErrorDecoder {

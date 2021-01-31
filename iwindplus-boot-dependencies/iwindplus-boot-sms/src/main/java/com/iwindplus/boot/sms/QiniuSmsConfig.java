@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
  * 七牛云短信配置.
  *
  * @author zengdegui
- * @since 2019年8月13日
+ * @since 2019/8/13
  */
 @Slf4j
 public class QiniuSmsConfig {

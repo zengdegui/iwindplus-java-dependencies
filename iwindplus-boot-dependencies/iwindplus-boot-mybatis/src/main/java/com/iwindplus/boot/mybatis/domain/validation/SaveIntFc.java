@@ -8,7 +8,7 @@ package com.iwindplus.boot.mybatis.domain.validation;
  * 保存时分组校验接口.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 public interface SaveIntFc {
 }

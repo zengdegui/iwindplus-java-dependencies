@@ -12,7 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * 七牛云对象存储相关属性.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Data
 @ConfigurationProperties(prefix = "oss.qiniu", ignoreUnknownFields = true)

@@ -32,7 +32,7 @@ import java.util.List;
  * 阿里云对象存储业务层接口实现类.
  *
  * @author zengdegui
- * @since 2019年8月9日
+ * @since 2019/8/9
  */
 @Slf4j
 public class AliyunOssServiceImpl extends AbstractOssServiceImpl implements AliyunOssService {

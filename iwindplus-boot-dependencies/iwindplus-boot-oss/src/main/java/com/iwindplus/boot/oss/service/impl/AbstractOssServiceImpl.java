@@ -29,7 +29,7 @@ import java.util.List;
  * 对象存储业务抽象类.
  *
  * @author zengdegui
- * @since 2020年3月13日
+ * @since 2020/3/13
  */
 @Slf4j
 public abstract class AbstractOssServiceImpl implements OssService {

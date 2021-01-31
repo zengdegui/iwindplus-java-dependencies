@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
  * feign配置.
  *
  * @author zengdegui
- * @since 2019年9月3日
+ * @since 2019/9/3
  */
 @Slf4j
 @Configuration

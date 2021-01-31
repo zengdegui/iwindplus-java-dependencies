@@ -10,7 +10,7 @@ import com.iwindplus.boot.mail.domain.dto.MailDTO;
  * 邮箱业务层接口类.
  *
  * @author zengdegui
- * @since 2020年4月28日
+ * @since 2020/4/28
  */
 public interface MailService {
     /**

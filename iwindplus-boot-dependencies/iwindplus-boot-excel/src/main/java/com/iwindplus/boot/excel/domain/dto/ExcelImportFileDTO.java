@@ -15,7 +15,7 @@ import java.io.File;
  * 基于注解本地文件excel导入数据传输对象.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

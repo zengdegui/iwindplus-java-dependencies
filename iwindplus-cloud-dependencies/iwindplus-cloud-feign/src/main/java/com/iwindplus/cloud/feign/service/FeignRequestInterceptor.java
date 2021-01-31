@@ -20,7 +20,7 @@ import java.util.UUID;
  * 微服务之间feign调用请求头丢失的问题 加入微服务之间传递的唯一标识,便于追踪.
  *
  * @author zengdegui
- * @since 2020年4月23日
+ * @since 2020/4/23
  */
 public class FeignRequestInterceptor implements RequestInterceptor {
     @Override

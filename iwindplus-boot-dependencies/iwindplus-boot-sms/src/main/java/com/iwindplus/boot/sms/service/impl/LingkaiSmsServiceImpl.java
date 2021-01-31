@@ -28,7 +28,7 @@ import java.time.ZoneId;
  * 凌凯短信业务层接口实现类
  *
  * @author zengdegui
- * @since 2019年8月13日
+ * @since 2019/8/13
  */
 @Slf4j
 public class LingkaiSmsServiceImpl extends AbstractSmsServiceImpl implements LingkaiSmsService {

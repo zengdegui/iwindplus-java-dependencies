@@ -13,7 +13,7 @@ import java.io.Serializable;
  * 微信小程序获取用户信息视图对象.
  *
  * @author zengdegui
- * @since 2019年10月10日
+ * @since 2019/10/10
  */
 @Data
 public class WechatUserInfoVO implements Serializable {

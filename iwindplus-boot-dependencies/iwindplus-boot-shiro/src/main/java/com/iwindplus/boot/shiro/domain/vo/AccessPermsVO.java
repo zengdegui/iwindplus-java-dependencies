@@ -15,7 +15,7 @@ import java.io.Serializable;
  * 访问权限权限视图对象.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Data
 @Builder

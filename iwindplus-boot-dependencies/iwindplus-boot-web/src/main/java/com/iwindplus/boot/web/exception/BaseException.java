@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
  * 自定义运行时异常.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Getter
 public class BaseException extends RuntimeException {

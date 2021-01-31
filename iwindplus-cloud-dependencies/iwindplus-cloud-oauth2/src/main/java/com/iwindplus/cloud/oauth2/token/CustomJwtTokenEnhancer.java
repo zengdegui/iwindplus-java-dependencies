@@ -21,7 +21,7 @@ import java.util.Map;
  * 自定义JwtAccessToken转换器.
  *
  * @author zengdegui
- * @since 2020年4月24日
+ * @since 2020/4/24
  */
 public class CustomJwtTokenEnhancer extends JwtAccessTokenConverter {
     @Override

@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
  * 微信小程序二维码数据传输对象.
  *
  * @author zengdegui
- * @since 2019年7月16日
+ * @since 2019/7/16
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

@@ -12,7 +12,7 @@ import java.io.Serializable;
  * 七牛云返回结果对象
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Data
 public class QiniuResultVO implements Serializable {

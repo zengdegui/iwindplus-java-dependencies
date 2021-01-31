@@ -11,7 +11,7 @@ import me.chanjar.weixin.mp.api.WxMpService;
  * 微信公众号相关业务层接口类.
  *
  * @author zengdegui
- * @since 2020年4月10日
+ * @since 2020/4/10
  */
 public interface WechatMpService extends WxMpService {
     /**

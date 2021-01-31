@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
  * 关系型数据库基础通用列实体类.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

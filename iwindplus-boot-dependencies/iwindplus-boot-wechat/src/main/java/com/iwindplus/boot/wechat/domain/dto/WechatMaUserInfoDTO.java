@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
  * 微信小程获取用户方式数据传输对象.
  *
  * @author zengdegui
- * @since 2020年3月12日
+ * @since 2020/3/12
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

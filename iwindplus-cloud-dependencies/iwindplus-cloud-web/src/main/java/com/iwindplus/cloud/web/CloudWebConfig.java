@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
  * 默认配置类.
  *
  * @author zengdegui
- * @since 2020年3月31日
+ * @since 2020/3/31
  */
 @Slf4j
 @Configuration

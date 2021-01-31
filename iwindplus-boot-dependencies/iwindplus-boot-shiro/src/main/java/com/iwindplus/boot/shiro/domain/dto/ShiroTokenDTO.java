@@ -12,7 +12,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
  * 用户和密码（包含验证码）令牌类数据传输对象.
  *
  * @author zengdegui
- * @since 2018年9月1日
+ * @since 2018/9/1
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
