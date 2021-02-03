@@ -65,6 +65,7 @@ public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
                 if (StringUtils.contains(ex.getCause().toString(), "BadCredentialsException")) {
                     return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.ACCOUNT_NOT_EXIST, null);
                 }
+                return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.INVALID_CREDENTIAL, null);
             }
         }
         return result;
