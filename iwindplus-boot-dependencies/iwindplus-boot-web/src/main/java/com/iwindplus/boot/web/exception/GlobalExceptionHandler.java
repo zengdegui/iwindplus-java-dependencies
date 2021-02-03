@@ -45,8 +45,6 @@ public class GlobalExceptionHandler {
         String className = ex.getClass().getName();
         if (StringUtils.contains(className, "UnauthorizedException")) {
             return getResultVO(HttpStatus.UNAUTHORIZED, WebCodeEnum.UNAUTHORIZED, null);
-        } else if (StringUtils.contains(className, "NullPointerException")) {
-            return getResultVO(HttpStatus.BAD_REQUEST, WebCodeEnum.NULL_POINTER, null);
         } else if (StringUtils.contains(className, "NoHandlerFoundException")) {
             return getResultVO(HttpStatus.NOT_FOUND, WebCodeEnum.NOT_FOUND, null);
         } else if (StringUtils.contains(className, "HttpRequestMethodNotSupportedException")) {
@@ -59,6 +57,8 @@ public class GlobalExceptionHandler {
             return getResultVO(HttpStatus.BAD_REQUEST, WebCodeEnum.NOT_READ, null);
         } else if (StringUtils.contains(className, "HttpMessageNotWritableException")) {
             return getResultVO(HttpStatus.BAD_REQUEST, WebCodeEnum.NOT_WRITABLE, null);
+        } else if (StringUtils.contains(className, "NullPointerException")) {
+            return getResultVO(HttpStatus.BAD_REQUEST, WebCodeEnum.NULL_POINTER, null);
         } else if (StringUtils.contains(className, "ConversionNotSupportedException")) {
             return getResultVO(HttpStatus.BAD_REQUEST, WebCodeEnum.CONVERSION_NOT_SUPPORTED, null);
         } else if (StringUtils.contains(className, "IllegalArgumentException")) {
