@@ -26,193 +26,132 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
     private static ResultVO getException(Exception ex) {
-        String className = ex.getClass().getName();
         ResultVO result = getError(ex);
         if (null == result) {
-            HttpStatus status = null;
-            String code = null;
-            String message = null;
-            Object data = null;
+            String className = ex.getClass().getName();
             if (StringUtils.contains(className, "UsernameNotFoundException")) {
-                code = CloudWebCodeEnum.ACCOUNT_NOT_EXIST.value();
-                message = CloudWebCodeEnum.ACCOUNT_NOT_EXIST.desc();
+                return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.ACCOUNT_NOT_EXIST, null);
             } else if (StringUtils.contains(className, "BadCredentialsException")) {
-                code = CloudWebCodeEnum.PASSWORD_ERROR.value();
-                message = CloudWebCodeEnum.PASSWORD_ERROR.desc();
+                return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.PASSWORD_ERROR, null);
             } else if (StringUtils.contains(className, "AccountExpiredException")) {
-                code = CloudWebCodeEnum.INVALID_ACCOUNT.value();
-                message = CloudWebCodeEnum.INVALID_ACCOUNT.desc();
+                return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.INVALID_ACCOUNT, null);
             } else if (StringUtils.contains(className, "LockedException")) {
-                code = CloudWebCodeEnum.ACCOUNT_LOCKED.value();
-                message = CloudWebCodeEnum.ACCOUNT_LOCKED.desc();
+                return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.ACCOUNT_LOCKED, null);
             } else if (StringUtils.contains(className, "DisabledException")) {
-                code = CloudWebCodeEnum.ACCOUNT_DISABLED.value();
-                message = CloudWebCodeEnum.ACCOUNT_DISABLED.desc();
+                return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.ACCOUNT_DISABLED, null);
             } else if (StringUtils.contains(className, "CredentialsExpiredException")) {
-                code = CloudWebCodeEnum.INVALID_CREDENTIAL.value();
-                message = CloudWebCodeEnum.INVALID_CREDENTIAL.desc();
+                return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.INVALID_CREDENTIAL, null);
             } else if (StringUtils.contains(className, "InvalidTokenException")) {
-                code = CloudWebCodeEnum.INVALID_ACCESS_TOKEN.value();
-                message = CloudWebCodeEnum.INVALID_ACCESS_TOKEN.desc();
+                return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.INVALID_ACCESS_TOKEN, null);
             } else if (StringUtils.contains(className, "InvalidScopeException")) {
-                code = CloudWebCodeEnum.INVALID_SCOPE.value();
-                message = CloudWebCodeEnum.INVALID_SCOPE.desc();
-            }
-            if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(message)) {
-                result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
+                return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.INVALID_SCOPE, null);
+            } else if (StringUtils.contains(className, "UnauthorizedClientException")) {
+                return getResultVO(HttpStatus.UNAUTHORIZED, CloudWebCodeEnum.UNAUTHORIZED_CLIENT, null);
+            } else if (StringUtils.contains(className, "InsufficientAuthenticationException") || StringUtils.contains(
+                    className, "AuthenticationCredentialsNotFoundException")) {
+                if (StringUtils.contains(ex.getMessage(), "Invalid access token")) {
+                    return getResultVO(HttpStatus.UNAUTHORIZED, CloudWebCodeEnum.INVALID_ACCESS_TOKEN, null);
+                }
+                return getResultVO(HttpStatus.UNAUTHORIZED, WebCodeEnum.UNAUTHORIZED, null);
+            } else if (StringUtils.contains(className, "ClientException") || StringUtils.contains(className,
+                    "FeignException")) {
+                return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.RPC_ERROR, null);
+            } else if (StringUtils.contains(className, "BadClientCredentialsException")) {
+                return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.INVALID_CLIENT, null);
+            } else if (StringUtils.contains(className, "NoSuchClientException") || StringUtils.contains(className,
+                    "InvalidClientException")) {
+                return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.INVALID_CLIENT, null);
+            } else if (StringUtils.contains(className, "InternalAuthenticationServiceException")) {
+                if (StringUtils.contains(ex.getCause().toString(), "BadCredentialsException")) {
+                    return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.ACCOUNT_NOT_EXIST, null);
+                }
             }
         }
         return result;
     }
 
     private static ResultVO getException2(Exception ex) {
-        String className = ex.getClass().getName();
         ResultVO result = getException(ex);
         if (null == result) {
-            HttpStatus status = null;
-            String code = null;
-            String message = null;
-            Object data = null;
-            if (StringUtils.contains(className, "UnauthorizedClientException")) {
-                status = HttpStatus.UNAUTHORIZED;
-                code = CloudWebCodeEnum.UNAUTHORIZED_CLIENT.value();
-                message = CloudWebCodeEnum.UNAUTHORIZED_CLIENT.desc();
-            } else if (StringUtils.contains(className, "InsufficientAuthenticationException") || StringUtils.contains(
-                    className, "AuthenticationCredentialsNotFoundException")) {
-                status = HttpStatus.UNAUTHORIZED;
-                code = WebCodeEnum.UNAUTHORIZED.value();
-                message = WebCodeEnum.UNAUTHORIZED.desc();
-                if (StringUtils.contains(ex.getMessage(), "Invalid access token")) {
-                    code = CloudWebCodeEnum.INVALID_ACCESS_TOKEN.value();
-                    message = CloudWebCodeEnum.INVALID_ACCESS_TOKEN.desc();
+            String className = ex.getClass().getName();
+            if (StringUtils.contains(className, "InvalidGrantException")) {
+                if (StringUtils.contains(ex.getMessage(), "Bad credentials")) {
+                    return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.PASSWORD_ERROR, null);
+                } else if (StringUtils.contains(ex.getMessage(), "User is disabled")) {
+                    return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.ACCOUNT_DISABLED, null);
+                } else if (StringUtils.contains(ex.getMessage(), "User account is locked")) {
+                    return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.ACCOUNT_LOCKED, null);
+                } else if (StringUtils.contains(ex.getMessage(), "Invalid refresh token")) {
+                    return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.INVALID_REFRESH_TOKEN, null);
+                } else if (StringUtils.contains(ex.getMessage(), "Invalid authorization code")) {
+                    return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.INVALID_CODE, null);
                 }
-            } else if (StringUtils.contains(className, "ClientException") || StringUtils.contains(className,
-                    "FeignException")) {
-                status = HttpStatus.BAD_REQUEST;
-                code = CloudWebCodeEnum.RPC_ERROR.value();
-                message = CloudWebCodeEnum.RPC_ERROR.desc();
-            } else if (StringUtils.contains(className, "BadClientCredentialsException")) {
-                code = CloudWebCodeEnum.INVALID_CLIENT.value();
-                message = CloudWebCodeEnum.INVALID_CLIENT.desc();
-            } else if (StringUtils.contains(className, "NoSuchClientException") || StringUtils.contains(className,
-                    "InvalidClientException")) {
-                status = HttpStatus.BAD_REQUEST;
-                code = CloudWebCodeEnum.INVALID_CLIENT.value();
-                message = CloudWebCodeEnum.INVALID_CLIENT.desc();
-            } else if (StringUtils.contains(className, "InternalAuthenticationServiceException")) {
-                if (StringUtils.contains(ex.getCause().toString(), "BadCredentialsException")) {
-                    code = CloudWebCodeEnum.ACCOUNT_NOT_EXIST.value();
-                    message = CloudWebCodeEnum.ACCOUNT_NOT_EXIST.desc();
+                return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.INVALID_GRANT, null);
+            } else if (StringUtils.contains(className, "InvalidTokenException")) {
+                if (StringUtils.contains(ex.getMessage(), "Token was not recognised") || StringUtils.contains(
+                        ex.getMessage(), "Invalid access token")) {
+                    return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.INVALID_ACCESS_TOKEN, null);
+                } else if (StringUtils.contains(ex.getMessage(), "Token has expired")) {
+                    return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.ACCESS_TOKEN_EXPIRED, null);
+                } else if (StringUtils.contains(ex.getMessage(), "Cannot convert access token to JSON")) {
+                    return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.ACCESS_TOKEN_FORMAT_ERROR, null);
+                } else if (StringUtils.contains(ex.getMessage(), "Invalid refresh token (expired)")) {
+                    return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.REFRESH_TOKEN_EXPIRED, null);
                 }
-            }
-            if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(message)) {
-                result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
+                return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.INVALID_TOKEN, null);
             }
         }
         return result;
     }
 
     private static ResultVO getException3(Exception ex) {
-        String className = ex.getClass().getName();
         ResultVO result = getException2(ex);
         if (null == result) {
-            HttpStatus status = null;
-            String code = null;
-            String message = null;
-            Object data = null;
-            if (StringUtils.contains(className, "InvalidGrantException")) {
-                code = CloudWebCodeEnum.INVALID_GRANT.value();
-                message = CloudWebCodeEnum.INVALID_GRANT.desc();
-                if (StringUtils.contains(ex.getMessage(), "Bad credentials")) {
-                    code = CloudWebCodeEnum.PASSWORD_ERROR.value();
-                    message = CloudWebCodeEnum.PASSWORD_ERROR.desc();
-                } else if (StringUtils.contains(ex.getMessage(), "User is disabled")) {
-                    code = CloudWebCodeEnum.ACCOUNT_DISABLED.value();
-                    message = CloudWebCodeEnum.ACCOUNT_DISABLED.desc();
-                } else if (StringUtils.contains(ex.getMessage(), "User account is locked")) {
-                    code = CloudWebCodeEnum.ACCOUNT_LOCKED.value();
-                    message = CloudWebCodeEnum.ACCOUNT_LOCKED.desc();
-                } else if (StringUtils.contains(ex.getMessage(), "Invalid refresh token")) {
-                    code = CloudWebCodeEnum.INVALID_REFRESH_TOKEN.value();
-                    message = CloudWebCodeEnum.INVALID_REFRESH_TOKEN.desc();
-                } else if (StringUtils.contains(ex.getMessage(), "Invalid authorization code")) {
-                    code = CloudWebCodeEnum.INVALID_CODE.value();
-                    message = CloudWebCodeEnum.INVALID_CODE.desc();
+            String className = ex.getClass().getName();
+            if (StringUtils.contains(className, "InvalidRequestException")) {
+                if (StringUtils.contains(ex.getMessage(), "Missing grant type")) {
+                    return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.GRANT_TYPE_NOT_NULL, null);
                 }
-            } else if (StringUtils.contains(className, "InvalidTokenException")) {
-                code = CloudWebCodeEnum.INVALID_TOKEN.value();
-                message = CloudWebCodeEnum.INVALID_TOKEN.desc();
-                if (StringUtils.contains(ex.getMessage(), "Token was not recognised") || StringUtils.contains(
-                        ex.getMessage(), "Invalid access token")) {
-                    code = CloudWebCodeEnum.INVALID_ACCESS_TOKEN.value();
-                    message = CloudWebCodeEnum.INVALID_ACCESS_TOKEN.desc();
-                } else if (StringUtils.contains(ex.getMessage(), "Token has expired")) {
-                    code = CloudWebCodeEnum.ACCESS_TOKEN_EXPIRED.value();
-                    message = CloudWebCodeEnum.ACCESS_TOKEN_EXPIRED.desc();
-                } else if (StringUtils.contains(ex.getMessage(), "Cannot convert access token to JSON")) {
-                    code = CloudWebCodeEnum.ACCESS_TOKEN_FORMAT_ERROR.value();
-                    message = CloudWebCodeEnum.ACCESS_TOKEN_FORMAT_ERROR.desc();
-                } else if (StringUtils.contains(ex.getMessage(), "Invalid refresh token (expired)")) {
-                    code = CloudWebCodeEnum.REFRESH_TOKEN_EXPIRED.value();
-                    message = CloudWebCodeEnum.REFRESH_TOKEN_EXPIRED.desc();
-                }
-            }
-            if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(message)) {
-                result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
+                return getResultVO(HttpStatus.BAD_REQUEST, WebCodeEnum.BAD_REQUEST, null);
+            } else if (StringUtils.contains(className, "UnsupportedGrantTypeException")) {
+                return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.UNSUPPORTED_GRANT_TYPE, null);
+            } else if (StringUtils.contains(className, "UnsupportedResponseTypeException")) {
+                return getResultVO(HttpStatus.BAD_REQUEST, CloudWebCodeEnum.UNSUPPORTED_RESPONSE_TYPE, null);
+            } else if (StringUtils.contains(className, "UserDeniedAuthorizationException") || StringUtils.contains(
+                    className, "UserDenAccessDeniedExceptioniedAuthorizationException")) {
+                return getResultVO(HttpStatus.UNAUTHORIZED, WebCodeEnum.UNAUTHORIZED, null);
+            } else if (StringUtils.contains(className, "RetryableException") || StringUtils.contains(className,
+                    "HystrixRuntimeException")) {
+                return getResultVO(HttpStatus.REQUEST_TIMEOUT, CloudWebCodeEnum.REQUEST_TIMEOUT, null);
+            } else if (StringUtils.contains(className, "FeignErrorException")) {
+                // 熔断器降级捕获异常
+                return ResultVO.builder()
+                        .status(((FeignErrorException) ex).getStatus())
+                        .code(((FeignErrorException) ex).getCode())
+                        .message(((FeignErrorException) ex).getCode())
+                        .data(((FeignErrorException) ex).getData())
+                        .build();
             }
         }
         return result;
     }
 
-    private static ResultVO getException4(Exception ex) {
-        String className = ex.getClass().getName();
-        ResultVO result = getException3(ex);
-        if (null == result) {
-            HttpStatus status = null;
-            String code = null;
-            String message = null;
-            Object data = null;
-            if (StringUtils.contains(className, "InvalidRequestException")) {
-                status = HttpStatus.BAD_REQUEST;
-                code = WebCodeEnum.BAD_REQUEST.value();
-                message = WebCodeEnum.BAD_REQUEST.desc();
-                if (StringUtils.contains(ex.getMessage(), "Missing grant type")) {
-                    code = CloudWebCodeEnum.GRANT_TYPE_NOT_NULL.value();
-                    message = CloudWebCodeEnum.GRANT_TYPE_NOT_NULL.desc();
-                }
-            } else if (StringUtils.contains(className, "UnsupportedGrantTypeException")) {
-                code = CloudWebCodeEnum.UNSUPPORTED_GRANT_TYPE.value();
-                message = CloudWebCodeEnum.UNSUPPORTED_GRANT_TYPE.desc();
-            } else if (StringUtils.contains(className, "UnsupportedResponseTypeException")) {
-                code = CloudWebCodeEnum.UNSUPPORTED_RESPONSE_TYPE.value();
-                message = CloudWebCodeEnum.UNSUPPORTED_RESPONSE_TYPE.desc();
-            } else if (StringUtils.contains(className, "UserDeniedAuthorizationException") || StringUtils.contains(
-                    className, "UserDenAccessDeniedExceptioniedAuthorizationException")) {
-                status = HttpStatus.UNAUTHORIZED;
-                code = WebCodeEnum.UNAUTHORIZED.value();
-                message = WebCodeEnum.UNAUTHORIZED.desc();
-            } else if (StringUtils.contains(className, "RetryableException")) {
-                // 重试超时捕获异常
-                status = HttpStatus.REQUEST_TIMEOUT;
-                code = CloudWebCodeEnum.REQUEST_TIMEOUT.value();
-                message = CloudWebCodeEnum.REQUEST_TIMEOUT.desc();
-            } else if (StringUtils.contains(className, "HystrixRuntimeException")) {
-                // 熔断器超时异常
-                status = HttpStatus.REQUEST_TIMEOUT;
-                code = CloudWebCodeEnum.REQUEST_TIMEOUT.value();
-                message = CloudWebCodeEnum.REQUEST_TIMEOUT.desc();
-            } else if (StringUtils.contains(className, "FeignErrorException")) {
-                // 熔断器降级捕获异常
-                status = ((FeignErrorException) ex).getStatus();
-                code = ((FeignErrorException) ex).getCode();
-                message = ((FeignErrorException) ex).getMessage();
-                data = ((FeignErrorException) ex).getData();
-            }
-            if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(message)) {
-                result = ResultVO.builder().status(status).code(code).message(message).data(data).build();
-            }
-        }
-        return result;
+    private static ResultVO getResultVO(HttpStatus status, WebCodeEnum webCodeEnum, Object data) {
+        return ResultVO.builder()
+                .status(status)
+                .code(webCodeEnum.value())
+                .message(webCodeEnum.desc())
+                .data(data)
+                .build();
+    }
+
+    private static ResultVO getResultVO(HttpStatus status, CloudWebCodeEnum cloudWebCodeEnum, Object data) {
+        return ResultVO.builder()
+                .status(status)
+                .code(cloudWebCodeEnum.value())
+                .message(cloudWebCodeEnum.desc())
+                .data(data)
+                .build();
     }
 
     /**
@@ -223,7 +162,7 @@ public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResultVO> exception(Exception ex) {
-        ResultVO result = getException4(ex);
+        ResultVO result = getException3(ex);
         return this.getResponse(result);
     }
 }
