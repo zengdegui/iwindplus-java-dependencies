@@ -5,6 +5,7 @@
 package com.iwindplus.boot.mybatis.service;
 
 import cn.hutool.core.net.NetUtil;
+import cn.hutool.core.util.ArrayUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -117,10 +118,12 @@ public class MyBatisAutoFillHandler implements MetaObjectHandler {
 			XssHttpServletRequestWrapper requestWrapper = new XssHttpServletRequestWrapper(this.request);
 			// Cookie不为空返回
 			Cookie[] cookies = requestWrapper.getCookies();
-			for (Cookie cookie : cookies) {
-				if (StringUtils.equals(MybatisConstant.OPERATOR, cookie.getName())) {
-					operator = cookie.getValue();
-					return operator;
+			if (ArrayUtil.isNotEmpty(cookies)) {
+				for (Cookie cookie : cookies) {
+					if (StringUtils.equals(MybatisConstant.OPERATOR, cookie.getName())) {
+						operator = cookie.getValue();
+						return operator;
+					}
 				}
 			}
 			// 请求头不为空返回
