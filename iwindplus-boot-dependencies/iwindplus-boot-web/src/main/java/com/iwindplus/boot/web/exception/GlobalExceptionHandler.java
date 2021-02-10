@@ -183,7 +183,7 @@ public class GlobalExceptionHandler {
                 return ResultVO.builder()
                         .status(((BaseException) ex).getStatus())
                         .code(((BaseException) ex).getCode())
-                        .message(((BaseException) ex).getCode())
+                        .message(((BaseException) ex).getMessage())
                         .data(((BaseException) ex).getData())
                         .build();
             } else if (StringUtils.contains(className, "BaseShiroAuthcException")) {
@@ -191,7 +191,7 @@ public class GlobalExceptionHandler {
                 return ResultVO.builder()
                         .status(((BaseShiroAuthcException) ex).getStatus())
                         .code(((BaseShiroAuthcException) ex).getCode())
-                        .message(((BaseShiroAuthcException) ex).getCode())
+                        .message(((BaseShiroAuthcException) ex).getMessage())
                         .data(((BaseShiroAuthcException) ex).getData())
                         .build();
             }

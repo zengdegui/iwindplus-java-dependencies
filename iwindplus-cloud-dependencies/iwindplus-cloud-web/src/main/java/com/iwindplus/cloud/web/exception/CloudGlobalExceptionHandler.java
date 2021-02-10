@@ -129,7 +129,7 @@ public class CloudGlobalExceptionHandler extends GlobalExceptionHandler {
                 return ResultVO.builder()
                         .status(((FeignErrorException) ex).getStatus())
                         .code(((FeignErrorException) ex).getCode())
-                        .message(((FeignErrorException) ex).getCode())
+                        .message(((FeignErrorException) ex).getMessage())
                         .data(((FeignErrorException) ex).getData())
                         .build();
             }
