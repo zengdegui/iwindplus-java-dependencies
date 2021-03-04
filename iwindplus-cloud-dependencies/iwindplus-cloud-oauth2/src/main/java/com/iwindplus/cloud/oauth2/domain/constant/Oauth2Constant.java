@@ -60,5 +60,5 @@ public class Oauth2Constant {
     /**
      * 记住我.
      */
-    public static final String REMEMBER_ME_KEY = "remeber_me";
+    public static final String REMEMBER_ME_KEY = "remember-me";
 }
