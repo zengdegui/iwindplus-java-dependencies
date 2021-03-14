@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Validator;
 import java.util.Locale;
 import java.util.Properties;
@@ -26,9 +25,6 @@ import java.util.Properties;
 public class I18nConfig {
 	@Autowired
 	private MessageSource messageSource;
-
-	@Autowired
-	private HttpServletRequest request;
 
 	/**
 	 * 统一校验规则到国际化信息文件.
@@ -53,24 +49,18 @@ public class I18nConfig {
 	 * @return String
 	 */
 	public String getMessage(String code) {
-		return this.getMessageByOS(code, null);
+		return this.getMessage(code, null);
 	}
 
 	/**
 	 * 根据应用部署的服务器系统来决定国际化.
 	 *
-	 * @param code           编码
-	 * @param defaultMessage 默认消息
+	 * @param code 编码
+	 * @param args 参数
 	 * @return String
 	 */
-	public String getMessageByOS(String code, String defaultMessage) {
-		Locale locale = null;
-		if (null != this.request) {
-			locale = request.getLocale();
-			if (null == locale) {
-				locale = Locale.getDefault();
-			}
-		}
-		return this.messageSource.getMessage(code, null, defaultMessage, locale);
+	public String getMessage(String code, Object[] args) {
+		Locale locale = Locale.getDefault();
+		return this.messageSource.getMessage(code, args, null, locale);
 	}
 }
