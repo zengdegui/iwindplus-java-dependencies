@@ -9,10 +9,11 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Validator;
+import java.util.Locale;
 import java.util.Properties;
 
 /**
@@ -25,6 +26,9 @@ import java.util.Properties;
 public class I18nConfig {
 	@Autowired
 	private MessageSource messageSource;
+
+	@Autowired
+	private HttpServletRequest request;
 
 	/**
 	 * 统一校验规则到国际化信息文件.
@@ -60,6 +64,13 @@ public class I18nConfig {
 	 * @return String
 	 */
 	public String getMessageByOS(String code, String defaultMessage) {
-		return this.messageSource.getMessage(code, null, defaultMessage, LocaleContextHolder.getLocale());
+		Locale locale = null;
+		if (null != this.request) {
+			locale = request.getLocale();
+			if (null == locale) {
+				locale = Locale.getDefault();
+			}
+		}
+		return this.messageSource.getMessage(code, null, defaultMessage, locale);
 	}
 }
