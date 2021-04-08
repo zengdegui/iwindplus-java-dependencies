@@ -29,10 +29,16 @@ public class RedisAuthorizationCodeServices extends RandomValueAuthorizationCode
     /**
      * 授权码有效时长.
      */
-    private long expiration = 300L;
+    private long expiration;
 
     public RedisAuthorizationCodeServices(RedisConnectionFactory connectionFactory) {
         this.connectionFactory = connectionFactory;
+        this.expiration = 300L;
+    }
+
+    public RedisAuthorizationCodeServices(RedisConnectionFactory connectionFactory, long expiration) {
+        this.connectionFactory = connectionFactory;
+        this.expiration = expiration;
     }
 
     private RedisConnection getConnection() {
