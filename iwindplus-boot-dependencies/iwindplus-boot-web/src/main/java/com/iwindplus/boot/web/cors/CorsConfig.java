@@ -20,22 +20,25 @@ import org.springframework.web.filter.CorsFilter;
 @Slf4j
 @Configuration
 public class CorsConfig {
-    /**
-     * 创建 CorsFilter.
-     *
-     * @return CorsFilter
-     */
-    @Bean
-    public CorsFilter corsFilter() {
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.addAllowedOrigin("*");
-        corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.addAllowedMethod("*");
-        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-        CorsFilter corsFilter = new CorsFilter(urlBasedCorsConfigurationSource);
-        log.info("CorsFilter [{}]", corsFilter);
-        return corsFilter;
-    }
+	/**
+	 * 创建 CorsFilter.
+	 *
+	 * @return CorsFilter
+	 */
+	@Bean
+	public CorsFilter corsFilter() {
+		final UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+		final CorsConfiguration corsConfiguration = new CorsConfiguration();
+		corsConfiguration.setAllowCredentials(true);
+		// 允许访问的客户端域名
+		corsConfiguration.addAllowedOrigin("*");
+		// 允许服务端访问的客户端请求头
+		corsConfiguration.addAllowedHeader("*");
+		// 允许访问的方法名,GET POST等
+		corsConfiguration.addAllowedMethod("*");
+		urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+		CorsFilter corsFilter = new CorsFilter(urlBasedCorsConfigurationSource);
+		log.info("CorsFilter [{}]", corsFilter);
+		return corsFilter;
+	}
 }
